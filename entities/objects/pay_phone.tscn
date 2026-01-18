@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://dqbkv2donh7x6"]
+
+[ext_resource type="Script" uid="uid://cyluk5bmgoft2" path="res://entities/objects/pay_phone.gd" id="1_k3ej3"]
+[ext_resource type="Texture2D" uid="uid://cf7h6gnjk80e6" path="res://graphics/SchoolHouse/PickUps/TapePlayers/Phone.png" id="2_e28lv"]
+[ext_resource type="AudioStream" uid="uid://8e8n2067slql" path="res://audio/SFX/Items/AntiHearing.wav" id="3_rb0sf"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ig0nv"]
+radius = 1.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0r8kc"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+shading_mode = 0
+albedo_texture = ExtResource("2_e28lv")
+texture_filter = 0
+billboard_mode = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_8jv3l"]
+material = SubResource("StandardMaterial3D_0r8kc")
+size = Vector2(3.75, 10)
+
+[node name="PayPhone" type="Area3D"]
+collision_layer = 5
+collision_mask = 4
+script = ExtResource("1_k3ej3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_ig0nv")
+
+[node name="Payphone" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_8jv3l")
+
+[node name="Audio" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_rb0sf")
+max_distance = 500.0
+bus = &"Sound"

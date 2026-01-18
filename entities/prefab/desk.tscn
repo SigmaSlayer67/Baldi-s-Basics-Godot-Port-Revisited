@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://cc2qxgplvp270"]
+
+[ext_resource type="ArrayMesh" uid="uid://dwgcw3pnniq3r" path="res://mesh/SchoolObjects/Desk.obj" id="1_wp1j4"]
+[ext_resource type="Material" uid="uid://b1asm28ebf5kr" path="res://graphics/Material/Wood.tres" id="3_pv63h"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bkuax"]
+size = Vector3(10, 3, 4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mknrm"]
+size = Vector3(10, 11, 4)
+
+[node name="Desk" type="Node3D"]
+
+[node name="Desk" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.5, 0)
+mesh = ExtResource("1_wp1j4")
+surface_material_override/0 = ExtResource("3_pv63h")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Desk"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.5, 0)
+collision_layer = 129
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Desk/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_bkuax")
+
+[node name="NavigationBlock" type="MeshInstance3D" parent="." groups=["navigation_mesh_source_group"]]
+transform = Transform3D(1, 0, -3.55271e-15, 0, 1, 0, 3.55271e-15, 0, 1, 0, 6.3503, 0)
+visible = false
+mesh = SubResource("BoxMesh_mknrm")
+skeleton = NodePath("")

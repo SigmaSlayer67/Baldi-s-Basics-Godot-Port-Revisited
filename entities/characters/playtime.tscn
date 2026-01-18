@@ -1,0 +1,237 @@
+[gd_scene load_steps=36 format=3 uid="uid://djbav4j82emsl"]
+
+[ext_resource type="Script" uid="uid://cl2p400abkqu7" path="res://entities/characters/Playtime.gd" id="1_twjcc"]
+[ext_resource type="Texture2D" uid="uid://bokyolsmv4pes" path="res://graphics/Characters/Playtime/JumpRope.png" id="2_yj56h"]
+[ext_resource type="Texture2D" uid="uid://bibbvt56cdnni" path="res://graphics/Characters/Playtime/JumpRope_None.png" id="3_xib3q"]
+[ext_resource type="AudioStream" uid="uid://d0ifldpnk2jpy" path="res://audio/Characters/Playtime/PT_WannaPlay.wav" id="4_0u8rc"]
+[ext_resource type="AudioStream" uid="uid://dguailycnitst" path="res://audio/Music/mus_Playtime.wav" id="5_matd6"]
+[ext_resource type="Texture2D" uid="uid://cokobje668j3m" path="res://graphics/HudTextures/Jumprope/Rope0032.png" id="6_avf7g"]
+[ext_resource type="Texture2D" uid="uid://7201eqr407hr" path="res://graphics/HudTextures/Jumprope/Rope0033.png" id="7_f8tgm"]
+[ext_resource type="Texture2D" uid="uid://cqpf0nrr6o5s0" path="res://graphics/HudTextures/Jumprope/Rope0034.png" id="8_o0v6c"]
+[ext_resource type="Texture2D" uid="uid://begkvr3fcob1w" path="res://graphics/HudTextures/Jumprope/Rope0035.png" id="9_xysed"]
+[ext_resource type="Texture2D" uid="uid://fe1nof3edqag" path="res://graphics/HudTextures/Jumprope/Rope0036.png" id="10_wteu0"]
+[ext_resource type="Texture2D" uid="uid://3ryt2ye0fxl" path="res://graphics/HudTextures/Jumprope/Rope0037.png" id="11_rdhqu"]
+[ext_resource type="Texture2D" uid="uid://bu4nwxquwusyj" path="res://graphics/HudTextures/Jumprope/Rope0038.png" id="12_6ksvi"]
+[ext_resource type="Texture2D" uid="uid://b0ujxshojy5is" path="res://graphics/HudTextures/Jumprope/Rope0039.png" id="13_frn8b"]
+[ext_resource type="Texture2D" uid="uid://dhdrf5y8v5i0i" path="res://graphics/HudTextures/Jumprope/Rope0040.png" id="14_lm6ok"]
+[ext_resource type="Texture2D" uid="uid://dq40rcjbe3xq3" path="res://graphics/HudTextures/Jumprope/Rope0041.png" id="15_xtoky"]
+[ext_resource type="Texture2D" uid="uid://b2yklpn1vgcoe" path="res://graphics/HudTextures/Jumprope/Rope0042.png" id="16_hjp1e"]
+[ext_resource type="Texture2D" uid="uid://d6ku424ntboi" path="res://graphics/HudTextures/Jumprope/Rope0043.png" id="17_qn3si"]
+[ext_resource type="Texture2D" uid="uid://dgdr6btab5v4j" path="res://graphics/HudTextures/Jumprope/Rope0044.png" id="18_ebmgp"]
+[ext_resource type="Texture2D" uid="uid://ul8mxdcb6anx" path="res://graphics/HudTextures/Jumprope/Rope0045.png" id="19_e4n2f"]
+[ext_resource type="Texture2D" uid="uid://w07yh7sk78qu" path="res://graphics/HudTextures/Jumprope/Rope0046.png" id="20_o5hak"]
+[ext_resource type="Shader" uid="uid://6hkvqedt6jfm" path="res://shaders/round_alpha.tres" id="21_carjx"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_shlfa"]
+height = 5.0
+radius = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_reilv"]
+radius = 2.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_be8hy"]
+atlas = ExtResource("2_yj56h")
+region = Rect2(0, 0, 653, 593)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fh3w7"]
+atlas = ExtResource("2_yj56h")
+region = Rect2(653, 0, 653, 593)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djjhr"]
+atlas = ExtResource("2_yj56h")
+region = Rect2(1306, 0, 653, 593)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k44l4"]
+atlas = ExtResource("2_yj56h")
+region = Rect2(0, 593, 653, 593)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0m1nb"]
+atlas = ExtResource("2_yj56h")
+region = Rect2(653, 593, 653, 593)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q4inl"]
+atlas = ExtResource("2_yj56h")
+region = Rect2(1306, 593, 653, 593)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_owdu5"]
+atlas = ExtResource("2_yj56h")
+region = Rect2(0, 1186, 653, 593)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lpq2y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_be8hy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fh3w7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_djjhr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k44l4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0m1nb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q4inl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_owdu5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_xib3q")
+}],
+"loop": true,
+"name": &"sad",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_v4bhc"]
+resource_name = "Jump"
+step = 0.0667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("JumpRopeTexture:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0667, 0.1334, 0.2001, 0.2668, 0.3335, 0.4002, 0.4669, 0.5336, 0.6003, 0.667, 0.7337, 0.8004, 0.8671, 0.9338, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("6_avf7g"), ExtResource("7_f8tgm"), ExtResource("8_o0v6c"), ExtResource("9_xysed"), ExtResource("10_wteu0"), ExtResource("11_rdhqu"), ExtResource("12_6ksvi"), ExtResource("13_frn8b"), ExtResource("14_lm6ok"), ExtResource("15_xtoky"), ExtResource("16_hjp1e"), ExtResource("17_qn3si"), ExtResource("18_ebmgp"), ExtResource("19_e4n2f"), ExtResource("20_o5hak"), null]
+}
+
+[sub_resource type="Animation" id="Animation_fo5x2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("JumpRopeTexture:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ikd1j"]
+_data = {
+&"Jump": SubResource("Animation_v4bhc"),
+&"RESET": SubResource("Animation_fo5x2")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h6bu2"]
+shader = ExtResource("21_carjx")
+
+[node name="Playtime" type="CharacterBody3D" groups=["activatable", "playtime"]]
+collision_layer = 8
+collision_mask = 25
+axis_lock_linear_y = true
+script = ExtResource("1_twjcc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_shlfa")
+
+[node name="PlayerCollider" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCollider"]
+shape = SubResource("SphereShape3D_reilv")
+
+[node name="Playtime" type="AnimatedSprite3D" parent="."]
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_lpq2y")
+autoplay = "default"
+frame_progress = 0.855828
+
+[node name="Nav" type="NavigationAgent3D" parent="."]
+path_height_offset = -2.2
+avoidance_enabled = true
+height = 5.0
+radius = 1.0
+max_speed = 15.0
+debug_use_custom = true
+debug_path_custom_color = Color(0.835294, 0.619608, 0.87451, 1)
+
+[node name="Sounds" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_0u8rc")
+unit_size = 15.0
+max_distance = 80.0
+bus = &"Dialogue"
+doppler_tracking = 2
+
+[node name="PlayerChecker" type="RayCast3D" parent="."]
+collision_mask = 65
+
+[node name="Ambience" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_matd6")
+unit_size = 20.0
+autoplay = true
+max_distance = 70.0
+bus = &"Music"
+
+[node name="JumpRope" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="JumpRopeTexture" type="TextureRect" parent="JumpRope"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="JumpRope" type="AnimationPlayer" parent="JumpRope"]
+libraries = {
+&"": SubResource("AnimationLibrary_ikd1j")
+}
+
+[node name="Instructions" type="Label" parent="JumpRope"]
+material = SubResource("ShaderMaterial_h6bu2")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -141.5
+offset_top = -96.0
+offset_right = 141.5
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Time to jump rope!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Count" type="Label" parent="JumpRope"]
+material = SubResource("ShaderMaterial_h6bu2")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -141.5
+offset_top = 56.0
+offset_right = 141.5
+offset_bottom = 102.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "/5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="body_entered" from="PlayerCollider" to="." method="_on_player_collider_body_entered"]
+[connection signal="animation_finished" from="JumpRope/JumpRope" to="." method="_on_jump_rope_animation_finished"]

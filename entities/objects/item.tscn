@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cb60m3sbxnwuv"]
+
+[ext_resource type="Script" uid="uid://bvh4ed7070bxu" path="res://entities/objects/item.gd" id="1_w4amr"]
+[ext_resource type="Texture2D" uid="uid://csdk5eps3kl7q" path="res://graphics/SchoolHouse/PickUps/EnergyFlavoredZestyBar.png" id="2_q7xwq"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ctgp8"]
+radius = 1.5
+
+[node name="Items" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_w4amr")
+
+[node name="Sprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47275, 0)
+pixel_size = 0.02
+billboard = 1
+texture_filter = 0
+texture = ExtResource("2_q7xwq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_ctgp8")

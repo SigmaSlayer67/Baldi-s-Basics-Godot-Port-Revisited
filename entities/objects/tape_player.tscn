@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgnbqsgo25f5m"]
+
+[ext_resource type="Script" uid="uid://cpj5rjd3ecna6" path="res://entities/objects/tape_player.gd" id="1_twr5j"]
+[ext_resource type="Texture2D" uid="uid://pxqr8hov8jaj" path="res://graphics/SchoolHouse/PickUps/TapePlayers/TapePlayerOpen.png" id="2_twr5j"]
+[ext_resource type="AudioStream" uid="uid://8e8n2067slql" path="res://audio/SFX/Items/AntiHearing.wav" id="3_11wvr"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ig0nv"]
+radius = 1.5
+
+[node name="TapePlayer" type="Area3D"]
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("1_twr5j")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_ig0nv")
+
+[node name="Player" type="Sprite3D" parent="."]
+pixel_size = 0.02
+billboard = 2
+texture_filter = 0
+texture = ExtResource("2_twr5j")
+
+[node name="Audio" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_11wvr")
+max_distance = 500.0
+bus = &"Sound"
+
+[connection signal="finished" from="Audio" to="." method="_on_audio_finished"]

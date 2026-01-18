@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://b7u7y8enhhimr"]
+
+[ext_resource type="Script" uid="uid://ruk3anmqpi3c" path="res://entities/objects/alarm_clock.gd" id="1_8tk4n"]
+[ext_resource type="Texture2D" uid="uid://rop5e8v77x5r" path="res://graphics/SchoolHouse/PickUps/Drops/AlarmClockDrop.png" id="2_gcdh3"]
+[ext_resource type="AudioStream" uid="uid://dgc6gj74fuf55" path="res://audio/SFX/Items/clocktick.wav" id="3_4ddvf"]
+
+[node name="AlarmClock" type="Node3D"]
+script = ExtResource("1_8tk4n")
+
+[node name="Player" type="Sprite3D" parent="."]
+pixel_size = 0.08
+billboard = 2
+texture_filter = 0
+texture = ExtResource("2_gcdh3")
+
+[node name="Audio" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_4ddvf")
+autoplay = true
+max_distance = 500.0
+bus = &"Sound"

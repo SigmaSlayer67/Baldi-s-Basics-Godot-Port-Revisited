@@ -1,0 +1,22 @@
+[gd_resource type="Environment" load_steps=4 format=3 uid="uid://bf68s7u74uc27"]
+
+[ext_resource type="Texture2D" uid="uid://c6bn5sayocens" path="res://graphics/SchoolHouse/OutsideTextures/Panorama.png" id="1_xvpop"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_76cbg"]
+panorama = ExtResource("1_xvpop")
+filter = false
+
+[sub_resource type="Sky" id="Sky_vscrb"]
+sky_material = SubResource("PanoramaSkyMaterial_76cbg")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_vscrb")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
+reflected_light_source = 1
+fog_light_color = Color(1, 1, 1, 1)
+fog_light_energy = 3.01
+fog_sky_affect = 0.619
+volumetric_fog_emission = Color(1, 1, 1, 1)

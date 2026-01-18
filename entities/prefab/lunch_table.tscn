@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://fvq3fkq30s4e"]
+
+[ext_resource type="Material" uid="uid://b1asm28ebf5kr" path="res://graphics/Material/Wood.tres" id="2_g04ue"]
+[ext_resource type="Material" uid="uid://sleos6i83xsk" path="res://graphics/Material/BSODASide.tres" id="3_mil2o"]
+[ext_resource type="ArrayMesh" uid="uid://duxokuqssbh1t" path="res://mesh/SchoolObjects/LunchDesk.obj" id="4_p887o"]
+[ext_resource type="ArrayMesh" uid="uid://bset0p31jkg58" path="res://mesh/SchoolObjects/LunchDeskLegs.obj" id="5_uvpxx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bkuax"]
+size = Vector3(30, 3, 7)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mknrm"]
+size = Vector3(20, 40, 5)
+
+[node name="Desk" type="Node3D"]
+
+[node name="LunchDesk" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10137, 0)
+mesh = ExtResource("4_p887o")
+surface_material_override/0 = ExtResource("2_g04ue")
+
+[node name="LunchDeskLegs" type="MeshInstance3D" parent="LunchDesk"]
+mesh = ExtResource("5_uvpxx")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("3_mil2o")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="LunchDesk"]
+transform = Transform3D(0.666667, 0, 0, 0, 1.33333, 0, 0, 0, 0.666667, 0, 1.19817, 0)
+collision_layer = 129
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LunchDesk/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.750005, 0)
+shape = SubResource("BoxShape3D_bkuax")
+
+[node name="NavigationBlock" type="MeshInstance3D" parent="." groups=["navigation_mesh_source_group"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.453, 0)
+visible = false
+mesh = SubResource("BoxMesh_mknrm")
+skeleton = NodePath("")

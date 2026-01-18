@@ -1,0 +1,13 @@
+[gd_resource type="Shader" format=3 uid="uid://6hkvqedt6jfm"]
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+
+
+
+void fragment() {
+	COLOR.a = round(COLOR.w);
+}
+"

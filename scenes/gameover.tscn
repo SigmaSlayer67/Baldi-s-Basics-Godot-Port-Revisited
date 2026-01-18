@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://cikgj57g26my1"]
+
+[ext_resource type="Script" uid="uid://1c1sohekkvqd" path="res://scripts/gameover.gd" id="1_dy3ie"]
+[ext_resource type="Texture2D" uid="uid://xhmaa61j4ksn" path="res://graphics/Screens/GameOver/0_1.png" id="1_ncp31"]
+
+[node name="Gameover" type="CanvasLayer"]
+script = ExtResource("1_dy3ie")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="FunnyImage" type="TextureRect" parent="."]
+anchors_preset = -1
+anchor_left = 0.34375
+anchor_top = 0.291667
+anchor_right = 0.65625
+anchor_bottom = 0.708333
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_ncp31")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

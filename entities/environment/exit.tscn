@@ -1,0 +1,62 @@
+[gd_scene load_steps=8 format=3 uid="uid://bqmxmbkkd8jst"]
+
+[ext_resource type="Script" uid="uid://b6w5v2clk8kcw" path="res://entities/environment/exit.gd" id="1_rfwlg"]
+[ext_resource type="PackedScene" uid="uid://b5afaoksa0f40" path="res://entities/objects/double_door.tscn" id="2_gtfcx"]
+[ext_resource type="Texture2D" uid="uid://qgjkiq456f20" path="res://graphics/SchoolHouse/Billboards/Plant.png" id="3_o22vf"]
+[ext_resource type="Texture2D" uid="uid://sxn2ldqlx7ru" path="res://graphics/SchoolHouse/Billboards/ExitSign.png" id="4_rgqd3"]
+[ext_resource type="PackedScene" uid="uid://bmtpx28agm8tn" path="res://mesh/School/exit_mesh.dae" id="5_0xivs"]
+[ext_resource type="AudioStream" uid="uid://bhya26r8yl4ft" path="res://audio/SFX/MEC_SLINGSHOT.wav" id="7_n8l33"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1usu7"]
+size = Vector3(35, 5, 15)
+
+[node name="Exit" type="Node3D" groups=["activatable", "escape"]]
+script = ExtResource("1_rfwlg")
+
+[node name="Door" parent="." instance=ExtResource("2_gtfcx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -15)
+backSideDarker = null
+lockForTutorial = true
+exitDoor = true
+
+[node name="Plant" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 5, -12)
+pixel_size = 0.08
+billboard = 2
+shaded = true
+texture_filter = 0
+texture = ExtResource("3_o22vf")
+
+[node name="Plant2" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 5, -12)
+pixel_size = 0.08
+billboard = 2
+shaded = true
+texture_filter = 0
+texture = ExtResource("3_o22vf")
+
+[node name="ExitSign" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.7, 0)
+pixel_size = 0.02
+billboard = 2
+shaded = true
+texture_filter = 0
+texture = ExtResource("4_rgqd3")
+
+[node name="exit_mesh" parent="." instance=ExtResource("5_0xivs")]
+
+[node name="NearTrigger" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, -7)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NearTrigger"]
+shape = SubResource("BoxShape3D_1usu7")
+
+[node name="Switch" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_n8l33")
+volume_db = -5.0
+pitch_scale = 0.8
+bus = &"Sound"
+
+[connection signal="body_entered" from="NearTrigger" to="." method="_on_near_trigger_body_entered"]

@@ -1,0 +1,536 @@
+[gd_scene load_steps=37 format=3 uid="uid://bbue54p2kyco2"]
+
+[ext_resource type="Script" uid="uid://cu535xbyrw2nk" path="res://scripts/player.gd" id="1_7kkx0"]
+[ext_resource type="Shader" uid="uid://6hkvqedt6jfm" path="res://shaders/round_alpha.tres" id="2_npnpg"]
+[ext_resource type="Texture2D" uid="uid://b1ygh2k3g4034" path="res://graphics/CursorSprite.png" id="3_4fffc"]
+[ext_resource type="Texture2D" uid="uid://djf518uq7notn" path="res://graphics/HudTextures/ItemSlots.png" id="3_4q0vh"]
+[ext_resource type="AudioStream" uid="uid://c71nrdtxiev4k" path="res://audio/Characters/Baldi/Sounds/BAL_Screech.wav" id="3_bmaun"]
+[ext_resource type="Texture2D" uid="uid://c8eg85kn0jils" path="res://graphics/HudTextures/BaldiHeads.png" id="5_ef06p"]
+[ext_resource type="AudioStream" uid="uid://b778r5buhupyk" path="res://audio/SFX/Items/can_spray.wav" id="6_6nuf8"]
+[ext_resource type="AudioStream" uid="uid://cyw07xsfi4dim" path="res://audio/Characters/Baldi/BAL_AllNotebooks.wav" id="6_6ttpy"]
+[ext_resource type="Texture2D" uid="uid://b07oe38frxx74" path="res://graphics/SchoolHouse/PickUps/Drops/boots.png" id="6_tjdhl"]
+[ext_resource type="Texture2D" uid="uid://uba0nngqha1r" path="res://graphics/HudTextures/MobileSprites/OutlineCircleSolid01_Pixely.png" id="8_0i614"]
+[ext_resource type="Texture2D" uid="uid://5qtq0m078byl" path="res://graphics/HudTextures/MobileSprites/RunSprite.png" id="9_oprnr"]
+[ext_resource type="Texture2D" uid="uid://30vn0efx4s80" path="res://graphics/HudTextures/MobileSprites/ItemButton.png" id="10_8rie4"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://virtual_joystick/virtual_joystick_scene.tscn" id="10_tjdhl"]
+[ext_resource type="Texture2D" uid="uid://vyljxeb6q6hi" path="res://graphics/HudTextures/MobileSprites/Mirror.png" id="11_dp3pk"]
+[ext_resource type="Texture2D" uid="uid://cvmkdgohbj3k4" path="res://graphics/HudTextures/MobileSprites/CursorSprite 1.png" id="12_cgp7q"]
+[ext_resource type="Texture2D" uid="uid://shh2gj3sgk25" path="res://graphics/HudTextures/MobileSprites/Pause.png" id="13_oprnr"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_yw05o"]
+radius = 2.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_gdjuf"]
+height = 8.0
+radius = 1.9
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ob5d5"]
+shader = ExtResource("2_npnpg")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_74hl2"]
+shader = ExtResource("2_npnpg")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_430oh"]
+shader = ExtResource("2_npnpg")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tjdhl"]
+atlas = ExtResource("5_ef06p")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x08pd"]
+atlas = ExtResource("5_ef06p")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dchgp"]
+atlas = ExtResource("5_ef06p")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kdgjc"]
+atlas = ExtResource("5_ef06p")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q0i8f"]
+atlas = ExtResource("5_ef06p")
+region = Rect2(768, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0i614"]
+atlas = ExtResource("5_ef06p")
+region = Rect2(896, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oprnr"]
+atlas = ExtResource("5_ef06p")
+region = Rect2(1024, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8rie4"]
+atlas = ExtResource("5_ef06p")
+region = Rect2(1152, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgp7q"]
+atlas = ExtResource("5_ef06p")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dp3pk"]
+atlas = ExtResource("5_ef06p")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1n8aq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tjdhl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x08pd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dchgp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kdgjc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q0i8f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0i614")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oprnr")
+}, {
+"duration": 20.0,
+"texture": SubResource("AtlasTexture_8rie4")
+}, {
+"duration": 30.0,
+"texture": SubResource("AtlasTexture_cgp7q")
+}],
+"loop": false,
+"name": &"Confused",
+"speed": 30.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tjdhl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x08pd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dchgp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kdgjc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q0i8f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0i614")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oprnr")
+}, {
+"duration": 20.0,
+"texture": SubResource("AtlasTexture_8rie4")
+}, {
+"duration": 30.0,
+"texture": SubResource("AtlasTexture_dp3pk")
+}],
+"loop": false,
+"name": &"Notice",
+"speed": 30.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0i614"]
+radius = 65.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oprnr"]
+radius = 65.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8rie4"]
+radius = 65.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dp3pk"]
+radius = 62.0
+
+[node name="Player" type="CharacterBody3D" groups=["escape"]]
+collision_layer = 2
+collision_mask = 81
+motion_mode = 1
+script = ExtResource("1_7kkx0")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+current = true
+size = 0.07
+
+[node name="Collider" type="RayCast3D" parent="Camera3D"]
+visible = false
+target_position = Vector3(0, 0, -10)
+collision_mask = 5
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="PlayerCollider" type="Area3D" parent="Camera3D"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/PlayerCollider"]
+shape = SubResource("SphereShape3D_yw05o")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_gdjuf")
+
+[node name="PlayerHud" type="CanvasLayer" parent="."]
+
+[node name="StaminaBar" type="ProgressBar" parent="PlayerHud"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_top = 6.0
+offset_right = 75.0
+offset_bottom = 16.0
+grow_horizontal = 2
+value = 50.0
+show_percentage = false
+
+[node name="Detention" type="VBoxContainer" parent="PlayerHud"]
+visible = false
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="PlayerHud/Detention"]
+material = SubResource("ShaderMaterial_ob5d5")
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "DETENTION TIME:"
+horizontal_alignment = 1
+
+[node name="Warning" type="Label" parent="PlayerHud"]
+material = SubResource("ShaderMaterial_74hl2")
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 20.0
+offset_right = 150.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "YOU NEED REST!"
+horizontal_alignment = 1
+
+[node name="ItemText" type="Label" parent="PlayerHud"]
+material = SubResource("ShaderMaterial_74hl2")
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -210.0
+offset_top = 65.0
+offset_right = -10.0
+offset_bottom = 115.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 18
+text = "Nothing"
+horizontal_alignment = 2
+
+[node name="Reticle" type="ColorRect" parent="PlayerHud"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Pointer" type="TextureRect" parent="PlayerHud"]
+visible = false
+anchors_preset = -1
+anchor_left = 0.471875
+anchor_top = 0.4625
+anchor_right = 0.528125
+anchor_bottom = 0.5375
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_4fffc")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="ItemSlots" type="TextureRect" parent="PlayerHud"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_bottom = 67.0
+grow_horizontal = 0
+texture = ExtResource("3_4q0vh")
+expand_mode = 1
+
+[node name="ItemSlots" type="Control" parent="PlayerHud/ItemSlots"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+
+[node name="ItemSlot0" type="ColorRect" parent="PlayerHud/ItemSlots/ItemSlots"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -109.0
+offset_top = 7.0
+offset_right = -77.0
+offset_bottom = 42.0
+grow_horizontal = 0
+color = Color(1, 0, 0, 1)
+
+[node name="Texture" type="TextureRect" parent="PlayerHud/ItemSlots/ItemSlots/ItemSlot0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 4
+
+[node name="ItemSlot1" type="ColorRect" parent="PlayerHud/ItemSlots/ItemSlots"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -70.0
+offset_top = 8.0
+offset_right = -38.0
+offset_bottom = 41.0
+grow_horizontal = 0
+
+[node name="Texture" type="TextureRect" parent="PlayerHud/ItemSlots/ItemSlots/ItemSlot1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 4
+
+[node name="ItemSlot2" type="ColorRect" parent="PlayerHud/ItemSlots/ItemSlots"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -33.0
+offset_top = 8.0
+offset_right = -0.999977
+offset_bottom = 41.0
+grow_horizontal = 0
+mouse_filter = 1
+
+[node name="Texture" type="TextureRect" parent="PlayerHud/ItemSlots/ItemSlots/ItemSlot2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 4
+
+[node name="NoteBookCount" type="Label" parent="PlayerHud"]
+material = SubResource("ShaderMaterial_430oh")
+offset_left = 5.0
+offset_right = 305.0
+offset_bottom = 50.0
+text = "Noteboos"
+
+[node name="BaldiHeadController" type="Control" parent="PlayerHud"]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="HeadReaction" type="AnimatedSprite2D" parent="PlayerHud/BaldiHeadController"]
+position = Vector2(-64, 64)
+sprite_frames = SubResource("SpriteFrames_1n8aq")
+animation = &"Confused"
+
+[node name="Boots" type="TextureRect" parent="PlayerHud"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -64.0
+offset_top = -128.0
+offset_right = 64.0
+grow_horizontal = 2
+texture = ExtResource("6_tjdhl")
+
+[node name="Virtual Joystick" parent="PlayerHud" instance=ExtResource("10_tjdhl")]
+process_mode = 3
+offset_left = -35.0
+offset_top = -265.0
+offset_right = 265.0
+offset_bottom = 35.000305
+
+[node name="Buttons" type="Control" parent="PlayerHud"]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -315.0
+offset_bottom = -15.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="PlayerHud/Buttons"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.00003
+offset_top = -128.0
+offset_right = 64.00003
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("8_0i614")
+stretch_mode = 4
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="PlayerHud/Buttons/TextureRect"]
+z_index = -1
+position = Vector2(3, 3)
+scale = Vector2(0.95, 0.95)
+texture_normal = ExtResource("9_oprnr")
+texture_pressed = ExtResource("9_oprnr")
+shape = SubResource("CircleShape2D_0i614")
+
+[node name="TextureRect2" type="TextureRect" parent="PlayerHud/Buttons"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_bottom = 128.0
+grow_horizontal = 0
+texture = ExtResource("8_0i614")
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="PlayerHud/Buttons/TextureRect2"]
+z_index = -1
+position = Vector2(3, 3)
+scale = Vector2(0.95, 0.95)
+texture_normal = ExtResource("10_8rie4")
+texture_pressed = ExtResource("10_8rie4")
+shape = SubResource("CircleShape2D_oprnr")
+action = "gm_use"
+
+[node name="TextureRect3" type="TextureRect" parent="PlayerHud/Buttons"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -128.0
+offset_right = 128.0
+grow_vertical = 0
+texture = ExtResource("8_0i614")
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="PlayerHud/Buttons/TextureRect3"]
+z_index = -1
+position = Vector2(3, 3)
+scale = Vector2(0.95, 0.95)
+texture_normal = ExtResource("11_dp3pk")
+texture_pressed = ExtResource("11_dp3pk")
+shape = SubResource("CircleShape2D_8rie4")
+
+[node name="TextureRect4" type="TextureRect" parent="PlayerHud/Buttons"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_top = -128.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("8_0i614")
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="PlayerHud/Buttons/TextureRect4"]
+z_index = -1
+position = Vector2(32, 32)
+texture_normal = ExtResource("12_cgp7q")
+texture_pressed = ExtResource("12_cgp7q")
+shape = SubResource("CircleShape2D_dp3pk")
+
+[node name="Pause" type="Control" parent="PlayerHud"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -190.0
+offset_right = -126.00006
+offset_bottom = 64.0
+grow_horizontal = 0
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="PlayerHud/Pause"]
+texture_normal = ExtResource("13_oprnr")
+texture_pressed = ExtResource("13_oprnr")
+action = "gm_pause"
+
+[node name="Caught" type="AudioStreamPlayer" parent="."]
+process_mode = 2
+stream = ExtResource("3_bmaun")
+volume_db = -20.0
+bus = &"Sound"
+
+[node name="AllNotebooks" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_6ttpy")
+volume_db = -30.0
+bus = &"Dialogue"
+
+[node name="NoSquee" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_6nuf8")
+volume_db = -10.0
+bus = &"Sound"
+
+[connection signal="pressed" from="PlayerHud/Buttons/TextureRect/TouchScreenButton" to="." method="_on_run_button_pressed"]
+[connection signal="pressed" from="PlayerHud/Buttons/TextureRect3/TouchScreenButton" to="." method="_on_behind_button_pressed"]
+[connection signal="pressed" from="PlayerHud/Buttons/TextureRect4/TouchScreenButton" to="." method="_on_click_button_pressed"]

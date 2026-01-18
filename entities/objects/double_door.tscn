@@ -1,0 +1,145 @@
+[gd_scene load_steps=12 format=3 uid="uid://b5afaoksa0f40"]
+
+[ext_resource type="Script" uid="uid://dj6xug2xm2vsu" path="res://scripts/Objects/door.gd" id="1_kigg1"]
+[ext_resource type="AudioStream" uid="uid://dijuoft8m4ddp" path="res://audio/SFX/Doors/swingdoor_open.wav" id="2_elj0p"]
+[ext_resource type="Shape3D" uid="uid://dg7yt1s2yqidk" path="res://collision_shapes/ConvexFace.tres" id="3_udr6l"]
+[ext_resource type="Texture2D" uid="uid://bdp0d8685tj5u" path="res://graphics/SchoolHouse/Textures.png" id="3_v0gml"]
+[ext_resource type="AudioStream" uid="uid://b4w0vnqq8522o" path="res://audio/Characters/Baldi/BaldiTutor/BAL_Door.wav" id="4_ab8dk"]
+[ext_resource type="Texture2D" uid="uid://bodqq56i4864j" path="res://graphics/SchoolHouse/DoorTextures/SwingDoors/SwingDoor_Lock.png" id="5_4213x"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_18fhn"]
+size = Vector3(4, 7.5, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x6uo6"]
+size = Vector3(10, 10, 1)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_lrt0p"]
+vertices = PackedVector3Array(1.47676, -4.98, 0.00499988, 1.71676, -4.98, -0.085, 1.74676, -4.98, -0.175, -1.73324, -4.98, -0.235, -1.73324, -4.98, -0.085, -1.49324, -4.98, 0.00499988, 1.02676, -4.98, -2.125, -1.04324, -4.98, -2.125, -1.73324, -4.98, 0.095, -1.73324, -4.98, 0.215, 1.74676, -4.98, 0.185, 1.74676, -4.98, 0.095, 1.02676, -4.98, 2.135, -1.01324, -4.98, 2.135)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(5, 4, 3), PackedInt32Array(3, 7, 5), PackedInt32Array(5, 7, 6), PackedInt32Array(5, 6, 0), PackedInt32Array(0, 6, 2), PackedInt32Array(9, 8, 5), PackedInt32Array(0, 11, 10), PackedInt32Array(9, 5, 13), PackedInt32Array(13, 5, 12), PackedInt32Array(12, 5, 0), PackedInt32Array(12, 0, 10)]
+cell_size = 0.03
+cell_height = 0.01
+agent_height = 0.0
+agent_radius = 0.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_5gyok"]
+size = Vector2(2, 4.25)
+orientation = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_5otbo"]
+size = Vector2(1, 2.125)
+orientation = 1
+
+[node name="Door" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_kigg1")
+audioDoorOpen = ExtResource("2_elj0p")
+audioDoorClose = null
+setDoorFrame = 40
+doubleDoor = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_18fhn")
+
+[node name="Door" type="StaticBody3D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Door"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+shape = ExtResource("3_udr6l")
+
+[node name="Sound" type="AudioStreamPlayer3D" parent="Door"]
+stream = ExtResource("2_elj0p")
+bus = &"Sound"
+
+[node name="DoorTexture" type="Sprite3D" parent="."]
+pixel_size = 0.0391
+shaded = true
+double_sided = false
+alpha_cut = 1
+alpha_antialiasing_mode = 2
+texture_filter = 0
+texture = ExtResource("3_v0gml")
+hframes = 8
+vframes = 8
+frame = 40
+
+[node name="Duplicate" type="Sprite3D" parent="DoorTexture"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+pixel_size = 0.0391
+shaded = true
+double_sided = false
+alpha_cut = 1
+alpha_antialiasing_mode = 2
+texture_filter = 0
+texture = ExtResource("3_v0gml")
+hframes = 8
+vframes = 8
+frame = 40
+
+[node name="Lock" type="Sprite3D" parent="DoorTexture/Duplicate"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05)
+visible = false
+pixel_size = 0.0391
+shaded = true
+double_sided = false
+alpha_cut = 1
+alpha_antialiasing_mode = 2
+texture_filter = 0
+texture = ExtResource("5_4213x")
+
+[node name="Lock" type="Sprite3D" parent="DoorTexture"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05)
+visible = false
+pixel_size = 0.0391
+shaded = true
+double_sided = false
+alpha_cut = 1
+alpha_antialiasing_mode = 2
+texture_filter = 0
+texture = ExtResource("5_4213x")
+
+[node name="CharacterCheck" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 10
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterCheck"]
+shape = SubResource("BoxShape3D_x6uo6")
+
+[node name="BaldiGuide" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_ab8dk")
+bus = &"Dialogue"
+
+[node name="NavigationLink" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_lrt0p")
+
+[node name="NavMeshReference" type="MeshInstance3D" parent="NavigationLink"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
+visible = false
+mesh = SubResource("QuadMesh_5gyok")
+
+[node name="NavMeshReference2" type="MeshInstance3D" parent="NavigationLink"]
+transform = Transform3D(0.939692, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939692, 0.9, -5, 0.95)
+visible = false
+mesh = SubResource("QuadMesh_5otbo")
+
+[node name="NavMeshReference3" type="MeshInstance3D" parent="NavigationLink"]
+transform = Transform3D(0.939692, 0, 0.34202, 0, 1, 0, -0.34202, 0, 0.939692, -0.9, -5, 0.95)
+visible = false
+mesh = SubResource("QuadMesh_5otbo")
+
+[node name="NavMeshReference4" type="MeshInstance3D" parent="NavigationLink"]
+transform = Transform3D(0.939692, 0, 0.34202, 0, 1, 0, -0.34202, 0, 0.939692, 0.9, -5, -0.95)
+visible = false
+mesh = SubResource("QuadMesh_5otbo")
+
+[node name="NavMeshReference5" type="MeshInstance3D" parent="NavigationLink"]
+transform = Transform3D(0.939692, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939692, -0.9, -5, -0.95)
+visible = false
+mesh = SubResource("QuadMesh_5otbo")
+
+[connection signal="frame_changed" from="DoorTexture" to="." method="_on_door_texture_frame_changed"]
+[connection signal="texture_changed" from="DoorTexture" to="." method="_on_door_texture_texture_changed"]
+[connection signal="visibility_changed" from="DoorTexture" to="." method="_on_door_texture_visibility_changed"]
+[connection signal="body_entered" from="CharacterCheck" to="." method="_on_character_check_body_entered"]
+[connection signal="body_exited" from="CharacterCheck" to="." method="_on_character_check_body_exited"]

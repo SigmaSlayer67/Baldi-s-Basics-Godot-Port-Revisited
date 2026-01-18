@@ -1,0 +1,111 @@
+[gd_scene load_steps=13 format=3 uid="uid://bp6yqhv44wlw0"]
+
+[ext_resource type="Script" path="res://scripts/math_game.gd" id="1_18yvs"]
+[ext_resource type="Texture2D" uid="uid://e40527k1lmgw" path="res://graphics/YCTPTextures/YCTP2_NoButtons.png" id="1_at22y"]
+[ext_resource type="AudioStream" uid="uid://d1eur0b5g7l0j" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise1.wav" id="2_3brbj"]
+[ext_resource type="Shader" uid="uid://6hkvqedt6jfm" path="res://shaders/round_alpha.tres" id="2_fckko"]
+[ext_resource type="Texture2D" uid="uid://dq7li4qika4hc" path="res://graphics/Characters/Baldi/MathTalk.png" id="2_h13hb"]
+[ext_resource type="AudioStream" uid="uid://fib73o68n5h4" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise2.wav" id="3_lmnlv"]
+[ext_resource type="AudioStream" uid="uid://b821jvtvfm1t6" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise3.wav" id="4_dcwby"]
+[ext_resource type="AudioStream" uid="uid://cii5ve8ghcypt" path="res://audio/Music/mus_Learn.wav" id="5_g4qqx"]
+[ext_resource type="AudioStream" uid="uid://ckp2nkd1jybi0" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise4.wav" id="5_t84fk"]
+[ext_resource type="AudioStream" uid="uid://cyhotsuegl1ch" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise5.wav" id="6_icm6d"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0ss3t"]
+streams_count = 5
+stream_0/stream = ExtResource("2_3brbj")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("3_lmnlv")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("4_dcwby")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("5_t84fk")
+stream_3/weight = 1.0
+stream_4/stream = ExtResource("6_icm6d")
+stream_4/weight = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7epx8"]
+shader = ExtResource("2_fckko")
+
+[node name="MathGame" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_18yvs")
+praises = SubResource("AudioStreamRandomizer_0ss3t")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Pad" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="WhiteRect" type="ColorRect" parent="Pad"]
+layout_mode = 0
+offset_left = -196.0
+offset_top = -105.0
+offset_right = 135.0
+offset_bottom = 40.0
+
+[node name="WhiteRect2" type="ColorRect" parent="Pad"]
+layout_mode = 0
+offset_left = -84.0
+offset_top = 41.0
+offset_right = 131.0
+offset_bottom = 128.0
+
+[node name="Questions" type="Label" parent="Pad"]
+use_parent_material = true
+layout_mode = 2
+offset_left = -112.0
+offset_top = -96.0
+offset_right = 120.0
+offset_bottom = -62.0
+theme_override_font_sizes/font_size = 24
+text = "SOLVE MATH Q"
+
+[node name="Answer" type="LineEdit" parent="Pad"]
+material = SubResource("ShaderMaterial_7epx8")
+layout_mode = 0
+offset_left = -68.0
+offset_top = 56.0
+offset_right = 125.0
+offset_bottom = 112.0
+placeholder_text = "ENTER ANSWER"
+virtual_keyboard_type = 2
+caret_blink = true
+metadata/_edit_use_anchors_ = true
+
+[node name="LiveBaldiReaction" type="Sprite2D" parent="Pad"]
+position = Vector2(-149, 89)
+scale = Vector2(0.370457, 0.370457)
+texture = ExtResource("2_h13hb")
+hframes = 5
+vframes = 5
+
+[node name="Yctp2NoButtons" type="Sprite2D" parent="Pad"]
+scale = Vector2(0.643229, 0.643229)
+texture = ExtResource("1_at22y")
+
+[node name="MathDialogue" type="AudioStreamPlayer" parent="."]
+autoplay = true
+bus = &"Dialogue"
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_g4qqx")
+autoplay = true
+bus = &"Music"
+
+[connection signal="text_changed" from="Pad/Answer" to="." method="_on_LineEdit_text_changed"]
+[connection signal="text_submitted" from="Pad/Answer" to="." method="_on_answer_text_submitted"]

@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://vbsp5gykge2e"]
+
+[ext_resource type="Script" uid="uid://bsckcxbu4h6bj" path="res://scripts/results.gd" id="1_8ht7k"]
+[ext_resource type="Texture2D" uid="uid://cwcrbxn1dygl4" path="res://graphics/Screens/win.png" id="2_0hjvs"]
+[ext_resource type="AudioStream" uid="uid://yf2pyfora5ng" path="res://audio/Characters/Filename2/great.wav" id="3_lh4d4"]
+
+[node name="Results" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8ht7k")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Texture" type="TextureRect" parent="Title"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_0hjvs")
+stretch_mode = 5
+
+[node name="Wow" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_lh4d4")
+autoplay = true
+bus = &"Dialogue"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

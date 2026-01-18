@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://bf5aen1h4jfgo"]
+
+[ext_resource type="Texture2D" uid="uid://gy5xhe5vcvep" path="res://graphics/Characters/Gotta Sweep Sprite.png" id="1_a12yu"]
+[ext_resource type="Script" uid="uid://bvyaoxoa4ra6c" path="res://entities/characters/gotta_sweep.gd" id="1_yuc06"]
+[ext_resource type="AudioStream" uid="uid://kmfcvs80dkmn" path="res://audio/Characters/GottaSweep/GS_Intro.wav" id="3_37x7l"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_h43de"]
+height = 4.0
+radius = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_r1cap"]
+radius = 6.0
+
+[node name="GottaSweep" type="CharacterBody3D" groups=["activatable"]]
+collision_layer = 8
+script = ExtResource("1_yuc06")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("CylinderShape3D_h43de")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 10
+collision_mask = 10
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("SphereShape3D_r1cap")
+
+[node name="GottaSweep" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.06742, 0)
+pixel_size = 0.032
+billboard = 2
+texture_filter = 0
+texture = ExtResource("1_a12yu")
+
+[node name="Nav" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
+max_speed = 50.0
+debug_use_custom = true
+debug_path_custom_color = Color(0.00392157, 0.847059, 0, 1)
+
+[node name="Sounds" type="AudioStreamPlayer3D" parent="." groups=["activatable"]]
+stream = ExtResource("3_37x7l")
+max_distance = 500.0
+max_polyphony = 2
+bus = &"Dialogue"
+doppler_tracking = 2
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

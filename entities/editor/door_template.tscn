@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=3 uid="uid://o4gsv31rnqvm"]
+
+[ext_resource type="Texture2D" uid="uid://bdp0d8685tj5u" path="res://graphics/SchoolHouse/Textures.png" id="1_3vp23"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5uj8x"]
+size = Vector3(2, 0, 8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g55f6"]
+size = Vector3(2, 0, 4)
+
+[node name="Door" type="Sprite3D"]
+pixel_size = 0.0391
+double_sided = false
+texture_filter = 0
+texture = ExtResource("1_3vp23")
+hframes = 16
+vframes = 8
+frame = 112
+
+[node name="AIPath" type="StaticBody3D" parent="."]
+collision_layer = 32
+collision_mask = 32
+
+[node name="AiPathCollision" type="CollisionShape3D" parent="AIPath"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
+shape = SubResource("BoxShape3D_5uj8x")
+disabled = true
+
+[node name="Triangulate" type="CollisionShape3D" parent="AIPath"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -1, -5, -2)
+shape = SubResource("BoxShape3D_g55f6")
+disabled = true
+
+[node name="Triangulate2" type="CollisionShape3D" parent="AIPath"]
+transform = Transform3D(-0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, -0.707107, 1, -5, -2)
+shape = SubResource("BoxShape3D_g55f6")
+disabled = true
+
+[node name="Triangulate3" type="CollisionShape3D" parent="AIPath"]
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 1, -5, 2)
+shape = SubResource("BoxShape3D_g55f6")
+disabled = true
+
+[node name="Triangulate4" type="CollisionShape3D" parent="AIPath"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -1, -5, 2)
+shape = SubResource("BoxShape3D_g55f6")
+disabled = true

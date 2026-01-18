@@ -1,0 +1,41 @@
+[gd_scene load_steps=9 format=3 uid="uid://cnetpcvq5y2vs"]
+
+[ext_resource type="Script" uid="uid://1810tqnpvw0c" path="res://entities/dropped_items/BSODA.gd" id="1_80yvj"]
+[ext_resource type="Shader" uid="uid://joqolcuflrka" path="res://shaders/dither_pattern.gdshader" id="2_i870h"]
+[ext_resource type="AudioStream" uid="uid://r3nhvnkcgckg" path="res://audio/SFX/Items/soda_spray.wav" id="2_x16kv"]
+[ext_resource type="Texture2D" uid="uid://dtktnod4mih01" path="res://graphics/SchoolHouse/PickUps/Drops/BSODA_Spray.png" id="2_yvj71"]
+[ext_resource type="Texture2D" uid="uid://pdwj7liee338" path="res://graphics/DitherPattern.png" id="3_ke8ci"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_om8qk"]
+radius = 5.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g24ot"]
+render_priority = 0
+shader = ExtResource("2_i870h")
+shader_parameter/pattern = ExtResource("3_ke8ci")
+shader_parameter/albedo_texture = ExtResource("2_yvj71")
+shader_parameter/tile_scale = 4.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_n7jij"]
+material = SubResource("ShaderMaterial_g24ot")
+size = Vector2(8, 8)
+
+[node name="BSODA" type="Area3D"]
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("1_80yvj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_om8qk")
+
+[node name="SODA" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_n7jij")
+
+[node name="Sounds" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_x16kv")
+autoplay = true
+bus = &"Sound"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

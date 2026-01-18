@@ -1,0 +1,425 @@
+[gd_scene load_steps=43 format=3 uid="uid://bp6yqhv44wlw0"]
+
+[ext_resource type="Script" uid="uid://bvrmeni48vtwi" path="res://scripts/math_game.gd" id="1_18yvs"]
+[ext_resource type="Texture2D" uid="uid://e40527k1lmgw" path="res://graphics/YCTPTextures/YCTP2_NoButtons.png" id="1_at22y"]
+[ext_resource type="AudioStream" uid="uid://d1eur0b5g7l0j" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise1.wav" id="2_3brbj"]
+[ext_resource type="Shader" uid="uid://6hkvqedt6jfm" path="res://shaders/round_alpha.tres" id="2_fckko"]
+[ext_resource type="Texture2D" uid="uid://dq7li4qika4hc" path="res://graphics/Characters/Baldi/MathTalk.png" id="2_h13hb"]
+[ext_resource type="AudioStream" uid="uid://fib73o68n5h4" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise2.wav" id="3_lmnlv"]
+[ext_resource type="AudioStream" uid="uid://b821jvtvfm1t6" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise3.wav" id="4_dcwby"]
+[ext_resource type="AudioStream" uid="uid://ckp2nkd1jybi0" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise4.wav" id="5_t84fk"]
+[ext_resource type="AudioStream" uid="uid://cyhotsuegl1ch" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise5.wav" id="6_icm6d"]
+[ext_resource type="Texture2D" uid="uid://cm1xwxv2vlw8b" path="res://graphics/Characters/Baldi/BaldiFrown.png" id="10_nepyx"]
+[ext_resource type="Texture2D" uid="uid://pqso17ee0uv" path="res://graphics/YCTPTextures/NumberPad/0_0.png" id="11_fp0f0"]
+[ext_resource type="AudioStream" uid="uid://cii5ve8ghcypt" path="res://audio/Music/mus_Learn.wav" id="11_oql8b"]
+[ext_resource type="Texture2D" uid="uid://c8ss76ehj61kv" path="res://graphics/YCTPTextures/NumberPad/Selected/0.png" id="12_6cpe1"]
+[ext_resource type="Texture2D" uid="uid://dw6scm3eyiue7" path="res://graphics/YCTPTextures/NumberPad/1_0.png" id="13_bqi3b"]
+[ext_resource type="Texture2D" uid="uid://cugo26ff6b0y1" path="res://graphics/YCTPTextures/NumberPad/Selected/1.png" id="14_y3b7u"]
+[ext_resource type="Texture2D" uid="uid://c8ctim25p8efo" path="res://graphics/YCTPTextures/NumberPad/2_0.png" id="15_n10w2"]
+[ext_resource type="Texture2D" uid="uid://6x4chn67nf26" path="res://graphics/YCTPTextures/NumberPad/Selected/2.png" id="16_qnbc1"]
+[ext_resource type="Texture2D" uid="uid://du3rqpxyy2751" path="res://graphics/YCTPTextures/NumberPad/3.png" id="17_b2e5o"]
+[ext_resource type="Texture2D" uid="uid://5nphh8ardwly" path="res://graphics/YCTPTextures/NumberPad/Selected/3_0.png" id="18_qt7ae"]
+[ext_resource type="Texture2D" uid="uid://6pm37es0irxo" path="res://graphics/YCTPTextures/NumberPad/4.png" id="19_1tq3q"]
+[ext_resource type="Texture2D" uid="uid://y21vnx04yh4h" path="res://graphics/YCTPTextures/NumberPad/Selected/4_0.png" id="20_cbv7a"]
+[ext_resource type="Texture2D" uid="uid://c5l553ie4oens" path="res://graphics/YCTPTextures/NumberPad/5.png" id="21_bhoy1"]
+[ext_resource type="Texture2D" uid="uid://bij142ohw6x3q" path="res://graphics/YCTPTextures/NumberPad/Selected/5_0.png" id="22_23oax"]
+[ext_resource type="Texture2D" uid="uid://bf3cv08at3t5q" path="res://graphics/YCTPTextures/NumberPad/6_0.png" id="23_ksb4f"]
+[ext_resource type="Texture2D" uid="uid://dk1iskxgaiqp7" path="res://graphics/YCTPTextures/NumberPad/Selected/6.png" id="24_fvjrs"]
+[ext_resource type="Texture2D" uid="uid://b4ledao4wj3w8" path="res://graphics/YCTPTextures/NumberPad/7_0.png" id="25_kqf7h"]
+[ext_resource type="Texture2D" uid="uid://da5vslh8lv4us" path="res://graphics/YCTPTextures/NumberPad/Selected/7.png" id="26_2ljrd"]
+[ext_resource type="Texture2D" uid="uid://clamnudsj3g5h" path="res://graphics/YCTPTextures/NumberPad/8.png" id="27_jjhqg"]
+[ext_resource type="Texture2D" uid="uid://d3j5cs8f27ekr" path="res://graphics/YCTPTextures/NumberPad/Selected/8_0.png" id="28_q62un"]
+[ext_resource type="Texture2D" uid="uid://bejrknrj4ffp" path="res://graphics/YCTPTextures/NumberPad/9.png" id="29_0xilb"]
+[ext_resource type="Texture2D" uid="uid://c6ur0x1ioecxl" path="res://graphics/YCTPTextures/NumberPad/Selected/9_0.png" id="30_p545p"]
+[ext_resource type="Texture2D" uid="uid://ciuh7ygxfdotm" path="res://graphics/YCTPTextures/NumberPad/C_0.png" id="31_3q1am"]
+[ext_resource type="Texture2D" uid="uid://d4bvnw48orf71" path="res://graphics/YCTPTextures/NumberPad/Selected/C.png" id="32_lluyt"]
+[ext_resource type="Texture2D" uid="uid://cifa7mv2hnam3" path="res://graphics/YCTPTextures/NumberPad/-_0.png" id="33_ca3ix"]
+[ext_resource type="Texture2D" uid="uid://delwg3ftvf5l3" path="res://graphics/YCTPTextures/NumberPad/Selected/-.png" id="34_dgf6u"]
+[ext_resource type="Texture2D" uid="uid://c7qhq6juvt827" path="res://graphics/YCTPTextures/NumberPad/OK.png" id="35_5qh6b"]
+[ext_resource type="Texture2D" uid="uid://vjsbtigml042" path="res://graphics/YCTPTextures/NumberPad/Selected/OK_0.png" id="36_txc72"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0ss3t"]
+streams_count = 5
+stream_0/stream = ExtResource("2_3brbj")
+stream_1/stream = ExtResource("3_lmnlv")
+stream_2/stream = ExtResource("4_dcwby")
+stream_3/stream = ExtResource("5_t84fk")
+stream_4/stream = ExtResource("6_icm6d")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6f1wk"]
+shader = ExtResource("2_fckko")
+
+[sub_resource type="Animation" id="Animation_65j2p"]
+resource_name = "Anger"
+length = 2.24
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LiveBaldiReaction:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [9]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LiveBaldiReaction:vframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LiveBaldiReaction:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2.24),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 71]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LiveBaldiReaction:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("10_nepyx")]
+}
+
+[sub_resource type="Animation" id="Animation_8yfn4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("LiveBaldiReaction:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("LiveBaldiReaction:vframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("LiveBaldiReaction:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("LiveBaldiReaction:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_h13hb")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_804ec"]
+_data = {
+&"Anger": SubResource("Animation_65j2p"),
+&"RESET": SubResource("Animation_8yfn4")
+}
+
+[node name="MathGame" type="CanvasLayer"]
+process_mode = 3
+layer = 10
+script = ExtResource("1_18yvs")
+praises = SubResource("AudioStreamRandomizer_0ss3t")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Pad" type="Control" parent="."]
+material = SubResource("ShaderMaterial_6f1wk")
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WhiteRect" type="ColorRect" parent="Pad"]
+layout_mode = 0
+offset_left = -240.0
+offset_top = -113.0
+offset_right = 119.0
+offset_bottom = 31.0
+
+[node name="WhiteRect2" type="ColorRect" parent="Pad"]
+layout_mode = 0
+offset_left = -113.0
+offset_top = 46.0
+offset_right = 121.0
+offset_bottom = 138.0
+
+[node name="Questions" type="Label" parent="Pad"]
+use_parent_material = true
+layout_mode = 2
+offset_left = -154.0
+offset_top = -107.0
+offset_right = 120.0
+offset_bottom = 16.0
+theme_override_font_sizes/font_size = 26
+text = "SOLVE MATH Q"
+autowrap_mode = 2
+
+[node name="Answer" type="LineEdit" parent="Pad"]
+use_parent_material = true
+layout_mode = 0
+offset_left = -101.0
+offset_top = 56.0
+offset_right = 117.0
+offset_bottom = 132.0
+placeholder_text = "ENTER ANSWER"
+keep_editing_on_text_submit = true
+virtual_keyboard_type = 2
+deselect_on_focus_loss_enabled = false
+caret_blink = true
+
+[node name="Result1" type="TextureRect" parent="Pad"]
+layout_mode = 0
+offset_left = -224.0
+offset_top = -106.0
+offset_right = -193.0
+offset_bottom = -75.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Result2" type="TextureRect" parent="Pad"]
+layout_mode = 0
+offset_left = -227.0
+offset_top = -55.0
+offset_right = -196.0
+offset_bottom = -24.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Result3" type="TextureRect" parent="Pad"]
+layout_mode = 0
+offset_left = -230.0
+offset_top = -1.0
+offset_right = -199.0
+offset_bottom = 30.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LiveBaldiReaction" type="Sprite2D" parent="Pad"]
+position = Vector2(-191, 97)
+scale = Vector2(0.370457, 0.370457)
+texture = ExtResource("2_h13hb")
+hframes = 5
+vframes = 5
+
+[node name="Yctp2NoButtons" type="Sprite2D" parent="Pad"]
+position = Vector2(-23, 0)
+scale = Vector2(0.72, 0.72)
+texture = ExtResource("1_at22y")
+
+[node name="BaldiAnimator" type="AnimationPlayer" parent="Pad"]
+libraries = {
+&"": SubResource("AnimationLibrary_804ec")
+}
+
+[node name="Keypad" type="Control" parent="Pad"]
+anchors_preset = 0
+offset_left = 226.0
+offset_right = 226.0
+
+[node name="0" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = -19.0
+offset_top = 15.0
+offset_right = 28.0
+offset_bottom = 62.0
+texture_normal = ExtResource("11_fp0f0")
+texture_pressed = ExtResource("12_6cpe1")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="1" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = -65.0
+offset_top = -34.0
+offset_right = -18.0
+offset_bottom = 13.0
+texture_normal = ExtResource("13_bqi3b")
+texture_pressed = ExtResource("14_y3b7u")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="2" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = -19.0
+offset_top = -34.0
+offset_right = 28.0
+offset_bottom = 13.0
+texture_normal = ExtResource("15_n10w2")
+texture_pressed = ExtResource("16_qnbc1")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="3" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = -34.0
+offset_right = 74.0
+offset_bottom = 13.0
+texture_normal = ExtResource("17_b2e5o")
+texture_pressed = ExtResource("18_qt7ae")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="4" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = -65.0
+offset_top = -81.0
+offset_right = -18.0
+offset_bottom = -34.0
+texture_normal = ExtResource("19_1tq3q")
+texture_pressed = ExtResource("20_cbv7a")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="5" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = -19.0
+offset_top = -81.0
+offset_right = 28.0
+offset_bottom = -34.0
+texture_normal = ExtResource("21_bhoy1")
+texture_pressed = ExtResource("22_23oax")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="6" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = 27.0
+offset_top = -81.0
+offset_right = 74.0
+offset_bottom = -34.0
+texture_normal = ExtResource("23_ksb4f")
+texture_pressed = ExtResource("24_fvjrs")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="7" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = -66.0
+offset_top = -127.0
+offset_right = -19.0
+offset_bottom = -80.0
+texture_normal = ExtResource("25_kqf7h")
+texture_pressed = ExtResource("26_2ljrd")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="8" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = -20.0
+offset_top = -127.0
+offset_right = 27.0
+offset_bottom = -80.0
+texture_normal = ExtResource("27_jjhqg")
+texture_pressed = ExtResource("28_q62un")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="9" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = -126.0
+offset_right = 73.0
+offset_bottom = -79.0
+texture_normal = ExtResource("29_0xilb")
+texture_pressed = ExtResource("30_p545p")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="C" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = -64.0
+offset_top = 14.0
+offset_right = -17.0
+offset_bottom = 61.0
+texture_normal = ExtResource("31_3q1am")
+texture_pressed = ExtResource("32_lluyt")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="-" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 15.0
+offset_right = 73.0
+offset_bottom = 62.0
+texture_normal = ExtResource("33_ca3ix")
+texture_pressed = ExtResource("34_dgf6u")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="OK" type="TextureButton" parent="Pad/Keypad"]
+layout_mode = 0
+offset_left = -69.0
+offset_top = 61.0
+offset_right = 76.0
+offset_bottom = 206.0
+texture_normal = ExtResource("35_5qh6b")
+texture_pressed = ExtResource("36_txc72")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="MathDialogue" type="AudioStreamPlayer" parent="."]
+autoplay = true
+bus = &"Dialogue"
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_oql8b")
+bus = &"Music"
+
+[connection signal="text_changed" from="Pad/Answer" to="." method="_on_LineEdit_text_changed"]
+[connection signal="text_submitted" from="Pad/Answer" to="." method="_on_answer_text_submitted"]

@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://crwtw4rwda8cl"]
+
+[ext_resource type="Texture2D" uid="uid://dpg4u31pj8dm0" path="res://graphics/SchoolHouse/Locker.png" id="1_kqer8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0lthd"]
+size = Vector3(2, 8, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rh3xh"]
+albedo_texture = ExtResource("1_kqer8")
+texture_filter = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_fl3k3"]
+material = SubResource("StandardMaterial3D_rh3xh")
+size = Vector2(2, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ows5"]
+albedo_color = Color(1, 0, 0, 1)
+texture_filter = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_cxiyc"]
+material = SubResource("StandardMaterial3D_0ows5")
+size = Vector2(2, 8)
+
+[node name="Lockers" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_0lthd")
+
+[node name="LockerFace" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+mesh = SubResource("QuadMesh_fl3k3")
+
+[node name="LockerFace2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1, 0, 0)
+mesh = SubResource("QuadMesh_cxiyc")
+
+[node name="LockerFace3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -1, 0, 0)
+mesh = SubResource("QuadMesh_cxiyc")

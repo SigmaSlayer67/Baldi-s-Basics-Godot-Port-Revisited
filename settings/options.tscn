@@ -1,0 +1,183 @@
+[gd_scene load_steps=8 format=3 uid="uid://bvyppef285meh"]
+
+[ext_resource type="Script" uid="uid://di34wtul5oja0" path="res://settings/options.gd" id="1_o0r4p"]
+[ext_resource type="Shader" uid="uid://6hkvqedt6jfm" path="res://shaders/round_alpha.tres" id="1_s3yxb"]
+[ext_resource type="Texture2D" uid="uid://pdwj7liee338" path="res://graphics/DitherPattern.png" id="2_aaqg6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_77krc"]
+shader = ExtResource("1_s3yxb")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yq6tc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_eikvg"]
+shader = ExtResource("1_s3yxb")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c1v63"]
+shader = ExtResource("1_s3yxb")
+
+[node name="Options" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+visible = false
+script = ExtResource("1_o0r4p")
+
+[node name="Options" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="Options"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_aaqg6")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="Menu" type="VBoxContainer" parent="Options"]
+material = SubResource("ShaderMaterial_77krc")
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -136.0
+offset_right = 136.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 13
+alignment = 1
+
+[node name="Turn" type="Label" parent="Options/Menu"]
+use_parent_material = true
+layout_mode = 2
+text = "TURN
+SENSATIVITY"
+horizontal_alignment = 1
+
+[node name="Sensativity" type="HSlider" parent="Options/Menu"]
+layout_mode = 2
+theme_override_styles/slider = SubResource("StyleBoxEmpty_yq6tc")
+value = 20.0
+scrollable = false
+
+[node name="SensBar" type="ProgressBar" parent="Options/Menu/Sensativity"]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 1.0
+offset_top = -8.0
+offset_right = -1.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+value = 20.0
+show_percentage = false
+
+[node name="Controls" type="Button" parent="Options/Menu"]
+use_parent_material = true
+layout_mode = 2
+text = "CONTROLS"
+
+[node name="Rumble" type="CheckBox" parent="Options/Menu"]
+use_parent_material = true
+layout_mode = 2
+text = "RUMBLE"
+alignment = 1
+
+[node name="Analog" type="CheckBox" parent="Options/Menu"]
+use_parent_material = true
+layout_mode = 2
+text = "ANALOG
+MOVEMENT"
+alignment = 1
+
+[node name="Back" type="Button" parent="Options/Menu"]
+use_parent_material = true
+layout_mode = 2
+text = "BACK"
+
+[node name="Controls" type="Control" parent="Options"]
+visible = false
+material = SubResource("ShaderMaterial_eikvg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="ColorRect" parent="Options/Controls"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Controls" type="Label" parent="Options/Controls"]
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -66.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/line_spacing = -1
+text = "Controls:
+WASD - Move
+Mouse - Look around
+Left Click - Pick up objects, open doors, other interactions
+Right Click - Use selected item
+Scroll Wheel, 1,2,3 - Change item selection
+Shift - Run (Watch your stamina!)
+Space bar - Look behind you and Jump!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Back" type="Button" parent="Options/Controls"]
+use_parent_material = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -41.0
+offset_top = -64.0
+offset_right = 41.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "BACK"
+
+[node name="ToMenu" type="Button" parent="Options"]
+material = SubResource("ShaderMaterial_c1v63")
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -91.0
+offset_bottom = 50.0
+grow_horizontal = 0
+text = "QUIT"
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="value_changed" from="Options/Menu/Sensativity" to="." method="_on_sensativity_value_changed"]
+[connection signal="pressed" from="Options/Menu/Controls" to="." method="_on_controls_pressed"]
+[connection signal="toggled" from="Options/Menu/Rumble" to="." method="_on_rumble_toggled"]
+[connection signal="toggled" from="Options/Menu/Analog" to="." method="_on_analog_toggled"]
+[connection signal="pressed" from="Options/Menu/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Options/Controls/Back" to="." method="_on_controls_back_pressed"]
+[connection signal="pressed" from="Options/ToMenu" to="." method="_on_to_menu_pressed"]

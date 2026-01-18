@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3 uid="uid://c8gs5vr4adrnj"]
+
+[ext_resource type="Script" uid="uid://bynb03dpo8p1f" path="res://entities/characters/bully.gd" id="1_bliot"]
+[ext_resource type="Texture2D" uid="uid://dyroe2a637hy3" path="res://graphics/Characters/bully_final.png" id="2_730d4"]
+[ext_resource type="AudioStream" uid="uid://qibkj4poh7ny" path="res://audio/Characters/Bully/B_TakeCandy.wav" id="3_1sfmx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a3ewb"]
+size = Vector3(9, 9, 9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mswy8"]
+size = Vector3(10, 10, 10)
+
+[node name="Bully" type="StaticBody3D" groups=["activatable"]]
+collision_layer = 64
+collision_mask = 0
+axis_lock_linear_y = true
+script = ExtResource("1_bliot")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_a3ewb")
+
+[node name="Collider" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 10
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Collider"]
+shape = SubResource("BoxShape3D_mswy8")
+
+[node name="Bully" type="Sprite3D" parent="."]
+pixel_size = 0.04
+billboard = 2
+texture_filter = 0
+texture = ExtResource("2_730d4")
+
+[node name="Sounds" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_1sfmx")
+bus = &"Dialogue"
+
+[node name="PlayerChecker" type="RayCast3D" parent="."]
+collision_mask = 65
+
+[connection signal="body_entered" from="Collider" to="." method="_on_collider_body_entered"]

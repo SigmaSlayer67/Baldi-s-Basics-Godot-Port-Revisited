@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3 uid="uid://bd33nwl0helkn"]
+
+[ext_resource type="Script" uid="uid://dj6xug2xm2vsu" path="res://scripts/Objects/door.gd" id="1_ybeqm"]
+[ext_resource type="Texture2D" uid="uid://bdp0d8685tj5u" path="res://graphics/SchoolHouse/Textures.png" id="2_x1ltx"]
+[ext_resource type="AudioStream" uid="uid://bp66ydwoqylmd" path="res://audio/SFX/Doors/door_open.wav" id="3_wxnqu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_18fhn"]
+size = Vector3(4, 7.5, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5ds21"]
+size = Vector3(5, 10, 0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x6uo6"]
+size = Vector3(5, 10, 1)
+
+[node name="Door" type="Area3D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_ybeqm")
+backSideDarker = null
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_18fhn")
+
+[node name="Door" type="StaticBody3D" parent="."]
+collision_layer = 64
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Door"]
+shape = SubResource("BoxShape3D_5ds21")
+
+[node name="Sound" type="AudioStreamPlayer3D" parent="Door"]
+stream = ExtResource("3_wxnqu")
+bus = &"Sound"
+
+[node name="DoorTexture" type="Sprite3D" parent="."]
+pixel_size = 0.0391
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("2_x1ltx")
+hframes = 16
+vframes = 8
+frame = 112
+
+[node name="Duplicate" type="Sprite3D" parent="DoorTexture"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+pixel_size = 0.0391
+shaded = true
+double_sided = false
+texture_filter = 0
+texture = ExtResource("2_x1ltx")
+hframes = 16
+vframes = 8
+frame = 112
+
+[node name="CharacterCheck" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterCheck"]
+shape = SubResource("BoxShape3D_x6uo6")
+
+[connection signal="frame_changed" from="DoorTexture" to="." method="_on_door_texture_frame_changed"]
+[connection signal="texture_changed" from="DoorTexture" to="." method="_on_door_texture_texture_changed"]
+[connection signal="visibility_changed" from="DoorTexture" to="." method="_on_door_texture_visibility_changed"]
+[connection signal="body_entered" from="CharacterCheck" to="." method="_on_character_check_body_entered"]
+[connection signal="body_exited" from="CharacterCheck" to="." method="_on_character_check_body_exited"]

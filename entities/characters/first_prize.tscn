@@ -1,0 +1,85 @@
+[gd_scene load_steps=11 format=3 uid="uid://b1l2qyfxyfumf"]
+
+[ext_resource type="Script" uid="uid://rxs0875gmnff" path="res://entities/characters/first_prize.gd" id="1_6kgm8"]
+[ext_resource type="Shader" uid="uid://dcueq5ndwbo83" path="res://shaders/sprite_rotating_billboard.gdshader" id="2_ep5xp"]
+[ext_resource type="Texture2D" uid="uid://w4pfp8jcsm4v" path="res://graphics/Characters/first_prize.png" id="3_ut0ta"]
+[ext_resource type="AudioStream" uid="uid://b0cckd88hpw0d" path="res://audio/Characters/1stPrize/1PR_AmComing.wav" id="4_ghdan"]
+[ext_resource type="AudioStream" uid="uid://c3rdqgchrrvup" path="res://audio/Characters/1stPrize/Sounds/1PR_Motor.wav" id="5_pfba8"]
+[ext_resource type="AudioStream" uid="uid://dyd648nrev5y" path="res://audio/Characters/1stPrize/Sounds/Bang.wav" id="6_k5g5t"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_shlfa"]
+height = 7.0
+radius = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mouia"]
+size = Vector3(8, 4, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r1so6"]
+render_priority = 0
+shader = ExtResource("2_ep5xp")
+shader_parameter/albedo = ExtResource("3_ut0ta")
+shader_parameter/directions = 16
+shader_parameter/frame_count = 1
+shader_parameter/frame = 0
+shader_parameter/scale = 1.0
+shader_parameter/y_billboard = true
+shader_parameter/use_alpha = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_2atqy"]
+size = Vector2(10, 10)
+
+[node name="FirstPrize" type="CharacterBody3D" groups=["activatable"]]
+collision_layer = 8
+collision_mask = 25
+axis_lock_linear_y = true
+script = ExtResource("1_6kgm8")
+active = true
+
+[node name="Nav" type="NavigationAgent3D" parent="."]
+path_height_offset = -4.2
+height = 7.0
+radius = 1.0
+debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(0.844845, 0.240843, 0.552265, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_shlfa")
+
+[node name="PlayerChecker" type="RayCast3D" parent="."]
+collision_mask = 65
+
+[node name="PlayerCollider" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCollider"]
+shape = SubResource("BoxShape3D_mouia")
+
+[node name="FirstPrize" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_r1so6")
+mesh = SubResource("QuadMesh_2atqy")
+
+[node name="Sounds" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_ghdan")
+unit_size = 15.0
+max_distance = 120.0
+bus = &"Dialogue"
+
+[node name="Engine" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_pfba8")
+autoplay = true
+max_distance = 80.0
+bus = &"Sound"
+
+[node name="Bang" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("6_k5g5t")
+max_distance = 70.0
+bus = &"Sound"
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, -1, -6.5)
+
+[connection signal="body_entered" from="PlayerCollider" to="." method="_on_player_collider_body_entered"]
+[connection signal="body_exited" from="PlayerCollider" to="." method="_on_player_collider_body_exited"]

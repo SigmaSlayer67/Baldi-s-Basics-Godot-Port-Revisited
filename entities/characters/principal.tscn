@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://0lx8swxwbvf1"]
+
+[ext_resource type="Script" uid="uid://1a67svmpi780" path="res://scripts/principal.gd" id="1_w7wtq"]
+[ext_resource type="Texture2D" uid="uid://cijse4hewxnu0" path="res://graphics/Characters/Principal.png" id="2_07nuq"]
+[ext_resource type="AudioStream" uid="uid://3gffc3717qlb" path="res://audio/Characters/Principal/PRI_Whistle.wav" id="3_f5eq1"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_shlfa"]
+height = 4.0
+radius = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_reilv"]
+radius = 2.0
+
+[node name="Principal" type="CharacterBody3D" groups=["activatable"]]
+collision_layer = 8
+collision_mask = 25
+axis_lock_linear_y = true
+script = ExtResource("1_w7wtq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+shape = SubResource("CylinderShape3D_shlfa")
+
+[node name="PlayerCollider" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCollider"]
+shape = SubResource("SphereShape3D_reilv")
+
+[node name="Principal" type="Sprite3D" parent="."]
+offset = Vector2(-32, 0)
+pixel_size = 0.016
+billboard = 2
+texture_filter = 0
+texture = ExtResource("2_07nuq")
+
+[node name="Nav" type="NavigationAgent3D" parent="."]
+path_height_offset = -3.5
+avoidance_enabled = true
+height = 4.0
+radius = 2.0
+max_speed = 30.0
+debug_use_custom = true
+debug_path_custom_color = Color(1, 0.6, 0, 1)
+
+[node name="Sounds" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_f5eq1")
+unit_size = 20.0
+max_distance = 415.0
+bus = &"Dialogue"
+
+[node name="PlayerChecker" type="RayCast3D" parent="."]
+collision_mask = 65
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 5
+
+[connection signal="body_entered" from="PlayerCollider" to="." method="_on_player_collider_body_entered"]
+[connection signal="finished" from="Sounds" to="." method="_on_sounds_finished"]

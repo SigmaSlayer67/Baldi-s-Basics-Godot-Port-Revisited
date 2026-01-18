@@ -1,0 +1,98 @@
+[gd_scene load_steps=12 format=3 uid="uid://bn3y5png3ao4m"]
+
+[ext_resource type="Script" uid="uid://dhcycrev00t2h" path="res://scripts/baldi.gd" id="1_f1phb"]
+[ext_resource type="Texture2D" uid="uid://53dnlnna4r4x" path="res://graphics/Characters/Baldi/BaldiAngry.png" id="2_w6abh"]
+[ext_resource type="AudioStream" uid="uid://c1014rb740pv4" path="res://audio/Characters/Baldi/Sounds/BAL_Slap.wav" id="3_ndxu4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nuyj6"]
+height = 3.8
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxtnq"]
+atlas = ExtResource("2_w6abh")
+region = Rect2(0, 0, 106, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pggrx"]
+atlas = ExtResource("2_w6abh")
+region = Rect2(106, 0, 106, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5mc8h"]
+atlas = ExtResource("2_w6abh")
+region = Rect2(212, 0, 106, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1qg0m"]
+atlas = ExtResource("2_w6abh")
+region = Rect2(318, 0, 106, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ndgjt"]
+atlas = ExtResource("2_w6abh")
+region = Rect2(424, 0, 106, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_on6xu"]
+animations = [{
+"frames": [{
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_mxtnq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pggrx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5mc8h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1qg0m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ndgjt")
+}],
+"loop": false,
+"name": &"slap",
+"speed": 10.0
+}]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ehnio"]
+radius = 2.0
+
+[node name="Baldi" type="CharacterBody3D" groups=["activatable"]]
+collision_layer = 8
+collision_mask = 25
+axis_lock_linear_y = true
+script = ExtResource("1_f1phb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
+shape = SubResource("CapsuleShape3D_nuyj6")
+
+[node name="Baldi" type="AnimatedSprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2, 0)
+offset = Vector2(8, 0)
+pixel_size = 0.03
+billboard = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_on6xu")
+animation = &"slap"
+
+[node name="Nav" type="NavigationAgent3D" parent="."]
+path_height_offset = -4.5
+avoidance_enabled = true
+height = 3.8
+max_speed = 75.0
+
+[node name="Slap" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_ndxu4")
+volume_db = -5.0
+unit_size = 30.0
+max_distance = 200.0
+max_polyphony = 2
+
+[node name="PlayerChecker" type="RayCast3D" parent="."]
+collision_mask = 65
+
+[node name="PlayerCollider" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlayerCollider"]
+shape = SubResource("SphereShape3D_ehnio")
+
+[connection signal="body_entered" from="PlayerCollider" to="." method="_on_player_collider_body_entered"]

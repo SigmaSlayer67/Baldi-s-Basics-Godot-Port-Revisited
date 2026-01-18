@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://bejvf6jq6xvxu"
+path="res://.godot/imported/Exit_Bitmap.bmp-302cac82236012bc20cc5dcce0993341.res"
+
+[deps]
+
+source_file="res://graphics/MenuTextures/ButtonTextures/ExitButton/Exit_Bitmap.bmp"
+dest_files=["res://.godot/imported/Exit_Bitmap.bmp-302cac82236012bc20cc5dcce0993341.res"]
+
+[params]
+
+create_from=0
+threshold=0.5
