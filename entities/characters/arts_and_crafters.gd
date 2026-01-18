@@ -39,7 +39,8 @@ func _process(delta : float) -> void:
 			angry = true # Get angry
 			sounds.play() # scream
 			sprite.texture = angrySprite
-	elif anger > 0.0: # if angeer is greater then 0, decrease
+	# if anger is greater then 0, decrease
+	elif anger > 0.0: 
 		anger = move_toward(anger,0.0,delta)
 
 func _physics_process(delta : float) -> void:
