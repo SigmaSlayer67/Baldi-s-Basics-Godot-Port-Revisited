@@ -1,7 +1,7 @@
 @tool
 extends Area3D
 
-@export var itemIndex:Global.ITEMS = Global.ITEMS.ZESTI:
+@export var itemIndex: Global.ITEMS = Global.ITEMS.ZESTI:
 	get:
 		return itemIndex
 	set(value):
@@ -9,7 +9,7 @@ extends Area3D
 		if get_node_or_null("Sprite") != null:
 			if Engine.is_editor_hint():
 				# you'll have to copy the texture array for this to display right
-				var itemTextures = [
+				var itemTextures : Array[Texture2D] = [
 				null,
 				preload("res://graphics/SchoolHouse/PickUps/EnergyFlavoredZestyBar.png"),
 				preload("res://graphics/SchoolHouse/PickUps/YellowDoorLock.png"),
@@ -26,9 +26,9 @@ extends Area3D
 			else:
 				get_node("Sprite").texture = Global.itemTextures[value]
 
-@onready var isActive = visible
+@onready var isActive : bool = visible
 
-func interact(object):
+func interact(object : Object) -> void:
 	if !visible:
 		return
 	visible = false
@@ -36,10 +36,10 @@ func interact(object):
 	if object is Player:
 		object.add_item(itemIndex)
 
-func activate():
+func activate() -> void:
 	if !isActive:
 		visible = true
 		isActive = true
 
-func _process(_delta):
+func _process(_delta : float) -> void:
 	$Sprite.position.y = sin(Engine.get_frames_drawn() * 0.017453292) / 2.0 + 1.0

@@ -1,11 +1,11 @@
 extends Node3D
 
-var timeLeft = 30.0
-var lifeSpan = 35.0 # lifeSpan should be above timeleft or otherwise it won't activate properly
-var rang = false
-@export var audioRing = preload("res://audio/SFX/Items/bell.wav")
+var timeLeft : float = 30.0
+var lifeSpan : float = 35.0 # lifeSpan should be above timeleft or otherwise it won't activate properly
+var rang : bool = false
+@export var audioRing : AudioStream = preload("res://audio/SFX/Items/bell.wav")
 
-func _physics_process(delta):
+func _physics_process(delta : float) -> void:
 	if timeLeft > 0.0:
 		timeLeft -= delta
 	elif !rang:# ring alarm

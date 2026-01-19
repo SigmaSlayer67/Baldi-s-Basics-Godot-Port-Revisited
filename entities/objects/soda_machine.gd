@@ -1,14 +1,15 @@
 extends StaticBody3D
 
-var material = [null,preload("res://graphics/Material/ZestiMachine.tres")]
-var pickUp = [Global.ITEMS.BSODA,Global.ITEMS.ZESTI]
+var material : Array[BaseMaterial3D] = [null,preload("res://graphics/Material/ZestiMachine.tres")]
+var pickUp : Array[Global.ITEMS] = [Global.ITEMS.BSODA,Global.ITEMS.ZESTI]
 
-@export_enum("BSODA","ZESTI") var machineType = 0:
+@export_enum("BSODA","ZESTI") var machineType : int = 0:
 	get:
 		return machineType
 	set(value):
 		machineType = value
 		$FrontTexture.material_override = material[value]
 
-func use_quarter(player : Player):
+
+func use_quarter(player : Player) -> void:
 	player.add_item(pickUp[machineType])
