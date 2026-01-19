@@ -1,6 +1,6 @@
 extends Area3D
 
-var npcList : Array = []
+var npcList : Array[Node3D] = []
 @export var speed : float = 20.0
 var lifeTime : float = 30.0
 @onready var soda : MeshInstance3D = $SODA
@@ -19,7 +19,7 @@ func _physics_process(delta : float) -> void:
 	else:
 		queue_free() # clear when lifespan timer runs out
 	
-	for i in npcList: # shift other npcs
+	for i : Node3D in npcList: # shift other npcs
 		if i.get("velocity") != null: # check that velocity exists
 			var setVelocity : Vector3 = -global_basis.z*speed
 			# set to position then move
