@@ -1,22 +1,10 @@
 extends Character
 class_name PlayTime
 
-@export var active = false
-
-var aim = Vector3.ZERO
-@onready var playerChecker = $PlayerChecker
-var canSeePlayer = false
-var playerSpotted = false
-@onready var sounds = $Sounds
-var coolDown = 0.0
-var playCool = 0.0
-var jumpRopeStarted = false
-
-@onready var playtime = $Playtime
-
+@export var active : bool = false
 
 # audio
-@export var audNumbers = [preload("res://audio/Characters/Playtime/Numbers/PT_1.wav"),
+@export var audNumbers : Array[AudioStream] = [preload("res://audio/Characters/Playtime/Numbers/PT_1.wav"),
 preload("res://audio/Characters/Playtime/Numbers/PT_2.wav"),
 preload("res://audio/Characters/Playtime/Numbers/PT_3.wav"),
 preload("res://audio/Characters/Playtime/Numbers/PT_4.wav"),
@@ -27,40 +15,54 @@ preload("res://audio/Characters/Playtime/Numbers/Unused/PT_8.wav"),
 preload("res://audio/Characters/Playtime/Numbers/Unused/PT_9.wav"),
 preload("res://audio/Characters/Playtime/Numbers/Unused/PT_10.wav"),
 ]
-@export var audRandom = [preload("res://audio/Characters/Playtime/PT_Laugh.wav"),
+@export var audRandom : Array[AudioStream] = [preload("res://audio/Characters/Playtime/PT_Laugh.wav"),
 preload("res://audio/Characters/Playtime/PT_WannaPlay.wav")]
 
-@export var audInstructions = preload("res://audio/Characters/Playtime/Unused/PT_Instructions.wav")
-@export var audOops = preload("res://audio/Characters/Playtime/PT_Oops.wav")
-@export var audLetsPlay = preload("res://audio/Characters/Playtime/PT_LetsPlay.wav")
-@export var audCongrats = preload("res://audio/Characters/Playtime/PT_Congrats.wav")
-@export var audReadyGo = preload("res://audio/Characters/Playtime/PT_ReadyGo.wav")
-@export var audSad = preload("res://audio/Characters/Playtime/PT_Sad.wav")
+@export var audInstructions : AudioStream = preload("res://audio/Characters/Playtime/Unused/PT_Instructions.wav")
+@export var audOops : AudioStream = preload("res://audio/Characters/Playtime/PT_Oops.wav")
+@export var audLetsPlay : AudioStream = preload("res://audio/Characters/Playtime/PT_LetsPlay.wav")
+@export var audCongrats : AudioStream = preload("res://audio/Characters/Playtime/PT_Congrats.wav")
+@export var audReadyGo : AudioStream = preload("res://audio/Characters/Playtime/PT_ReadyGo.wav")
+@export var audSad : AudioStream = preload("res://audio/Characters/Playtime/PT_Sad.wav")
+
+# general
+var aim : Vector3 = Vector3.ZERO
+var can_see_player : bool = false
+var player_spotted : bool = false
+var cool_down : float = 0.0
+var play_cool : float = 0.0
+var jump_rope_started : bool = false
+var jumps : int = 0
+var jump_delay : float = 1.0
+
+# onready
+@onready var playtime : AnimatedSprite3D = $Playtime
+@onready var sounds : AudioStreamPlayer3D = $Sounds
+@onready var player_checker : RayCast3D = $PlayerChecker
 
 
-var jumps = 0
-var jumpDelay = 1.0
-
-@onready var jumpropeAnimator = $JumpRope/JumpRope
 
 
-func _ready():
+@onready var jumpropeAnimator : AnimationPlayer  = $JumpRope/JumpRope
+
+
+func _ready() -> void:
 	super()
 	set_physics_process(active)
 	visible = active
 
-func activate():
+func activate() -> void:
 	active = true
 	set_physics_process(active)
 	show()
 
-func _physics_process(delta): 
+func _physics_process(delta) -> void: 
 	
-	coolDown = move_toward(coolDown,0.0,delta)
-	if playCool > 0:
-		playCool = move_toward(playCool,0.0,delta)
+	cool_down = move_toward(cool_down,0.0,delta)
+	if play_cool > 0:
+		play_cool = move_toward(play_cool,0.0,delta)
 		# stop being sad if sad
-		if playCool <= 0:
+		if play_cool <= 0:
 			playtime.play("default")
 	
 	# Global.player.jumpRope
@@ -69,60 +71,60 @@ func _physics_process(delta):
 		if !Global.player.jumpRope && speed == 0: # if player's not jump roping but playtime is still expecting it, then run the dissapointment routine
 			dissapoint()
 		if !Global.player.jumpRope:
-			playerChecker.target_position = Global.player.global_position - global_position
+			player_checker.target_position = Global.player.global_position - global_position
 			# check that the cast wasn't interupted
-			canSeePlayer = (!playerChecker.is_colliding() && global_position.distance_to(Global.player.global_position) <= 80.0 && playCool <= 0)
+			can_see_player = (!player_checker.is_colliding() && global_position.distance_to(Global.player.global_position) <= 80.0 && play_cool <= 0)
 		
-			if canSeePlayer:
+			if can_see_player:
 				target_player()
-				playerSpotted = true # if playtime sees the player, chase them
-			elif playerSpotted && coolDown <= 0:
-				playerSpotted = false
+				player_spotted = true # if playtime sees the player, chase them
+			elif player_spotted && cool_down <= 0:
+				player_spotted = false
 				wander()
-			elif get_real_velocity().length() <= 1.0 && coolDown <= 0.0:
+			elif get_real_velocity().length() <= 1.0 && cool_down <= 0.0:
 				wander()
-			jumpRopeStarted = false
+			jump_rope_started = false
 		else:
-			if !jumpRopeStarted:
+			if !jump_rope_started:
 				var destination = Global.player.global_position.slide(up_direction)-(global_position.slide(up_direction).direction_to(Global.player.global_position.slide(up_direction))*10.0)
 				global_position = Vector3(destination.x,global_position.y,destination.z)
-				jumpRopeStarted = true
-			playCool = 15.0
+				jump_rope_started = true
+			play_cool = 15.0
 	
 	$PlayerCollider/CollisionShape3D.disabled = !$PlayerCollider/CollisionShape3D.disabled
 	super(delta)
 	velocity.y = 0.0
 
 
-func wander():
+func wander() -> void:
 	navAgent.target_position = Global.get_wander_point("hall_wander")# set random target based on targets
 	speed = 15.0 # reset speed
-	playerSpotted = false
+	player_spotted = false
 	if !sounds.playing:
 		sounds.stream = audRandom[randi_range(0,audRandom.size()-1)]
 		sounds.play()
-	coolDown = 1.0
+	cool_down = 1.0
 
-func target_player():
+func target_player() -> void:
 	playtime.play("default") # no longer be sad
 	navAgent.target_position = Global.player.global_position # target player
 	speed = 20.0 # speed up
-	coolDown = 0.2
-	if !playerSpotted:
+	cool_down = 0.2
+	if !player_spotted:
 		sounds.stream = audLetsPlay
 		sounds.play()
-		playerSpotted = true
+		player_spotted = true
 
-func dissapoint():
+func dissapoint() -> void:
 	playtime.play("sad")
 	sounds.stream = audSad
 	sounds.play()
 	$JumpRope.hide()
 	
 
-func _on_player_collider_body_entered(body):
+func _on_player_collider_body_entered(body) -> void:
 	if body is Player:
-		if !body.jumpRope && playCool <= 0:
+		if !body.jumpRope && play_cool <= 0:
 			speed = 0.0
 			count_jumps()
 			$JumpRope.show()
@@ -134,14 +136,15 @@ func _on_player_collider_body_entered(body):
 			jumpropeAnimator.play("Jump")
 
 
-func _on_jump_rope_animation_finished(_anim_name):
+func _on_jump_rope_animation_finished(_anim_name) -> void:
 	if !Global.player.jumpRope: return
 	if Global.player.camera3D.v_offset <= 0.2: # failure
 		jumps = 0 # reset jumps
 		count_jumps()
 		sounds.stream = audOops
 		sounds.play()
-		await get_tree().create_timer(2.0,false).timeout # Delay for 2 seconds to allow playtime to finish her line before the rope starts
+		# Delay for 2 seconds to allow playtime to finish her line before the rope starts
+		await get_tree().create_timer(2.0,false).timeout
 		jumpropeAnimator.play("Jump")
 	else: # success
 		sounds.stream = audNumbers[jumps]
@@ -151,7 +154,8 @@ func _on_jump_rope_animation_finished(_anim_name):
 		await get_tree().create_timer(0.5,false).timeout
 		if jumps >= 5:
 			Global.player.jumpRope = false
-			speed = 0.01 # give a bit of speed so the dissapointed routine doesn't run
+			# give a bit of speed so the dissapointed routine doesn't run
+			speed = 0.01
 			jumps = 0
 			$JumpRope.hide()
 			sounds.stream = audCongrats
@@ -159,7 +163,7 @@ func _on_jump_rope_animation_finished(_anim_name):
 		else:
 			jumpropeAnimator.play("Jump")
 
-func count_jumps():
+func count_jumps() -> void:
 	$JumpRope/Count.text = str(jumps)+"/5"
 
 # cancel jumprope is scissors are used
