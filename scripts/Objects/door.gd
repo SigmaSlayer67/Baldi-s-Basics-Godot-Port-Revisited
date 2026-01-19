@@ -2,21 +2,21 @@
 extends Area3D
 class_name Door
 
-@onready var barrier = $Door/CollisionShape3D
-@onready var navigationLink = get_node_or_null("NavigationLink")
-@export var audioDoorOpen = preload("res://audio/SFX/Doors/door_open.wav")
-@export var audioDoorClose = preload("res://audio/SFX/Doors/door_close.wav")
+@onready var barrier : CollisionShape3D = $Door/CollisionShape3D
+@onready var navigationLink : NavigationRegion3D = get_node_or_null("NavigationLink")
+@export var audioDoorOpen : AudioStream = preload("res://audio/SFX/Doors/door_open.wav")
+@export var audioDoorClose : AudioStream = preload("res://audio/SFX/Doors/door_close.wav")
 
-@export var backSideDarker = false
+@export var backSideDarker : bool = false
 
-var silentOpens = 0
-var openTime = 0.0
-var lockTime = 0.0
-@onready var myAudio = $Door/Sound
-var doorOpen = false
-var doorLocked = false
-@onready var doorTexture = $DoorTexture
-@export var setDoorFrame = 112:
+var silentOpens : int = 0
+var openTime : float = 0.0
+var lockTime : float = 0.0
+@onready var myAudio : AudioStreamPlayer3D = $Door/Sound
+var doorOpen : bool = false
+var doorLocked : bool = false
+@onready var doorTexture : Sprite3D = $DoorTexture
+@export var setDoorFrame : int = 112:
 	set(value):
 		setDoorFrame = value
 		if has_node("DoorTexture"):
@@ -24,20 +24,20 @@ var doorLocked = false
 			if has_node("DoorTexture/Duplicate"):
 				get_node("DoorTexture/Duplicate").frame = value
 
-@onready var defaultDoorFrame = setDoorFrame
+@onready var defaultDoorFrame : int = setDoorFrame
 
-var interactingBodies = []
-@onready var doorCollider = $Door
+var interactingBodies : Array[Node3D] = []
+@onready var doorCollider : StaticBody3D = $Door
 
-@export var lockForTutorial = false
+@export var lockForTutorial : bool = false
 
-@export var doorNavLinkScale = 1.0
+@export var doorNavLinkScale : float = 1.0
 
-@export var doubleDoor = false
+@export var doubleDoor : bool = false
 
-@export var exitDoor = false
+@export var exitDoor : bool = false
 
-func _ready():
+func _ready() -> void:
 	if !Engine.is_editor_hint():
 		Global.note_books_updated.connect(note_book_check)
 		$DoorTexture/Duplicate.modulate = Color.WHITE if !backSideDarker else Color(0.5,0.5,0.5)
@@ -49,7 +49,7 @@ func _ready():
 	setDoorFrame = setDoorFrame
 	
 
-func _physics_process(delta):
+func _physics_process(delta : float) -> void:
 	if !Engine.is_editor_hint():
 		if lockTime > 0:
 			lockTime = move_toward(lockTime,0.0,delta)
@@ -83,7 +83,7 @@ func _physics_process(delta):
 			
 
 
-func interact(_object):
+func interact(_object : Object) -> void:
 	if doubleDoor: return
 	if !doorLocked:
 		if silentOpens <= 0 && is_instance_valid(Global.baldi) && !doorOpen && openTime <= 0.0: # alert baldi if the door isn't silent
@@ -93,7 +93,7 @@ func interact(_object):
 			silentOpens -= 1 # decrease silent door counter
 
 # opens the door
-func open_door():
+func open_door() -> void:
 	if lockTime > 0: return
 	if silentOpens <= 0 && !doorOpen:
 		myAudio.stream = audioDoorOpen
@@ -104,7 +104,7 @@ func open_door():
 	openTime = 3.0 # Set the open time to 3 seconds
 	
 
-func _on_character_check_body_entered(body):
+func _on_character_check_body_entered(body : Node3D) -> void:
 	if !interactingBodies.has(body):
 		interactingBodies.append(body)
 	
@@ -126,26 +126,26 @@ func _on_character_check_body_entered(body):
 			else:
 				Global.baldi.hear(global_position,1)
 
-func _on_character_check_body_exited(body):
+func _on_character_check_body_exited(body : Node3D) -> void:
 	if interactingBodies.has(body):
 		interactingBodies.erase(body)
 
 
-func _on_door_texture_frame_changed():
+func _on_door_texture_frame_changed() -> void:
 	if doorTexture != null:
 		$DoorTexture/Duplicate.frame = doorTexture.frame
 
 
-func _on_door_texture_texture_changed():
+func _on_door_texture_texture_changed() -> void:
 	if doorTexture != null:
 		$DoorTexture/Duplicate.texture = doorTexture.texture
 
 
-func _on_door_texture_visibility_changed():
+func _on_door_texture_visibility_changed() -> void:
 	if doorTexture != null:
 		$DoorTexture/Duplicate.visible = doorTexture.visible
 
-func note_book_check():
+func note_book_check() -> void:
 	# remove solid wall if note books above 2
 	if Global.noteBooks >= 2 && lockForTutorial:
 		#doorCollider.collision_layer = 0 # reset collision mask
