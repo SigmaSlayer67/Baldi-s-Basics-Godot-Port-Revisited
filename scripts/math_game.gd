@@ -1,46 +1,46 @@
 extends CanvasLayer
 
-const VU_COUNT = 16
-const FREQ_MAX = 11050.0
-const MIN_DB = 60.0
+const VU_COUNT : int = 16
+const FREQ_MAX : float = 11050.0
+const MIN_DB : float = 60.0
 
-var spectrum
-var getFrame = 0.0
+var spectrum : AudioEffectInstance
+var getFrame : float = 0.0
 
-@onready var liveBaldiReaction = $Pad/LiveBaldiReaction
+@onready var liveBaldiReaction : Sprite2D = $Pad/LiveBaldiReaction
 
-@onready var mathDialogue = $MathDialogue
-@onready var music = $Music
-@onready var results = [$Pad/Result1,
+@onready var mathDialogue : AudioStreamPlayer = $MathDialogue
+@onready var music : AudioStreamPlayer = $Music
+@onready var results : Array[TextureRect] = [$Pad/Result1,
 $Pad/Result2,
 $Pad/Result3,
 ]
 
-@onready var numberLineEdit = $Pad/Answer
-@onready var LineEditRegEx = RegEx.new()
-var old_text = ""
+@onready var numberLineEdit : LineEdit = $Pad/Answer
+@onready var LineEditRegEx := RegEx.new()
+var old_text : String = ""
 
-var hintText = ["I GET ANGRIER FOR EVERY PROBLEM YOU GET WRONG",
+var hintText : PackedStringArray = ["I GET ANGRIER FOR EVERY PROBLEM YOU GET WRONG",
 "I HEAR EVERY DOOR YOU OPEN",]
 
-var audioQueue = []
+var audioQueue : Array[AudioStream] = []
 
-@export var correctTexture = preload("res://graphics/YCTPTextures/Check.png")
-@export var incorrectTexture = preload("res://graphics/YCTPTextures/X.png")
+@export var correctTexture : Texture2D = preload("res://graphics/YCTPTextures/Check.png")
+@export var incorrectTexture : Texture2D = preload("res://graphics/YCTPTextures/X.png")
 
-@onready var questions = $Pad/Questions
-var questionOverlaps = []
+@onready var questions : Label = $Pad/Questions
+var questionOverlaps : Array[Label] = []
 
-@export var bal_plus = preload("res://audio/Characters/Baldi/MathGame/BAL_Math_Plus.wav")
-@export var bal_minus = preload("res://audio/Characters/Baldi/MathGame/BAL_Math_Minus.wav")
-@export var bal_times = preload("res://audio/Characters/Baldi/MathGame/BAL_Math_Times.wav")
-@export var bal_divide = preload("res://audio/Characters/Baldi/MathGame/Unused/BAL_Math_Divided.wav")
-@export var bal_equels = preload("res://audio/Characters/Baldi/MathGame/BAL_Math_Equals.wav")
-@export var bal_howto = preload("res://audio/Characters/Baldi/MathGame/Intro/BAL_General_HowTo.wav")
-@export var bal_intro = preload("res://audio/Characters/Baldi/MathGame/Intro/BAL_Math_Intro.wav")
-@export var bal_screech = preload("res://audio/Characters/Baldi/Sounds/BAL_Screech.wav")
+@export var bal_plus : AudioStream = preload("res://audio/Characters/Baldi/MathGame/BAL_Math_Plus.wav")
+@export var bal_minus : AudioStream = preload("res://audio/Characters/Baldi/MathGame/BAL_Math_Minus.wav")
+@export var bal_times : AudioStream = preload("res://audio/Characters/Baldi/MathGame/BAL_Math_Times.wav")
+@export var bal_divide : AudioStream = preload("res://audio/Characters/Baldi/MathGame/Unused/BAL_Math_Divided.wav")
+@export var bal_equels : AudioStream = preload("res://audio/Characters/Baldi/MathGame/BAL_Math_Equals.wav")
+@export var bal_howto : AudioStream = preload("res://audio/Characters/Baldi/MathGame/Intro/BAL_General_HowTo.wav")
+@export var bal_intro : AudioStream = preload("res://audio/Characters/Baldi/MathGame/Intro/BAL_Math_Intro.wav")
+@export var bal_screech : AudioStream = preload("res://audio/Characters/Baldi/Sounds/BAL_Screech.wav")
 
-var bal_numbers = [
+var bal_numbers : Array[AudioStream] = [
 preload("res://audio/Characters/Baldi/MathGame/Numbers/BAL_Math_0.wav"),
 preload("res://audio/Characters/Baldi/MathGame/Numbers/BAL_Math_1.wav"),
 preload("res://audio/Characters/Baldi/MathGame/Numbers/BAL_Math_2.wav"),
@@ -54,21 +54,21 @@ preload("res://audio/Characters/Baldi/MathGame/Numbers/BAL_Math_9.wav"),
 ]
 
 @export var praises = AudioStreamRandomizer
-var problemAudio = [
+var problemAudio : Array[AudioStream] = [
 preload("res://audio/Characters/Baldi/MathGame/Problems/BAL_General_Problem1.wav"),
 preload("res://audio/Characters/Baldi/MathGame/Problems/BAL_General_Problem2.wav"),
 preload("res://audio/Characters/Baldi/MathGame/Problems/BAL_General_Problem3.wav")
 ]
 
-var impossible = false
+var impossible : bool = false
 
-var endDelay = 5.0
+var endDelay : float = 5.0
 
-var problem = 0
-var wrongAnswers = 0
-var solution = 0
+var problem : int = 0
+var wrongAnswers : int = 0
+var solution : int = 0
 
-func _ready():
+func _ready() -> void:
 	Global.unlock_mouse()
 	LineEditRegEx.compile("^-?[0-9]*$")
 	# get spectrum
@@ -84,17 +84,17 @@ func _ready():
 	if !Global.spoopMode:
 		music.play()
 	# connect buttons
-	for i:TextureButton in $Pad/Keypad.get_children():
+	for i : TextureButton in $Pad/Keypad.get_children():
 		i.pressed.connect(parse_button.bind(i))
 
-func _process(delta):
+func _process(delta : float) -> void:
 	# calculate soudn volume for lip sync
-	var hzOffset = 1.5
-	var hz = hzOffset * FREQ_MAX / VU_COUNT
-	var prevHz = (hzOffset-1.0) * FREQ_MAX / VU_COUNT
+	var hzOffset : float = 1.5
+	var hz : float = hzOffset * FREQ_MAX / VU_COUNT
+	var prevHz : float = (hzOffset-1.0) * FREQ_MAX / VU_COUNT
 
-	var magnitude = spectrum.get_magnitude_for_frequency_range(hz,prevHz).length()
-	var volume = (clampf((MIN_DB + linear_to_db(magnitude)) / MIN_DB, 0, 1))
+	var magnitude : float = spectrum.get_magnitude_for_frequency_range(hz,prevHz).length()
+	var volume : float = (clampf((MIN_DB + linear_to_db(magnitude)) / MIN_DB, 0, 1))
 	if !mathDialogue.playing:
 		volume = 0.0
 		# queue next audio
@@ -117,15 +117,15 @@ func _process(delta):
 
 
 
-func new_problems():
+func new_problems() -> void:
 	numberLineEdit.clear()
 	if problem <= 2:
 		queue_audio(problemAudio[problem])
 		if (problem <= 1 || Global.noteBooks <= 0):
-			var nums = [randi_range(0,9),randi_range(0,9)]
+			var nums : PackedInt32Array = [randi_range(0,9),randi_range(0,9)]
 			# determine if + or -
-			var getSign = sign(randf()-0.5)
-			var symbol = "+"
+			var getSign : int = sign(randf()-0.5)
+			var symbol : String = "+"
 			solution = nums[0]+nums[1]
 			if getSign < 0:
 				symbol = "-"
@@ -142,7 +142,7 @@ func new_problems():
 			# add question to the overlap list
 			questionOverlaps.append(questions)
 			# create 2 label duplicated
-			var textDuplicate = questions.duplicate()
+			var textDuplicate : Node = questions.duplicate()
 			$Pad.add_child(textDuplicate)
 			questionOverlaps.append(textDuplicate)
 			# third duplciate
@@ -150,14 +150,14 @@ func new_problems():
 			$Pad.add_child(textDuplicate)
 			questionOverlaps.append(textDuplicate)
 			# overlap the questions so it looks garbled
-			for i in questionOverlaps.size():
-				var nums = [randi_range(1,9999),randi_range(1,9999),randi_range(1,9999)]
-				var getSign = sign(randf()-0.5)
-				var symbol = "+"
+			for i : int in questionOverlaps.size():
+				var nums : PackedInt64Array = [randi_range(1,9999),randi_range(1,9999),randi_range(1,9999)]
+				var getSign : int = sign(randf()-0.5)
+				var symbol : String = "+"
 				solution = nums[0]+nums[1]
 				if getSign < 0:
 					symbol = "-"
-				var secondSymbol = "/"
+				var secondSymbol : String = "/"
 				if getSign < 0:
 					secondSymbol = "x"
 				questionOverlaps[i].text = "SOLVE MATH Q"+str(problem+1)+":\n"+str(nums[0])+symbol+str(nums[1])+secondSymbol+str(nums[2])+"="
@@ -188,19 +188,19 @@ func new_problems():
 	
 
 
-func _on_LineEdit_text_changed(new_text):
-	var caretPos = numberLineEdit.caret_column
+func _on_LineEdit_text_changed(new_text : String) -> void:
+	var caretPos : int = numberLineEdit.caret_column
 	if LineEditRegEx.search(new_text):
 		old_text = str(new_text)
 	else:
 		numberLineEdit.text = old_text
 		numberLineEdit.caret_column = caretPos-1
 
-func queue_audio(audio:AudioStream = null):
+func queue_audio(audio:AudioStream = null) -> void:
 	audioQueue.append(audio)
 
 
-func _on_answer_text_submitted(_new_text):
+func _on_answer_text_submitted(_new_text : String) -> void:
 	if problem <= 3:
 		# reset math dialogue
 		mathDialogue.stop()
@@ -219,12 +219,12 @@ func _on_answer_text_submitted(_new_text):
 			results[problem-1].texture = incorrectTexture
 			if !Global.spoopMode:
 				Global.spoopMode = true
-				for i in get_tree().get_nodes_in_group("pre_game"):
+				for i : Node in get_tree().get_nodes_in_group("pre_game"):
 					if i is AudioStreamPlayer:
 						i.stop()
 					else:
 						i.queue_free()
-				for i in get_tree().get_nodes_in_group("activatable"):
+				for i : Node in get_tree().get_nodes_in_group("activatable"):
 					if i.has_method("activate"):
 						i.activate()
 			
@@ -236,7 +236,7 @@ func _on_answer_text_submitted(_new_text):
 				# check if all notebooks are collection
 				if Global.noteBooks >= 6 && !Global.escapeMode:
 					Global.escapeMode = true
-					for i in get_tree().get_nodes_in_group("escape"):
+					for i : Node in get_tree().get_nodes_in_group("escape"):
 						if i.has_method("escape_activate"):
 							i.escape_activate()
 					
@@ -244,7 +244,7 @@ func _on_answer_text_submitted(_new_text):
 				Global.baldi.get_angry(1.0) # add 1.0
 		new_problems()
 
-func parse_button(button:TextureButton):
+func parse_button(button : TextureButton) -> void:
 	# parse button pressed based on name
 	match(button.name):
 		"OK":

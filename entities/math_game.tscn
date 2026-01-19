@@ -1,14 +1,10 @@
-[gd_scene load_steps=43 format=3 uid="uid://bp6yqhv44wlw0"]
+[gd_scene load_steps=38 format=3 uid="uid://bp6yqhv44wlw0"]
 
 [ext_resource type="Script" uid="uid://bvrmeni48vtwi" path="res://scripts/math_game.gd" id="1_18yvs"]
 [ext_resource type="Texture2D" uid="uid://e40527k1lmgw" path="res://graphics/YCTPTextures/YCTP2_NoButtons.png" id="1_at22y"]
-[ext_resource type="AudioStream" uid="uid://d1eur0b5g7l0j" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise1.wav" id="2_3brbj"]
+[ext_resource type="AudioStream" uid="uid://d27tqh11ogju1" path="res://resources/math_game/baldi_praises.tres" id="2_d3kwt"]
 [ext_resource type="Shader" uid="uid://6hkvqedt6jfm" path="res://shaders/round_alpha.tres" id="2_fckko"]
 [ext_resource type="Texture2D" uid="uid://dq7li4qika4hc" path="res://graphics/Characters/Baldi/MathTalk.png" id="2_h13hb"]
-[ext_resource type="AudioStream" uid="uid://fib73o68n5h4" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise2.wav" id="3_lmnlv"]
-[ext_resource type="AudioStream" uid="uid://b821jvtvfm1t6" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise3.wav" id="4_dcwby"]
-[ext_resource type="AudioStream" uid="uid://ckp2nkd1jybi0" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise4.wav" id="5_t84fk"]
-[ext_resource type="AudioStream" uid="uid://cyhotsuegl1ch" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise5.wav" id="6_icm6d"]
 [ext_resource type="Texture2D" uid="uid://cm1xwxv2vlw8b" path="res://graphics/Characters/Baldi/BaldiFrown.png" id="10_nepyx"]
 [ext_resource type="Texture2D" uid="uid://pqso17ee0uv" path="res://graphics/YCTPTextures/NumberPad/0_0.png" id="11_fp0f0"]
 [ext_resource type="AudioStream" uid="uid://cii5ve8ghcypt" path="res://audio/Music/mus_Learn.wav" id="11_oql8b"]
@@ -37,14 +33,6 @@
 [ext_resource type="Texture2D" uid="uid://delwg3ftvf5l3" path="res://graphics/YCTPTextures/NumberPad/Selected/-.png" id="34_dgf6u"]
 [ext_resource type="Texture2D" uid="uid://c7qhq6juvt827" path="res://graphics/YCTPTextures/NumberPad/OK.png" id="35_5qh6b"]
 [ext_resource type="Texture2D" uid="uid://vjsbtigml042" path="res://graphics/YCTPTextures/NumberPad/Selected/OK_0.png" id="36_txc72"]
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_0ss3t"]
-streams_count = 5
-stream_0/stream = ExtResource("2_3brbj")
-stream_1/stream = ExtResource("3_lmnlv")
-stream_2/stream = ExtResource("4_dcwby")
-stream_3/stream = ExtResource("5_t84fk")
-stream_4/stream = ExtResource("6_icm6d")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6f1wk"]
 shader = ExtResource("2_fckko")
@@ -162,7 +150,7 @@ _data = {
 process_mode = 3
 layer = 10
 script = ExtResource("1_18yvs")
-praises = SubResource("AudioStreamRandomizer_0ss3t")
+praises = ExtResource("2_d3kwt")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -199,7 +187,7 @@ offset_bottom = 138.0
 
 [node name="Questions" type="Label" parent="Pad"]
 use_parent_material = true
-layout_mode = 2
+layout_mode = 0
 offset_left = -154.0
 offset_top = -107.0
 offset_right = 120.0

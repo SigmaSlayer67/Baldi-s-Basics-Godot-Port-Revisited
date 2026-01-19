@@ -13,7 +13,7 @@ var spoken : bool = false
 @export var audThanks : Array[AudioStream] = [preload("res://audio/Characters/Bully/B_TakeThat.wav"),preload("res://audio/Characters/Bully/B_Donation.wav")]
 @export var audDenied : AudioStream = preload("res://audio/Characters/Bully/B_NoItems.wav")
 
-@onready var sounds : AudioStreamPlayer3D = $Sounds
+@onready var sounds : AudioStreamPlayer = $Sounds
 @onready var playerChecker : RayCast3D = $PlayerChecker
 
 
