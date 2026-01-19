@@ -26,7 +26,10 @@ preload("res://audio/Characters/Playtime/PT_WannaPlay.wav")]
 @export var audSad : AudioStream = preload("res://audio/Characters/Playtime/PT_Sad.wav")
 
 # general
-var aim : Vector3 = Vector3.ZERO
+# We are just using := since it is redundantin this case  for the reader/compiler to type this literally
+# So everytime you see a class being used like this, just do :=
+var aim := Vector3.ZERO
+# For everything else, you can statically type these as is
 var can_see_player : bool = false
 var player_spotted : bool = false
 var cool_down : float = 0.0
@@ -39,10 +42,6 @@ var jump_delay : float = 1.0
 @onready var playtime : AnimatedSprite3D = $Playtime
 @onready var sounds : AudioStreamPlayer3D = $Sounds
 @onready var player_checker : RayCast3D = $PlayerChecker
-
-
-
-
 @onready var jumpropeAnimator : AnimationPlayer  = $JumpRope/JumpRope
 
 
