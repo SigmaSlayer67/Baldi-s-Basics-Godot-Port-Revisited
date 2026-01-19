@@ -3,7 +3,7 @@ extends Area3D
 enum ZONE_TYPE {FACULTY, PRINCIPAL}
 @export var zone : ZONE_TYPE = ZONE_TYPE.FACULTY
 
-func _on_body_entered(body):
+func _on_body_entered(body : Node3D) -> void:
 	match(zone):
 		ZONE_TYPE.PRINCIPAL:
 			if body is Player: # reset guilt (wouldn't make sense if the principal gives you detention when you're already inside and didn't see you leave)
@@ -16,8 +16,8 @@ func _on_body_entered(body):
 			if body is Player:
 				body.reset_guilt("faculty",1.0)
 				# disable and renable the mask so it retriggers
-				var layer_memory = collision_layer
-				var mask_memory = collision_mask
+				var layer_memory : int = collision_layer
+				var mask_memory : int = collision_mask
 				collision_layer = 0
 				collision_mask = 0
 				# wait physics frame
@@ -27,10 +27,10 @@ func _on_body_entered(body):
 				
 			
 
-func _on_body_exited(body):
+func _on_body_exited(body : Node3D) -> void:
 	match(zone):
 		ZONE_TYPE.PRINCIPAL:
 			if body is Player:
-				body.reset_guilt("escape",body.detentionTimer)
+				body.reset_guilt("escape", body.detentionTimer)
 			elif body is Principal:
 				body.inOffice = false
