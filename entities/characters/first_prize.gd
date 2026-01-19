@@ -3,39 +3,39 @@ class_name FirstPrize
 
 # first prize was the most annoying character to set up and even now I'm pretty sure they're still inaccurate
 
-@export var active = false
+@export var active : bool = false
 
-const TURN_SPEED = 15.0
+const TURN_SPEED : float = 15.0
 
-var angDiff = 0.0
-var normSpeed = 5.0
-var runSpeed = 100.0
-var currentSpeed = 0.0
-var autoBreakCool = 0.0
-var crazyTime = 0.0
+var angDiff : float = 0.0
+var normSpeed : float = 5.0
+var runSpeed : float = 100.0
+var currentSpeed : float = 0.0
+var autoBreakCool : float = 0.0
+var crazyTime : float = 0.0
 var targetRotation : Transform3D
-var coolDown = 0.0
-var prevSpeed = 0.0
-var playerSeen = false
-var hugAnnounced = false
-@export var audFound = [preload("res://audio/Characters/1stPrize/1PR_AmComing.wav"), preload("res://audio/Characters/1stPrize/1PR_ISeeYou.wav")]
-@export var audLost = [preload("res://audio/Characters/1stPrize/1PR_HaveLost.wav"), preload("res://audio/Characters/1stPrize/1PR_OhNo.wav")]
-@export var audHug = [preload("res://audio/Characters/1stPrize/1PR_IHug.wav"), preload("res://audio/Characters/1stPrize/1PR_Marry.wav")]
-@export var audRandom = [preload("res://audio/Characters/1stPrize/1PR_BeenProgrammed.wav"), preload("res://audio/Characters/1stPrize/1PR_AmLooking.wav")]
+var coolDown : float = 0.0
+var prevSpeed : float = 0.0
+var playerSeen : bool = false
+var hugAnnounced : bool = false
+@export var audFound : Array[AudioStream] = [preload("res://audio/Characters/1stPrize/1PR_AmComing.wav"), preload("res://audio/Characters/1stPrize/1PR_ISeeYou.wav")]
+@export var audLost : Array[AudioStream] = [preload("res://audio/Characters/1stPrize/1PR_HaveLost.wav"), preload("res://audio/Characters/1stPrize/1PR_OhNo.wav")]
+@export var audHug : Array[AudioStream] = [preload("res://audio/Characters/1stPrize/1PR_IHug.wav"), preload("res://audio/Characters/1stPrize/1PR_Marry.wav")]
+@export var audRandom : Array[AudioStream] = [preload("res://audio/Characters/1stPrize/1PR_BeenProgrammed.wav"), preload("res://audio/Characters/1stPrize/1PR_AmLooking.wav")]
 
-@onready var playerChecker = $PlayerChecker
-@onready var sounds = $Sounds
-@onready var engine = $Engine
-@onready var bang = $Bang
+@onready var playerChecker : RayCast3D = $PlayerChecker
+@onready var sounds : AudioStreamPlayer3D = $Sounds
+@onready var engine : AudioStreamPlayer3D = $Engine
+@onready var bang : AudioStreamPlayer3D = $Bang
 
-@onready var raycast = $RayCast3D #Change "RaycCast3D to the name of your raycast object"
+@onready var raycast : RayCast3D = $RayCast3D #Change "RaycCast3D to the name of your raycast object"
 
-var playerReference = null
-var alive = false # zoom prevention
+var playerReference : Player = null
+var alive : bool = false # zoom prevention
 
-var justhit = false
+var justhit : bool = false
 
-func _ready():
+func _ready() -> void:
 	super()
 	navAgent.target_position = global_position
 	set_physics_process(active)
@@ -47,14 +47,14 @@ func _ready():
 	await get_tree().physics_frame
 	alive = true
 
-func _physics_process(delta):
+func _physics_process(delta : float) -> void:
 	coolDown = move_toward(coolDown,0.0,delta)
 	
 	#return
 	if autoBreakCool > 0.0:
 		autoBreakCool = move_toward(autoBreakCool,0.0,delta)
 	
-	var getPose = global_position-navAgent.get_next_path_position()
+	var getPose : Vector3 = global_position-navAgent.get_next_path_position()
 	angDiff = angle_difference(rotation.y,atan2(getPose.x,getPose.z)) * 57.29578
 	
 	if crazyTime <= 0.0:
@@ -96,11 +96,11 @@ func _physics_process(delta):
 	move_and_slide()
 	
 	# clamp position
-	var lastTarget = navAgent.target_position # memorize target
+	var lastTarget : Vector3 = navAgent.target_position # memorize target
 	navAgent.target_position = global_position+(Vector3.UP*navAgent.path_height_offset) # set nav agent to self
 	
 	if !navAgent.is_target_reachable() && alive:
-		var newTarget = Vector3(navAgent.get_final_position().x,global_position.y,navAgent.get_final_position().z)-global_position # clamp position
+		var newTarget := Vector3(navAgent.get_final_position().x,global_position.y,navAgent.get_final_position().z)-global_position # clamp position
 		if newTarget.length() > 0.1:
 			velocity = velocity.slide(newTarget.normalized()) # adjust velocity to slide against the barrier (prevents driving constantly into walls)
 		
@@ -126,29 +126,29 @@ func _physics_process(delta):
 			playerReference.velocity = velocity*delta*60.0
 	#super(delta)
 
-func activate():
+func activate() -> void:
 	active = true
 	set_physics_process(active)
 	show()
 
 
-func wander():
+func wander() -> void:
 	navAgent.target_position = Global.get_wander_point("hall_wander")# set random target based on targets
 	hugAnnounced = false
-	var num = randi_range(0,9)
+	var num : int = randi_range(0,9)
 	if num == 0 && coolDown <= 0.0 && sounds.playing:
 		sounds.stream = audRandom[randi_range(0,audRandom.size()-1)]
 		sounds.play()
 	coolDown = 1.0
 
 
-func target_player():
+func target_player() -> void:
 	navAgent.target_position = Global.player.global_position
 	coolDown = 0.5
 
 
 
-func _on_player_collider_body_entered(body):
+func _on_player_collider_body_entered(body : Node3D) -> void:
 	if body is Player:
 		if !sounds.playing && !hugAnnounced:
 			sounds.stream = audHug[randi_range(0,audHug.size()-1)]
@@ -158,7 +158,7 @@ func _on_player_collider_body_entered(body):
 
 
 
-func _on_player_collider_body_exited(_body):
+func _on_player_collider_body_exited(_body : Node3D) -> void:
 	autoBreakCool = 1.0
 	playerReference = null
 
