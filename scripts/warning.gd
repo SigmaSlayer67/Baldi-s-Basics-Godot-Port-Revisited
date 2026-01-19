@@ -1,5 +1,5 @@
 extends CanvasLayer
-@export var warnings:PackedStringArray = [
+@export var warnings: PackedStringArray = [
 "[center][wave]Hello![/wave] This is a fanmade recreation of the original [color=green]Baldi's Basics[/color] for [color=0AF]Godot 4.4[/color].
 The idea is to create an easier was to create fangames for people that prefer Godot over Unity.
 This was created using the fanmade Baldi's Basics Classic and Birthday bash decompiles by Jumpman25 and Porky Powers.
@@ -15,15 +15,15 @@ YOU HAVE BEEN WARNED
 
 (Press to continue)",
 ]
-var warningID = 0
+var warningID : int = 0
 
-func _ready():
+func _ready() -> void:
 	update_text()
 
-func update_text():
+func update_text() -> void:
 	$Label.text = warnings[warningID]
 
-func _input(event):
+func _input(event : InputEvent) -> void:
 	if "pressed" in event and not (event is InputEventKey and event.echo) and not event is InputEventScreenTouch: # Remove touch because it simulates mouse too
 		if event.pressed:
 			if warningID < warnings.size()-1:

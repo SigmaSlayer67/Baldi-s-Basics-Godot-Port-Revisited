@@ -1,4 +1,4 @@
 extends WorldEnvironment
 
-func _ready():
+func _ready() -> void:
 	Global.background = self
