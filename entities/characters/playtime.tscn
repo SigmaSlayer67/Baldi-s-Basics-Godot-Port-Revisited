@@ -1,6 +1,6 @@
 [gd_scene load_steps=36 format=3 uid="uid://djbav4j82emsl"]
 
-[ext_resource type="Script" uid="uid://cl2p400abkqu7" path="res://entities/characters/Playtime.gd" id="1_twjcc"]
+[ext_resource type="Script" uid="uid://cl2p400abkqu7" path="res://entities/characters/playtime.gd" id="1_twjcc"]
 [ext_resource type="Texture2D" uid="uid://bokyolsmv4pes" path="res://graphics/Characters/Playtime/JumpRope.png" id="2_yj56h"]
 [ext_resource type="Texture2D" uid="uid://bibbvt56cdnni" path="res://graphics/Characters/Playtime/JumpRope_None.png" id="3_xib3q"]
 [ext_resource type="AudioStream" uid="uid://d0ifldpnk2jpy" path="res://audio/Characters/Playtime/PT_WannaPlay.wav" id="4_0u8rc"]

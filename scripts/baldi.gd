@@ -1,49 +1,48 @@
 extends Character
 class_name Baldi
 
-@export var active = false
+@export var active : bool = false
 
-var baseTime = 3.0
-var timeToMove = 0.0
+var baseTime : float = 3.0
+var timeToMove : float = 0.0
 
+var baldiWait : float = 3.0
 
-var baldiWait = 3.0
+var baldiSpeedScale : float = 0.65
 
-var baldiSpeedScale = 0.65
+var moveFrames : float = 0.0
 
-var moveFrames = 0.0
+var currentPriority : int = 0
 
-var currentPriority = 0
+var antiHearing : bool = false
+var antiHearingTime : float = 0.0
+var vibrationDistance : float = 50.0
 
-var antiHearing = false
-var antiHearingTime = 0.0
-var vibrationDistance = 50.0
+var baldiAnger : float = 0.0
+var baldiTempAnger : float = 0.0
+var angerRate : float = 0.01
+var angerRateRatio : float = 0.00025
+var angerFrequency : float = 1.0
+var timeToAnger : float = 0.0
 
-var baldiAnger = 0.0
-var baldiTempAnger = 0.0
-var angerRate = 0.01
-var angerRateRatio = 0.00025
-var angerFrequency = 1.0
-var timeToAnger = 0.0
+var wanderTarget := Vector3.ZERO
+var previous := Vector3.ZERO
 
-var wanderTarget = Vector3.ZERO
-var previous = Vector3.ZERO
+var coolDown : float = 0.0
 
-var coolDown = 0.0
+var rumble : bool = false
 
-var rumble = false
+@onready var sfxSlap : AudioStreamPlayer3D = $Slap
+@onready var playerChecker : RayCast3D = $PlayerChecker
 
-@onready var sfxSlap = $Slap
-@onready var playerChecker = $PlayerChecker
-
-func _ready():
+func _ready() -> void:
 	super()
 	Global.baldi = self
 	wander()
 	set_physics_process(active)
 	visible = active
 
-func activate():
+func activate() -> void:
 	active = true
 	show()
 	set_physics_process(active)
@@ -51,10 +50,10 @@ func activate():
 	playerChecker.force_raycast_update()
 	
 
-func _process(_delta):
+func _process(_delta : float) -> void:
 	$Baldi.speed_scale = max(1.0,speed/60.0)
 
-func _physics_process(delta):
+func _physics_process(delta : float) -> void:
 	
 	# cool downs
 	if timeToMove > 0.0: # decrease if time to move is greater then 0
@@ -100,18 +99,18 @@ func _physics_process(delta):
 	super(delta) # call parent movement class
 
 
-func wander():
+func wander() -> void:
 	navAgent.target_position = Global.get_wander_point()# set random target based on targets
 	coolDown = 1.0 # set cool down
 	currentPriority = 0 # reset priority
 
-func set_target_node(object):
+func set_target_node(object : Node3D) -> void:
 	navAgent.target_position = object.global_position
 	coolDown = 1.0 # set cool down
 	currentPriority = 0 # reset priority
 
 
-func move():
+func move() -> void:
 	if global_position.is_equal_approx(previous) && coolDown <= 0:
 		wander()
 	moveFrames = 10.0
@@ -122,21 +121,21 @@ func move():
 	$Baldi.play("slap")
 	# rumble
 	if Global.rumble:
-		var distance = global_position.distance_to(Global.player.global_position)
+		var distance : float = global_position.distance_to(Global.player.global_position)
 		if distance <= vibrationDistance:
 			Input.start_joy_vibration(0, 0.5, 1.0-(distance/vibrationDistance), 0.15)
 
-func get_angry(setAnger):
+func get_angry(setAnger : float) -> void:
 	baldiAnger = max(0.5,baldiAnger+setAnger) # increase anger but cap baldi's lower anger to 0.5
 	baldiWait = -3.0 * baldiAnger / (baldiAnger + 2.0 / baldiSpeedScale) + 3.0 # keeps baldi from going nuts I think, i dunno, comment it out see what happens lmao
 
-func get_temp_anger(tempSet):
+func get_temp_anger(tempSet : float) -> void:
 	baldiTempAnger += tempSet # idk why this is a function but hey you can always add some checks this way
 
-func hear(soundLocation = Vector3.ZERO, priority = 0, playReaction = true):
+func hear(soundLocation := Vector3.ZERO, priority : int = 0, playReaction : bool = true) -> void:
 	if !antiHearing:
 		if priority >= currentPriority:
-			var oldTarget = navAgent.target_position # used to determine if the point is reachable
+			var oldTarget : Vector3 = navAgent.target_position # used to determine if the point is reachable
 			navAgent.target_position = soundLocation # set new location
 			if navAgent.get_final_position().slide(Vector3.UP).distance_to(navAgent.target_position.slide(Vector3.UP)) > 1.0: # if unreachable, set target to old target (use a distance verify because positions in the air don't play nice with is_target_reachable)
 				navAgent.target_position = oldTarget
@@ -152,12 +151,12 @@ func hear(soundLocation = Vector3.ZERO, priority = 0, playReaction = true):
 		elif active:
 			Global.player.bali_react("Confused")
 
-func activate_anti_hearing(time):
+func activate_anti_hearing(time : float) -> void:
 	wander()
 	antiHearing = true
 	antiHearingTime = time
 
-func _on_player_collider_body_entered(body):
+func _on_player_collider_body_entered(body : Node3D) -> void:
 	if playerChecker.is_colliding(): return
 	if body is Player && visible:
 		if body.has_method("game_over"):
