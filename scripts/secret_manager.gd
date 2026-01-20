@@ -2,8 +2,8 @@ extends Node3D
 
 func _process(_delta : float) -> void:
 	# make baldi face the camera
-	var camera = get_viewport().get_camera_3d()
-	var baldi = $Badi/BaldiSprite
+	var camera : Camera3D = get_viewport().get_camera_3d()
+	var baldi : Sprite3D = $Badi/BaldiSprite
 	baldi.look_at(baldi.global_position+camera.global_basis.z,Vector3.UP)
 
 # when dialogue file finished close the game

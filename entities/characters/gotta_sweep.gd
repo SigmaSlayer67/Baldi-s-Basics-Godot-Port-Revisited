@@ -13,7 +13,7 @@ var audIntro : AudioStream = preload("res://audio/Characters/GottaSweep/GS_Intro
 
 @onready var sounds : AudioStreamPlayer3D = $Sounds
 
-var npcList : Array = [] # keep a record of contacted NPCs
+var npcList : Array[Node3D] = [] # keep a record of contacted NPCs
 
 
 func _ready() -> void:
@@ -54,7 +54,7 @@ func _physics_process(delta : float) -> void:
 	elif wanders >= 5:
 		go_home()
 	
-	for i in npcList: # shift other npcs
+	for i : Node3D in npcList: # shift other npcs
 		if i.get("velocity") != null: # check that velocity exists
 			var setVelocity := Vector3(velocity.x,i.velocity.y,velocity.z)
 			# set to position then move

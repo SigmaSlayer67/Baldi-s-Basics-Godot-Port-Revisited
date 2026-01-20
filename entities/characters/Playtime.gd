@@ -85,7 +85,7 @@ func _physics_process(delta) -> void:
 			jump_rope_started = false
 		else:
 			if !jump_rope_started:
-				var destination = Global.player.global_position.slide(up_direction)-(global_position.slide(up_direction).direction_to(Global.player.global_position.slide(up_direction))*10.0)
+				var destination : Vector3 = Global.player.global_position.slide(up_direction)-(global_position.slide(up_direction).direction_to(Global.player.global_position.slide(up_direction))*10.0)
 				global_position = Vector3(destination.x,global_position.y,destination.z)
 				jump_rope_started = true
 			play_cool = 15.0

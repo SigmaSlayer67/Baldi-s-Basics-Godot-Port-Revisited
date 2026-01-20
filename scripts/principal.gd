@@ -149,7 +149,7 @@ func _on_player_collider_body_entered(body : Node3D) -> void:
 			Global.baldi.hear(global_position,8)
 		coolDown = 5.0
 		angry = false
-		for i in get_tree().get_nodes_in_group("principal_lock"):
+		for i : Node in get_tree().get_nodes_in_group("principal_lock"):
 			if i is Door:
 				i.lockTime = lockTimes[detentions]
 				i.doorLocked = true
