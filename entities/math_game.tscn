@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bvrmeni48vtwi" path="res://scripts/math_game.gd" id="1_18yvs"]
 [ext_resource type="Texture2D" uid="uid://e40527k1lmgw" path="res://graphics/YCTPTextures/YCTP2_NoButtons.png" id="1_at22y"]
-[ext_resource type="AudioStream" uid="uid://d27tqh11ogju1" path="res://resources/math_game/baldi_praises.tres" id="2_d3kwt"]
+[ext_resource type="AudioStream" uid="uid://d27tqh11ogju1" path="res://audio/Characters/Baldi/MathGame/Praises/baldi_praises.tres" id="2_d3kwt"]
 [ext_resource type="Shader" uid="uid://6hkvqedt6jfm" path="res://shaders/round_alpha.tres" id="2_fckko"]
 [ext_resource type="Texture2D" uid="uid://dq7li4qika4hc" path="res://graphics/Characters/Baldi/MathTalk.png" id="2_h13hb"]
 [ext_resource type="Texture2D" uid="uid://cm1xwxv2vlw8b" path="res://graphics/Characters/Baldi/BaldiFrown.png" id="10_nepyx"]

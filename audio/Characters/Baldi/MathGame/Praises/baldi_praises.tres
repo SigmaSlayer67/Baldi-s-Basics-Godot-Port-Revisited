@@ -1,0 +1,15 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=6 format=3 uid="uid://d27tqh11ogju1"]
+
+[ext_resource type="AudioStream" uid="uid://d1eur0b5g7l0j" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise1.wav" id="1_ybje3"]
+[ext_resource type="AudioStream" uid="uid://fib73o68n5h4" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise2.wav" id="2_5tuqa"]
+[ext_resource type="AudioStream" uid="uid://b821jvtvfm1t6" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise3.wav" id="3_4x6jo"]
+[ext_resource type="AudioStream" uid="uid://ckp2nkd1jybi0" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise4.wav" id="4_24lp8"]
+[ext_resource type="AudioStream" uid="uid://cyhotsuegl1ch" path="res://audio/Characters/Baldi/MathGame/Praises/BAL_Praise5.wav" id="5_o1ev7"]
+
+[resource]
+streams_count = 5
+stream_0/stream = ExtResource("1_ybje3")
+stream_1/stream = ExtResource("2_5tuqa")
+stream_2/stream = ExtResource("3_4x6jo")
+stream_3/stream = ExtResource("4_24lp8")
+stream_4/stream = ExtResource("5_o1ev7")
