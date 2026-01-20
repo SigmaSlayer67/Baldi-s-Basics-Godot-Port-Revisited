@@ -20,7 +20,11 @@ func interact(object : Object) -> void:
 	visible = false
 	# give player stamina
 	if object is Player:
-		object.stamina = object.maxStamina
+		# this might be cheating as changes like these should be made on their own
+		# separate branch after we finish the static typing one but i just wanted to make a
+		# little change for more type safety that will be used for the future
+		var player : Player = object as Player
+		player.stamina = player.maxStamina
 	# set respawn time for endless mode
 	if Global.endless:
 		respawnTime = 120.0

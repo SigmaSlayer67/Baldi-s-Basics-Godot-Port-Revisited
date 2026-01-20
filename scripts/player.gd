@@ -48,7 +48,7 @@ var BSoda : PackedScene = preload("res://entities/dropped_items/BSODA.tscn")
 @onready var frozenPosition : Vector3 = global_position
 
 var itemSelected : int = 0
-var items : Array[int] = []
+var items : PackedInt32Array = []
 
 var run_toggled : bool = false # for mobile
 var behind_toggled : bool = false # for mobile
@@ -330,7 +330,7 @@ func use_item() -> void:
 			stamina = maxStamina * 2.0
 			items[itemSelected] = Global.ITEMS.NONE
 		Global.ITEMS.BSODA: # Create BSODA!
-			var mySoda : Node3D = BSoda.instantiate()
+			var mySoda := BSoda.instantiate() as Area3D
 			get_parent().add_child(mySoda)
 			reset_guilt("drink",1.0)
 			mySoda.global_position = global_position
@@ -388,7 +388,7 @@ func use_item() -> void:
 			$PlayerHud/Boots.hide()
 		Global.ITEMS.ALARM:
 			# place alarm clock and remove item, pretty simple
-			var clock : Node3D = ALARM_CLOCK.instantiate()
+			var clock := ALARM_CLOCK.instantiate() as Node3D
 			add_sibling(clock)
 			clock.global_position = global_position
 			items[itemSelected] = Global.ITEMS.NONE
@@ -438,7 +438,7 @@ func update_items() -> void:
 func escape_activate() -> void:
 	$AllNotebooks.play()
 
-func bali_react(react_frame = "Notice") -> void:
+func bali_react(react_frame : StringName = "Notice") -> void:
 	$PlayerHud/BaldiHeadController/HeadReaction.play(react_frame)
 
 

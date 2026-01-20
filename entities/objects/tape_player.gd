@@ -12,5 +12,5 @@ func use_tape(_player : Player) -> void:
 	$Player.texture = close_sprite
 
 
-func _on_audio_finished():
+func _on_audio_finished() -> void:
 	$Player.texture = open_sprite

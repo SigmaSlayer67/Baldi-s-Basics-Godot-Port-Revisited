@@ -87,6 +87,7 @@ func _ready() -> void:
 	for i : TextureButton in $Pad/Keypad.get_children():
 		i.pressed.connect(parse_button.bind(i))
 
+
 func _process(delta : float) -> void:
 	# calculate soudn volume for lip sync
 	var hzOffset : float = 1.5

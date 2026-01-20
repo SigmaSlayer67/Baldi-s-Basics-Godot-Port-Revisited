@@ -55,7 +55,7 @@ func activate() -> void:
 	set_physics_process(active)
 	show()
 
-func _physics_process(delta) -> void: 
+func _physics_process(delta : float) -> void: 
 	
 	cool_down = move_toward(cool_down,0.0,delta)
 	if play_cool > 0:
@@ -121,7 +121,7 @@ func dissapoint() -> void:
 	$JumpRope.hide()
 	
 
-func _on_player_collider_body_entered(body) -> void:
+func _on_player_collider_body_entered(body : Node3D) -> void:
 	if body is Player:
 		if !body.jumpRope && play_cool <= 0:
 			speed = 0.0
@@ -135,7 +135,7 @@ func _on_player_collider_body_entered(body) -> void:
 			jumpropeAnimator.play("Jump")
 
 
-func _on_jump_rope_animation_finished(_anim_name) -> void:
+func _on_jump_rope_animation_finished(_anim_name : StringName) -> void:
 	if !Global.player.jumpRope: return
 	if Global.player.camera3D.v_offset <= 0.2: # failure
 		jumps = 0 # reset jumps
