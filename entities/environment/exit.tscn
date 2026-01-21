@@ -15,7 +15,6 @@ script = ExtResource("1_rfwlg")
 
 [node name="Door" parent="." instance=ExtResource("2_gtfcx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -15)
-backSideDarker = null
 lockForTutorial = true
 exitDoor = true
 

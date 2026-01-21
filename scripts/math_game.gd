@@ -53,7 +53,7 @@ preload("res://audio/Characters/Baldi/MathGame/Numbers/BAL_Math_8.wav"),
 preload("res://audio/Characters/Baldi/MathGame/Numbers/BAL_Math_9.wav"),
 ]
 
-@export var praises = AudioStreamRandomizer
+@export var praises : AudioStreamRandomizer = preload("res://audio/Characters/Baldi/MathGame/Praises/baldi_praises.tres")
 var problemAudio : Array[AudioStream] = [
 preload("res://audio/Characters/Baldi/MathGame/Problems/BAL_General_Problem1.wav"),
 preload("res://audio/Characters/Baldi/MathGame/Problems/BAL_General_Problem2.wav"),
@@ -215,18 +215,18 @@ func _on_answer_text_submitted(_new_text : String) -> void:
 				music.stream = load("res://audio/Music/mus_hang.wav")
 				music.play()
 				# play anger animation
-				$Pad/BaldiAnimator.play("Anger")
+				$Pad/BaldiAnimator.play(&"Anger")
 			wrongAnswers += 1
 			results[problem-1].texture = incorrectTexture
 			if !Global.spoopMode:
 				Global.spoopMode = true
-				for i : Node in get_tree().get_nodes_in_group("pre_game"):
+				for i : Node in get_tree().get_nodes_in_group(&"pre_game"):
 					if i is AudioStreamPlayer:
 						i.stop()
 					else:
 						i.queue_free()
-				for i : Node in get_tree().get_nodes_in_group("activatable"):
-					if i.has_method("activate"):
+				for i : Node in get_tree().get_nodes_in_group(&"activatable"):
+					if i.has_method(&"activate"):
 						i.activate()
 			
 			if !Global.endless:
@@ -237,8 +237,8 @@ func _on_answer_text_submitted(_new_text : String) -> void:
 				# check if all notebooks are collection
 				if Global.noteBooks >= 6 && !Global.escapeMode:
 					Global.escapeMode = true
-					for i : Node in get_tree().get_nodes_in_group("escape"):
-						if i.has_method("escape_activate"):
+					for i : Node in get_tree().get_nodes_in_group(&"escape"):
+						if i.has_method(&"escape_activate"):
 							i.escape_activate()
 					
 			else:
@@ -248,14 +248,14 @@ func _on_answer_text_submitted(_new_text : String) -> void:
 func parse_button(button : TextureButton) -> void:
 	# parse button pressed based on name
 	match(button.name):
-		"OK":
+		&"OK":
 			_on_answer_text_submitted(numberLineEdit.text)
-		"-":
+		&"-":
 			if numberLineEdit.text.begins_with("-"):
 				numberLineEdit.text = numberLineEdit.text.right(-1)
 			else:
 				numberLineEdit.text = numberLineEdit.text.insert(0,"-")
-		"C":
+		&"C":
 			numberLineEdit.clear()
 		_:
 			numberLineEdit.text += button.name

@@ -81,5 +81,5 @@ func load_scene() -> void:
 	
 
 
-func _on_exit_pressed():
+func _on_exit_pressed() -> void:
 	get_tree().quit()

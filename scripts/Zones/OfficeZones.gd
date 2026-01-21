@@ -7,14 +7,14 @@ func _on_body_entered(body : Node3D) -> void:
 	match(zone):
 		ZONE_TYPE.PRINCIPAL:
 			if body is Player: # reset guilt (wouldn't make sense if the principal gives you detention when you're already inside and didn't see you leave)
-				if body.guiltType == "escape":
+				if body.guiltType == &"escape":
 					body.guilt = 0.0
 			elif body is Principal:
 				if !body.angry:
 					body.inOffice = true
 		ZONE_TYPE.FACULTY:
 			if body is Player:
-				body.reset_guilt("faculty",1.0)
+				body.reset_guilt(&"faculty",1.0)
 				# disable and renable the mask so it retriggers
 				var layer_memory : int = collision_layer
 				var mask_memory : int = collision_mask
@@ -31,6 +31,6 @@ func _on_body_exited(body : Node3D) -> void:
 	match(zone):
 		ZONE_TYPE.PRINCIPAL:
 			if body is Player:
-				body.reset_guilt("escape", body.detentionTimer)
+				body.reset_guilt(&"escape", body.detentionTimer)
 			elif body is Principal:
 				body.inOffice = false
