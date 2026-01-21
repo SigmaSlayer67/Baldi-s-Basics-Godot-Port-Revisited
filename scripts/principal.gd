@@ -125,11 +125,11 @@ func correct_player() -> void:
 	audioQueue.clear()
 	# get player rule break
 	match(Global.player.guiltType):
-		&"escape": # escaping detention
+		"escape": # escaping detention
 			queue_audio(audNoEscaping)
-		&"drink": # bsoda
+		"drink": # bsoda
 			queue_audio(audNoDrinking)
-		&"faculty": # faculty 
+		"faculty": # faculty 
 			queue_audio(audNoFaculty)
 		_: # default
 			queue_audio(audNoRunning)
@@ -149,7 +149,7 @@ func _on_player_collider_body_entered(body : Node3D) -> void:
 			Global.baldi.hear(global_position,8)
 		coolDown = 5.0
 		angry = false
-		for i : Node in get_tree().get_nodes_in_group(&"principal_lock"):
+		for i : Node in get_tree().get_nodes_in_group("principal_lock"):
 			if i is Door:
 				i.lockTime = lockTimes[detentions]
 				i.doorLocked = true

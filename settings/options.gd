@@ -25,7 +25,7 @@ func _on_sensativity_value_changed(value : float) -> void:
 
 func _input(event : InputEvent) -> void:
 	# close on pause pressed
-	if event.is_action_pressed(&"gm_pause") && visible && get_tree().paused:
+	if event.is_action_pressed("gm_pause") && visible && get_tree().paused:
 		_on_back_pressed()
 
 func _on_rumble_toggled(toggled_on : bool) -> void:
@@ -44,4 +44,4 @@ func _on_to_menu_pressed() -> void:
 
 # determine if to show the menu button if not in the menu scene (do a name check, if you change the main menu node name then you'll have to change this too)
 func _on_visibility_changed() -> void:
-	$Options/ToMenu.visible = get_tree().current_scene.name != &"Menu"
+	$Options/ToMenu.visible = get_tree().current_scene.name != "Menu"
