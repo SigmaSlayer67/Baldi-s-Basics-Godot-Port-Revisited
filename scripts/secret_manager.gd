@@ -1,6 +1,5 @@
 extends Node3D
 
-
 func _process(_delta : float) -> void:
 	# make baldi face the camera
 	var camera : Camera3D = get_viewport().get_camera_3d()

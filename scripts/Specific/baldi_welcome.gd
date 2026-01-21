@@ -9,7 +9,7 @@ func new_dialogue() -> void:
 	else:
 		$BaldiGreeting.stream = load("res://audio/Characters/Baldi/BaldiTutor/BAL_GetPrize.wav")
 	$BaldiGreeting.play()
-	for i : Node in get_tree().get_nodes_in_group(&"reward"):
-		if i.has_method(&"activate"):
+	for i : Node in get_tree().get_nodes_in_group("reward"):
+		if i.has_method("activate"):
 			i.activate()
 	translate(basis.x*3)
