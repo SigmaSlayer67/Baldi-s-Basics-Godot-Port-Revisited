@@ -16,10 +16,6 @@ grow_vertical = 0
 mouse_filter = 2
 script = ExtResource("1_8x4dy")
 visibility_mode = 1
-action_left = "gm_left"
-action_right = "gm_right"
-action_up = "gm_forward"
-action_down = "gm_back"
 
 [node name="Base" type="TextureRect" parent="."]
 layout_mode = 1

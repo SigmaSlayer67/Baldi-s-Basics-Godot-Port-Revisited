@@ -98,7 +98,7 @@ func open_door() -> void:
 	if silentOpens <= 0 && !doorOpen:
 		myAudio.stream = audioDoorOpen
 		myAudio.play() # play door open sound if not silent and not already open
-	barrier.call_deferred("set_disabled",true) # turn off collision
+	barrier.call_deferred(&"set_disabled",true) # turn off collision
 	doorOpen = true # Set the door open status to true
 	doorTexture.frame = defaultDoorFrame+1 # set frame to open frame
 	openTime = 3.0 # Set the open time to 3 seconds
@@ -120,9 +120,9 @@ func _on_character_check_body_entered(body : Node3D) -> void:
 			if exitDoor:
 				# check for secret exit (all note books failed)
 				if Global.secret:
-					get_tree().call_deferred("change_scene_to_file","res://scenes/secret.tscn")
+					get_tree().call_deferred(&"change_scene_to_file","res://scenes/secret.tscn")
 				else: # otherwise go to the normal ending
-					get_tree().call_deferred("change_scene_to_file","res://scenes/results.tscn")
+					get_tree().call_deferred(&"change_scene_to_file","res://scenes/results.tscn")
 			else:
 				Global.baldi.hear(global_position,1)
 
