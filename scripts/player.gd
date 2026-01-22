@@ -1,3 +1,4 @@
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends CharacterBody3D
 class_name Player
 
@@ -107,7 +108,7 @@ func _ready() -> void:
 	
 	# funny debug (make the player ultra fast)
 	if debugMode == 2:
-		walkSpeed *= 5
+		walkSpeed *= 5.0
 
 func _process(delta : float) -> void:
 	# look behind
@@ -115,7 +116,7 @@ func _process(delta : float) -> void:
 	
 	$PlayerHud/Detention.visible = detentionTimer > 0
 	$PlayerHud/Detention/Label.text = "You have detention! \n" + str(int(ceil(detentionTimer))) + " seconds remain!"
-	$PlayerHud/StaminaBar.value = (stamina / maxStamina) * 100
+	$PlayerHud/StaminaBar.value = (stamina / maxStamina) * 100.0
 	$PlayerHud/Warning.visible = stamina < 0.0
 	update_note_book_counter()
 	
@@ -147,7 +148,7 @@ func _physics_process(delta : float) -> void:
 	
 	# boots
 	bootTime = move_toward(bootTime,0.0,delta)
-	boots = bootTime > 0
+	boots = bootTime > 0.0
 	
 	# check for interacts for pointer visibility
 	# set pointer to invisible by default (sometimes the object collider might collide with nothing)
@@ -165,7 +166,7 @@ func player_move(delta : float) -> void:
 	## for the sake of static typing. 
 	var input_dir : Vector2 = Input.get_vector(&"gm_left",&"gm_right",&"gm_back",&"gm_forward")
 	var direction := Vector3(input_dir.x,0.0,-input_dir.y)
-	if stamina > 0:
+	if stamina > 0.0:
 		if Input.is_action_pressed(&"gm_run") or run_toggled:
 			playerSpeed = runSpeed
 			if velocity.length() > 0.1 && !hugging && !sweeping:
@@ -179,10 +180,10 @@ func player_move(delta : float) -> void:
 	
 	if jumpRope:
 		moveDirection = Vector3.ZERO
-	if jumpRope || jumpHeight > 0: # continue jump routine if the players still in the air
+	if jumpRope || jumpHeight > 0.0: # continue jump routine if the players still in the air
 		# jumping
 		jumpVelocity -= GRAVITY*delta
-		jumpHeight = max(0,jumpHeight+(jumpVelocity*delta))
+		jumpHeight = max(0.0,jumpHeight+(jumpVelocity*delta))
 		# set v_offset (jumping)
 		if cameraVTween:
 			cameraVTween.kill()
@@ -196,7 +197,7 @@ func player_move(delta : float) -> void:
 			move_and_collide(velocity.slide(velocity.slide(collider.get_normal()).normalized()) * delta)
 			velocity = velocity.slide(collider.get_normal())
 		
-		velocity.y = 0
+		velocity.y = 0.0
 		move_and_slide()
 		camera3D.global_translate(-get_real_velocity()*delta)
 	velocity = moveDirection.rotated(basis.y,rotation.y)
@@ -281,7 +282,7 @@ func reset_guilt(type : StringName, amount : float) -> void:
 		guiltType = type
 
 func guilt_check(delta : float) -> void:
-	if guilt > 0:
+	if guilt > 0.0:
 		guilt = move_toward(guilt,0.0,delta)
 	detentionTimer = move_toward(detentionTimer,0.0,delta)
 
@@ -292,8 +293,8 @@ func game_over() -> void:
 	camera3D.process_mode = Node.PROCESS_MODE_ALWAYS
 	if is_instance_valid(Global.baldi):
 		# Goodnes, we might have to fix this spacing sooner than later
-		camera3D.global_position = Global.baldi.global_position+Global.baldi.global_position.direction_to(Vector3(global_position.x,Global.baldi.global_position.y,global_position.z))*2.0+Vector3(0,1,0)
-		camera3D.look_at(Global.baldi.global_position+Vector3(0,1,0),up_direction)
+		camera3D.global_position = Global.baldi.global_position+Global.baldi.global_position.direction_to(Vector3(global_position.x,Global.baldi.global_position.y,global_position.z))*2.0+Vector3(0.0,1.0,0.0)
+		camera3D.look_at(Global.baldi.global_position+Vector3(0.0,1.0,0.0),up_direction)
 	$Caught.play() # volume turned down because I don't wanna be responcible for blowing out someoen's speakers.
 	# if you have a problem with me doing that cry about it.
 	$PlayerHud.visible = false

@@ -1,3 +1,4 @@
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 class_name VirtualJoystick
 extends Control
 
@@ -22,7 +23,7 @@ enum Joystick_mode {
 }
 
 ## If the joystick stays in the same position or appears on the touched position when touch is started
-@export var joystick_mode : Joystick_mode = Joystick_mode.FIXED
+@export var joystick_mode := Joystick_mode.FIXED
 
 enum Visibility_mode {
 	ALWAYS, ## Always visible
@@ -31,7 +32,7 @@ enum Visibility_mode {
 }
 
 ## If the joystick is always visible, or is shown only if there is a touchscreen
-@export var visibility_mode : Visibility_mode = Visibility_mode.ALWAYS
+@export var visibility_mode := Visibility_mode.ALWAYS
 
 ## If true, the joystick uses Input Actions (Project -> Project Settings -> Input Map)
 @export var use_input_actions : bool = true
