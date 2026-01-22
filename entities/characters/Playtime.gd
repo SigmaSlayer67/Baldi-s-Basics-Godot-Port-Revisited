@@ -1,3 +1,4 @@
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Character
 class_name PlayTime
 
@@ -58,26 +59,26 @@ func activate() -> void:
 func _physics_process(delta : float) -> void: 
 	
 	cool_down = move_toward(cool_down,0.0,delta)
-	if play_cool > 0:
+	if play_cool > 0.0:
 		play_cool = move_toward(play_cool,0.0,delta)
 		# stop being sad if sad
-		if play_cool <= 0:
+		if play_cool <= 0.0:
 			playtime.play(&"default")
 	
 	# Global.player.jumpRope
 	
 	if is_instance_valid(Global.player): # error prevention
-		if !Global.player.jumpRope && speed == 0: # if player's not jump roping but playtime is still expecting it, then run the dissapointment routine
+		if !Global.player.jumpRope && speed == 0.0: # if player's not jump roping but playtime is still expecting it, then run the dissapointment routine
 			dissapoint()
 		if !Global.player.jumpRope:
 			player_checker.target_position = Global.player.global_position - global_position
 			# check that the cast wasn't interupted
-			can_see_player = (!player_checker.is_colliding() && global_position.distance_to(Global.player.global_position) <= 80.0 && play_cool <= 0)
+			can_see_player = (!player_checker.is_colliding() && global_position.distance_to(Global.player.global_position) <= 80.0 && play_cool <= 0.0)
 		
 			if can_see_player:
 				target_player()
 				player_spotted = true # if playtime sees the player, chase them
-			elif player_spotted && cool_down <= 0:
+			elif player_spotted && cool_down <= 0.0:
 				player_spotted = false
 				wander()
 			elif get_real_velocity().length() <= 1.0 && cool_down <= 0.0:
@@ -123,7 +124,7 @@ func dissapoint() -> void:
 
 func _on_player_collider_body_entered(body : Node3D) -> void:
 	if body is Player:
-		if !body.jumpRope && play_cool <= 0:
+		if !body.jumpRope && play_cool <= 0.0:
 			speed = 0.0
 			count_jumps()
 			$JumpRope.show()

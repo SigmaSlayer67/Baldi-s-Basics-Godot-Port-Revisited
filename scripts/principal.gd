@@ -1,4 +1,5 @@
 extends Character
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 class_name Principal
 
 @export var active : bool = false
@@ -84,7 +85,7 @@ func _physics_process(delta : float) -> void:
 	
 	if !angry:
 		aim = global_position.direction_to(Global.player.global_position)
-		if canSeePlayer && Global.player.guilt > 0 && !inOffice && !angry:
+		if canSeePlayer && Global.player.guilt > 0.0 && !inOffice && !angry:
 			seeRuleBreak = true
 		else:
 			seeRuleBreak = false
@@ -138,13 +139,14 @@ func correct_player() -> void:
 func _on_player_collider_body_entered(body : Node3D) -> void:
 	if body is Player && angry && !inOffice:
 		inOffice = true
-		global_position = principalOfficeLocation+Vector3(0,0,-10)
+		global_position = principalOfficeLocation+Vector3(0.0,0.0,-10.0)
 		body.global_position = principalOfficeLocation
 		body.look_at(Vector3(global_position.x,body.global_position.y,global_position.z),body.up_direction)
 		body.detentionTimer = lockTimes[detentions]
 		body.guilt = 0.0 # reset guilt
 		body.jumpRope = false
 		navAgent.target_position = global_position
+		# Idk why the check is for baldi to be visible instead of just the instance being valid but i digress
 		if Global.baldi.visible:
 			Global.baldi.hear(global_position,8)
 		coolDown = 5.0
