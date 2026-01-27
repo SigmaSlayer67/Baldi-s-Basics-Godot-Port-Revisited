@@ -155,7 +155,7 @@ func note_book_check() -> void:
 			navigationLink.enabled = true # enable nav mesh navigation
 
 func lock_double_door() -> bool:
-	if !doubleDoor or lockTime > 0: return false
+	if !doubleDoor or lockTime > 0.0: return false
 	$DoorTexture/Lock.show()
 	$DoorTexture/Duplicate/Lock.show()
 	lockTime = 15.0

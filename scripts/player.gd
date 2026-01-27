@@ -162,8 +162,6 @@ func _physics_process(delta : float) -> void:
 			$PlayerHud/Pointer.visible = hit.has_method(&"interact") && hit.visible
 
 func player_move(delta : float) -> void:
-	## ATTENTION: This might break something, but i had no other choice except for doing this
-	## for the sake of static typing. 
 	var input_dir : Vector2 = Input.get_vector(&"gm_left",&"gm_right",&"gm_back",&"gm_forward")
 	var direction := Vector3(input_dir.x,0.0,-input_dir.y)
 	if stamina > 0.0:

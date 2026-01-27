@@ -62,7 +62,7 @@ func _physics_process(delta : float) -> void:
 	else:
 		move() # move
 	
-	coolDown = max(0,coolDown-delta) # decrease cool down if above 0
+	coolDown = max(0.0,coolDown-delta) # decrease cool down if above 0
 	
 	baldiTempAnger = move_toward(baldiTempAnger,0.0,0.02 * delta)
 	
