@@ -1,3 +1,4 @@
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Area3D
 
 var npcList : Array[Node3D] = []
@@ -14,7 +15,7 @@ func _ready() -> void:
 func _physics_process(delta : float) -> void:
 	translate(Vector3.FORWARD*delta*speed) # move forward
 	
-	if lifeTime > 0:
+	if lifeTime > 0.0:
 		lifeTime -= delta # decrease life span
 	else:
 		queue_free() # clear when lifespan timer runs out

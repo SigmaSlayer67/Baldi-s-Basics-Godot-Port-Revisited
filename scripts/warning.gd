@@ -1,4 +1,6 @@
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends CanvasLayer
+
 @export var warnings: PackedStringArray = [
 "[center][wave]Hello![/wave] This is a fanmade recreation of the original [color=green]Baldi's Basics[/color] for [color=0AF]Godot 4.4[/color].
 The idea is to create an easier was to create fangames for people that prefer Godot over Unity.

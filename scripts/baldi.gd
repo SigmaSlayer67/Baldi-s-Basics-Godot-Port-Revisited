@@ -1,3 +1,4 @@
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Character
 class_name Baldi
 
@@ -61,20 +62,20 @@ func _physics_process(delta : float) -> void:
 	else:
 		move() # move
 	
-	coolDown = max(0,coolDown-delta) # decrease cool down if above 0
+	coolDown = max(0.0,coolDown-delta) # decrease cool down if above 0
 	
 	baldiTempAnger = move_toward(baldiTempAnger,0.0,0.02 * delta)
 	
 	
 	# anti hearing
-	if antiHearingTime > 0: # decrease anti hearing time, if below 0 then stop anti hearing
+	if antiHearingTime > 0.0: # decrease anti hearing time, if below 0 then stop anti hearing
 		antiHearingTime -= delta
 	else:
 		antiHearing = false
 	
 	# endless anger mechanics
 	if Global.endless: # only applies to endless mode
-		if timeToAnger > 0: # decrease time to anger
+		if timeToAnger > 0.0: # decrease time to anger
 			timeToAnger -= delta
 		else:
 			timeToAnger = angerFrequency
@@ -82,7 +83,7 @@ func _physics_process(delta : float) -> void:
 			angerRate += angerRateRatio # increase anger for next anger call
 	
 	# moving
-	if moveFrames > 0:
+	if moveFrames > 0.0:
 		speed = 75.0
 		moveFrames -= delta*60.0
 	else:
@@ -111,7 +112,7 @@ func set_target_node(object : Node3D) -> void:
 
 
 func move() -> void:
-	if global_position.is_equal_approx(previous) && coolDown <= 0:
+	if global_position.is_equal_approx(previous) && coolDown <= 0.0:
 		wander()
 	moveFrames = 10.0
 	timeToMove = baldiWait - baldiTempAnger

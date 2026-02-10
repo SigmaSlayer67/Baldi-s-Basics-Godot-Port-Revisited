@@ -1,3 +1,4 @@
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends CanvasLayer
 
 const VU_COUNT : int = 16
@@ -197,7 +198,7 @@ func _on_LineEdit_text_changed(new_text : String) -> void:
 		numberLineEdit.text = old_text
 		numberLineEdit.caret_column = caretPos-1
 
-func queue_audio(audio:AudioStream = null) -> void:
+func queue_audio(audio : AudioStream = null) -> void:
 	audioQueue.append(audio)
 
 

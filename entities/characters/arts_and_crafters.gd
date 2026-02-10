@@ -1,3 +1,4 @@
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Character
 class_name Crafters
 
@@ -46,7 +47,7 @@ func _process(delta : float) -> void:
 func _physics_process(delta : float) -> void:
 	if !angry: # if not angry
 		if is_instance_valid(Global.player):
-			if (global_position.distance_to(navAgent.get_final_position()) <= 20.0 && global_position.distance_to(Global.player.global_position) >= 60) || force_show_time > 0.0: # if close to the player and force showtime is less then 0
+			if (global_position.distance_to(navAgent.get_final_position()) <= 20.0 && global_position.distance_to(Global.player.global_position) >= 60.0) || forceShowTime > 0.0: # if close to the player and force showtime is less then 0
 				visible = true # show
 			else:
 				visible = false # hide

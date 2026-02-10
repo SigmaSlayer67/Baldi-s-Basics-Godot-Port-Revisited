@@ -1,3 +1,4 @@
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 @tool
 extends Area3D
 class_name Door
@@ -51,7 +52,7 @@ func _ready() -> void:
 
 func _physics_process(delta : float) -> void:
 	if !Engine.is_editor_hint():
-		if lockTime > 0:
+		if lockTime > 0.0:
 			lockTime = move_toward(lockTime,0.0,delta)
 		elif doorLocked:
 			doorLocked = false
@@ -94,7 +95,7 @@ func interact(_object : Object) -> void:
 
 # opens the door
 func open_door() -> void:
-	if lockTime > 0: return
+	if lockTime > 0.0: return
 	if silentOpens <= 0 && !doorOpen:
 		myAudio.stream = audioDoorOpen
 		myAudio.play() # play door open sound if not silent and not already open
@@ -154,7 +155,7 @@ func note_book_check() -> void:
 			navigationLink.enabled = true # enable nav mesh navigation
 
 func lock_double_door() -> bool:
-	if !doubleDoor or lockTime > 0: return false
+	if !doubleDoor or lockTime > 0.0: return false
 	$DoorTexture/Lock.show()
 	$DoorTexture/Duplicate/Lock.show()
 	lockTime = 15.0

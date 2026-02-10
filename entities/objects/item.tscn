@@ -12,7 +12,7 @@ collision_mask = 0
 script = ExtResource("1_w4amr")
 
 [node name="Sprite" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47275, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4635916, 0)
 pixel_size = 0.02
 billboard = 1
 texture_filter = 0
