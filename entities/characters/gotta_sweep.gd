@@ -1,6 +1,7 @@
 # ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Character
 
+
 var coolDown : float = 0.0
 var waitTime : float = 0.0
 var wanders : int = 0
@@ -28,7 +29,7 @@ func activate() -> void:
 	show()
 
 func wander() -> void:
-	navAgent.target_position = Global.get_wander_point(&"hall_wander") # set random target based on targets
+	navAgent.target_position = Global.get_wander_point("hall_wander") # set random target based on targets
 	wanders += 1
 	coolDown = 1.0
 
@@ -55,7 +56,7 @@ func _physics_process(delta : float) -> void:
 		go_home()
 	
 	for i : Node3D in npcList: # shift other npcs
-		if i.get(&"velocity") != null: # check that velocity exists
+		if i.get("velocity") != null: # check that velocity exists
 			var setVelocity := Vector3(velocity.x,i.velocity.y,velocity.z)
 			# set to position then move
 			if i is CharacterBody3D:
@@ -70,7 +71,7 @@ func _physics_process(delta : float) -> void:
 					i.failSafe = 1.0
 			else:
 				i.velocity = setVelocity + (0.1 * i.velocity)
-			if i.get(&"navSkipSafe") != null:
+			if i.get("navSkipSafe") != null:
 				i.navSkipSafe = true
 	
 	super(delta)

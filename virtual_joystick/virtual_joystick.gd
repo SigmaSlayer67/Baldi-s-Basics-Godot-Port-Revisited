@@ -1,5 +1,6 @@
 # ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 class_name VirtualJoystick
+
 extends Control
 
 ## A simple virtual joystick for touchscreens, with useful options.
@@ -35,17 +36,17 @@ enum Visibility_mode {
 @export var visibility_mode := Visibility_mode.ALWAYS
 
 ## If true, the joystick uses Input Actions (Project -> Project Settings -> Input Map)
-@export var use_input_actions : bool = true
+@export var use_input_actions := true
 
-@export var action_left : StringName = &"ui_left"
-@export var action_right : StringName = &"ui_right"
-@export var action_up : StringName = &"ui_up"
-@export var action_down : StringName = &"ui_down"
+@export var action_left := "ui_left"
+@export var action_right := "ui_right"
+@export var action_up := "ui_up"
+@export var action_down := "ui_down"
 
 # PUBLIC VARIABLES
 
 ## If the joystick is receiving inputs.
-var is_pressed : bool = false
+var is_pressed := false
 
 # The joystick output.
 var output := Vector2.ZERO
@@ -54,8 +55,8 @@ var output := Vector2.ZERO
 
 var _touch_index : int = -1
 
-@onready var _base : TextureRect = $Base
-@onready var _tip : TextureRect = $Base/Tip
+@onready var _base := $Base
+@onready var _tip := $Base/Tip
 
 @onready var _base_default_position : Vector2 = _base.position
 @onready var _tip_default_position : Vector2 = _tip.position
@@ -71,13 +72,12 @@ func _ready() -> void:
 	if visibility_mode == Visibility_mode.WHEN_TOUCHED:
 		hide()
 
-func _physics_process(_delta : float) -> void:
+func _physics_process(_delta):
 	if get_tree().paused and is_pressed: # Reset automatically when pauseing
 		_reset()
 		if visibility_mode == Visibility_mode.WHEN_TOUCHED:
 			hide()
-
-func _input(event : InputEvent) -> void:
+func _input(event: InputEvent) -> void:
 	if not get_tree().paused:
 		if event is InputEventScreenTouch:
 			if event.pressed:
@@ -101,22 +101,22 @@ func _input(event : InputEvent) -> void:
 				_update_joystick(event.position)
 				get_viewport().set_input_as_handled()
 
-func _move_base(new_position : Vector2) -> void:
+func _move_base(new_position: Vector2) -> void:
 	_base.global_position = new_position - _base.pivot_offset * get_global_transform_with_canvas().get_scale()
 
-func _move_tip(new_position : Vector2) -> void:
+func _move_tip(new_position: Vector2) -> void:
 	_tip.global_position = new_position - _tip.pivot_offset * _base.get_global_transform_with_canvas().get_scale()
 
 func _is_point_inside_joystick_area(point: Vector2) -> bool:
-	var x : bool = point.x >= global_position.x and point.x <= global_position.x + (size.x * get_global_transform_with_canvas().get_scale().x)
-	var y : bool = point.y >= global_position.y and point.y <= global_position.y + (size.y * get_global_transform_with_canvas().get_scale().y)
+	var x: bool = point.x >= global_position.x and point.x <= global_position.x + (size.x * get_global_transform_with_canvas().get_scale().x)
+	var y: bool = point.y >= global_position.y and point.y <= global_position.y + (size.y * get_global_transform_with_canvas().get_scale().y)
 	return x and y
 
 func _get_base_radius() -> Vector2:
 	return _base.size * _base.get_global_transform_with_canvas().get_scale() / 2
 
-func _is_point_inside_base(point : Vector2) -> bool:
-	var _base_radius : Vector2 = _get_base_radius()
+func _is_point_inside_base(point: Vector2) -> bool:
+	var _base_radius = _get_base_radius()
 	var center : Vector2 = _base.global_position + _base_radius
 	var vector : Vector2 = point - center
 	if vector.length_squared() <= _base_radius.x * _base_radius.x:
@@ -124,8 +124,8 @@ func _is_point_inside_base(point : Vector2) -> bool:
 	else:
 		return false
 
-func _update_joystick(touch_position : Vector2) -> void:
-	var _base_radius : Vector2 = _get_base_radius()
+func _update_joystick(touch_position: Vector2) -> void:
+	var _base_radius = _get_base_radius()
 	var center : Vector2 = _base.global_position + _base_radius
 	var vector : Vector2 = touch_position - center
 	vector = vector.limit_length(clampzone_size)
@@ -162,7 +162,7 @@ func _update_joystick(touch_position : Vector2) -> void:
 		if output.y > 0.0:
 			Input.action_press(action_down, output.y)
 
-func _reset() -> void:
+func _reset():
 	is_pressed = false
 	output = Vector2.ZERO
 	_touch_index = -1
@@ -171,6 +171,6 @@ func _reset() -> void:
 	_tip.position = _tip_default_position
 	# Release actions
 	if use_input_actions:
-		for action : StringName in [action_left, action_right, action_down, action_up]:
+		for action in [action_left, action_right, action_down, action_up]:
 			if Input.is_action_pressed(action):
 				Input.action_release(action)

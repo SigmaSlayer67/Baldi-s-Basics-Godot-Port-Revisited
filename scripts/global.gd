@@ -51,10 +51,10 @@ var analog : bool = true
 var rumble : bool = true
 #endregion
 
-func get_wander_point(group : StringName = &"wander", min_range : int = 0, max_range : int = 99999) -> Vector3:
+func get_wander_point(group : StringName = "wander", min_range : int = 0, max_range : int = 99999) -> Vector3:
 	var wanderPoints : Array[Node] = get_tree().get_nodes_in_group(group)
 	var getPoint : Vector3 = wanderPoints[randi_range(min_range,min(wanderPoints.size()-1,max_range))].global_position
-	for i : Node in get_tree().get_nodes_in_group(&"ambience"):
+	for i : Node in get_tree().get_nodes_in_group("ambience"):
 		if i is Ambience:
 			i.play_ambience(getPoint)
 	return getPoint # set target
@@ -75,20 +75,20 @@ func exit_reached() -> void:
 	match(int(escapesReached)):
 		1: # first exit
 			# set scene to red
-			for i : Node in get_tree().get_nodes_in_group(&"first_exit_trigger"):
+			for i : Node in get_tree().get_nodes_in_group("first_exit_trigger"):
 				if i is WorldEnvironment:
 					i.environment.ambient_light_color = Color.RED
 				elif i is AudioStreamPlayer: # play machine noise
 					i.stream = audMachineQuite
 					i.play()
 		2: # second exit
-			for i : Node in get_tree().get_nodes_in_group(&"second_exit_trigger"):
+			for i : Node in get_tree().get_nodes_in_group("second_exit_trigger"):
 				if i is AudioStreamPlayer: # play machine noise
 					i.volume_db = -20.0 # lower volume so that you don't blow up someone's speakers
 					i.stream = audMachineStart
 					i.play()
 		3: # third exit
-			for i : Node in get_tree().get_nodes_in_group(&"third_exit_trigger"):
+			for i : Node in get_tree().get_nodes_in_group("third_exit_trigger"):
 				if i is AudioStreamPlayer: # play machine noise
 					i.volume_db = -20.0 # lower volume so that you don't blow up someone's speakers
 					i.stream = audMachineRev

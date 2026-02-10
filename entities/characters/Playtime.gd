@@ -97,7 +97,7 @@ func _physics_process(delta : float) -> void:
 
 
 func wander() -> void:
-	navAgent.target_position = Global.get_wander_point(&"hall_wander")# set random target based on targets
+	navAgent.target_position = Global.get_wander_point("hall_wander")# set random target based on targets
 	speed = 15.0 # reset speed
 	player_spotted = false
 	if !sounds.playing:
@@ -106,7 +106,7 @@ func wander() -> void:
 	cool_down = 1.0
 
 func target_player() -> void:
-	playtime.play(&"default") # no longer be sad
+	playtime.play("default") # no longer be sad
 	navAgent.target_position = Global.player.global_position # target player
 	speed = 20.0 # speed up
 	cool_down = 0.2
@@ -116,7 +116,7 @@ func target_player() -> void:
 		player_spotted = true
 
 func dissapoint() -> void:
-	playtime.play(&"sad")
+	playtime.play("sad")
 	sounds.stream = audSad
 	sounds.play()
 	$JumpRope.hide()
@@ -133,7 +133,7 @@ func _on_player_collider_body_entered(body : Node3D) -> void:
 			sounds.stream = audReadyGo
 			sounds.play()
 			await get_tree().create_timer(1.0,false).timeout
-			jumpropeAnimator.play(&"Jump")
+			jumpropeAnimator.play("Jump")
 
 
 func _on_jump_rope_animation_finished(_anim_name : StringName) -> void:
@@ -145,7 +145,7 @@ func _on_jump_rope_animation_finished(_anim_name : StringName) -> void:
 		sounds.play()
 		# Delay for 2 seconds to allow playtime to finish her line before the rope starts
 		await get_tree().create_timer(2.0,false).timeout
-		jumpropeAnimator.play(&"Jump")
+		jumpropeAnimator.play("Jump")
 	else: # success
 		sounds.stream = audNumbers[jumps]
 		sounds.play()
@@ -161,7 +161,7 @@ func _on_jump_rope_animation_finished(_anim_name : StringName) -> void:
 			sounds.stream = audCongrats
 			sounds.play()
 		else:
-			jumpropeAnimator.play(&"Jump")
+			jumpropeAnimator.play("Jump")
 
 func count_jumps() -> void:
 	$JumpRope/Count.text = str(jumps)+"/5"

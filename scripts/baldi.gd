@@ -119,7 +119,7 @@ func move() -> void:
 	previous = global_position
 	sfxSlap.play()
 	$Baldi.stop()
-	$Baldi.play(&"slap")
+	$Baldi.play("slap")
 	# rumble
 	if Global.rumble:
 		var distance : float = global_position.distance_to(Global.player.global_position)
@@ -142,15 +142,15 @@ func hear(soundLocation := Vector3.ZERO, priority : int = 0, playReaction : bool
 				navAgent.target_position = oldTarget
 				# play a confused reaction
 				if active && playReaction:
-					Global.player.bali_react(&"Confused")
+					Global.player.bali_react("Confused")
 			else: # else set the new priority
 				currentPriority = priority
 				# play a notice reaction
 				if active && playReaction:
-					Global.player.bali_react(&"Notice")
+					Global.player.bali_react("Notice")
 		# play a confused reaction if the current priority is more important
 		elif active:
-			Global.player.bali_react(&"Confused")
+			Global.player.bali_react("Confused")
 
 func activate_anti_hearing(time : float) -> void:
 	wander()
@@ -160,5 +160,5 @@ func activate_anti_hearing(time : float) -> void:
 func _on_player_collider_body_entered(body : Node3D) -> void:
 	if playerChecker.is_colliding(): return
 	if body is Player && visible:
-		if body.has_method(&"game_over"):
+		if body.has_method("game_over"):
 			body.game_over()

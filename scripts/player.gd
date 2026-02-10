@@ -25,7 +25,7 @@ var maxStamina : float = 100.0
 
 @onready var guilt : float = initGuilt
 var initGuilt : float = 0.0
-var guiltType : StringName = &""
+var guiltType : StringName = ""
 
 @onready var castCollider : RayCast3D = $Camera3D/Collider
 @onready var lastCameraPosition : Vector3 = $Camera3D.global_position
@@ -112,7 +112,7 @@ func _ready() -> void:
 
 func _process(delta : float) -> void:
 	# look behind
-	camera3D.rotation.y = 0.0 if (!Input.is_action_pressed(&"gm_behind") and !behind_toggled) || jumpRope else deg_to_rad(180.0)
+	camera3D.rotation.y = 0.0 if (!Input.is_action_pressed("gm_behind") and !behind_toggled) || jumpRope else deg_to_rad(180.0)
 	
 	$PlayerHud/Detention.visible = detentionTimer > 0
 	$PlayerHud/Detention/Label.text = "You have detention! \n" + str(int(ceil(detentionTimer))) + " seconds remain!"
@@ -122,7 +122,7 @@ func _process(delta : float) -> void:
 	
 	# rotation code
 	rotate_y(deg_to_rad(turnRate*delta*Global.sensativity*8.0))
-	turnRate = -Input.get_axis(&"gm_turn_left",&"gm_turn_right")
+	turnRate = -Input.get_axis("gm_turn_left","gm_turn_right")
 	if !Global.analog:
 		turnRate = round(turnRate)
 	
@@ -159,16 +159,18 @@ func _physics_process(delta : float) -> void:
 			# special handling for double doors (don't want to make it into a different class)
 			$PlayerHud/Pointer.visible = !hit.doubleDoor && hit.visible
 		else:
-			$PlayerHud/Pointer.visible = hit.has_method(&"interact") && hit.visible
+			$PlayerHud/Pointer.visible = hit.has_method("interact") && hit.visible
 
 func player_move(delta : float) -> void:
-	var input_dir : Vector2 = Input.get_vector(&"gm_left",&"gm_right",&"gm_back",&"gm_forward")
+	## ATTENTION: This might break something, but i had no other choice except for doing this
+	## for the sake of static typing. 
+	var input_dir : Vector2 = Input.get_vector("gm_left","gm_right","gm_back","gm_forward")
 	var direction := Vector3(input_dir.x,0.0,-input_dir.y)
-	if stamina > 0.0:
-		if Input.is_action_pressed(&"gm_run") or run_toggled:
+	if stamina > 0:
+		if Input.is_action_pressed("gm_run") or run_toggled:
 			playerSpeed = runSpeed
 			if velocity.length() > 0.1 && !hugging && !sweeping:
-				reset_guilt(&"running",0.1)
+				reset_guilt("running",0.1)
 		else:
 			playerSpeed = walkSpeed
 	else:
@@ -211,7 +213,7 @@ func player_move(delta : float) -> void:
 
 func stamina_check(delta : float) -> void:
 	if velocity.length() > 0.1:
-		if (Input.is_action_pressed(&"gm_run") or run_toggled) && stamina > 0.0:
+		if (Input.is_action_pressed("gm_run") or run_toggled) && stamina > 0.0:
 			stamina -= staminaRate * delta
 		if stamina <= 0.0 && stamina > -5.0:
 			stamina = -5.0
@@ -238,29 +240,29 @@ func _input(event : InputEvent) -> void:
 		
 	
 	if jumpRope:
-		if event.is_action_pressed(&"gm_jump") && jumpHeight <= 0.0: # jumping for jumprope minigame
+		if event.is_action_pressed("gm_jump") && jumpHeight <= 0.0: # jumping for jumprope minigame
 			jumpVelocity = initVelocity # start jump
-	elif event.is_action_pressed(&"gm_click") && castCollider.is_colliding():
+	elif event.is_action_pressed("gm_click") && castCollider.is_colliding():
 		# interact with objects
 		if not is_mobile:
 			on_click()
 	
-	if event.is_action_pressed(&"gm_next_item"):
+	if event.is_action_pressed("gm_next_item"):
 		set_selected_item(itemSelected+1)
-	elif event.is_action_pressed(&"gm_prev_item"):
+	elif event.is_action_pressed("gm_prev_item"):
 		set_selected_item(itemSelected-1)
-	elif event.is_action_pressed(&"gm_first_item"):
+	elif event.is_action_pressed("gm_first_item"):
 		set_selected_item(0)
-	elif  event.is_action_pressed(&"gm_second_item"):
+	elif  event.is_action_pressed("gm_second_item"):
 		set_selected_item(1)
-	elif  event.is_action_pressed(&"gm_third_item"):
+	elif  event.is_action_pressed("gm_third_item"):
 		set_selected_item(2)
 	
-	if event.is_action_pressed(&"gm_use"):
+	if event.is_action_pressed("gm_use"):
 		use_item()
 	
 	# pause menu
-	if event.is_action_pressed(&"gm_pause"):
+	if event.is_action_pressed("gm_pause"):
 		get_tree().paused = true
 		Global.unlock_mouse()
 		await get_tree().process_frame
@@ -271,7 +273,7 @@ func _input(event : InputEvent) -> void:
 
 func on_click() -> void:
 	var hit : Object = castCollider.get_collider()
-	if hit and hit.has_method(&"interact"):
+	if hit and hit.has_method("interact"):
 		hit.interact(self)
 
 func reset_guilt(type : StringName, amount : float) -> void:
@@ -331,7 +333,7 @@ func use_item() -> void:
 		Global.ITEMS.BSODA: # Create BSODA!
 			var mySoda := BSoda.instantiate() as Area3D
 			get_parent().add_child(mySoda)
-			reset_guilt(&"drink",1.0)
+			reset_guilt("drink",1.0)
 			mySoda.global_position = global_position
 			# set bsoda rotation to camera rotation
 			mySoda.global_rotation = camera3D.global_rotation
@@ -340,28 +342,28 @@ func use_item() -> void:
 			# interact with objects
 			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method(&"lock_double_door"):
+				if hit.has_method("lock_double_door"):
 					if hit.lock_double_door():
 						items[itemSelected] = Global.ITEMS.NONE
 		Global.ITEMS.KEY: # Unlock Principal door
 			# interact with objects
 			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method(&"use_key"):
+				if hit.has_method("use_key"):
 					if hit.use_key():
 						items[itemSelected] = Global.ITEMS.NONE
 		Global.ITEMS.QUARTER:
 			# interact with objects
 			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method(&"use_quarter"):
+				if hit.has_method("use_quarter"):
 					items[itemSelected] = Global.ITEMS.NONE
 					hit.use_quarter(self)
 		Global.ITEMS.NO_SQUEE: # no squee
 			# interact with objects
 			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method(&"no_squee"):
+				if hit.has_method("no_squee"):
 					if hit.no_squee():
 						$NoSquee.play()
 						items[itemSelected] = Global.ITEMS.NONE
@@ -369,7 +371,7 @@ func use_item() -> void:
 			# interact with objects
 			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method(&"use_tape"):
+				if hit.has_method("use_tape"):
 					items[itemSelected] = Global.ITEMS.NONE
 					hit.use_tape(self)
 		Global.ITEMS.BOOTS:
@@ -402,12 +404,12 @@ func use_item() -> void:
 			# interact with characters
 			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method(&"scissors"):
+				if hit.has_method("scissors"):
 					if hit.scissors():
 						items[itemSelected] = Global.ITEMS.NONE
 			# playtime check
 			elif jumpRope:
-				for i : Node in get_tree().get_nodes_in_group(&"playtime"):
+				for i : Node in get_tree().get_nodes_in_group("playtime"):
 					if i is PlayTime:
 						if i.jumpRopeStarted:
 							if i.scissors():
@@ -437,7 +439,7 @@ func update_items() -> void:
 func escape_activate() -> void:
 	$AllNotebooks.play()
 
-func bali_react(react_frame : StringName = &"Notice") -> void:
+func bali_react(react_frame : StringName = "Notice") -> void:
 	$PlayerHud/BaldiHeadController/HeadReaction.play(react_frame)
 
 
@@ -451,4 +453,4 @@ func _on_behind_button_pressed() -> void:
 
 func _on_click_button_pressed() -> void:
 	on_click()
-	Input.action_press(&"gm_jump")
+	Input.action_press("gm_jump")
