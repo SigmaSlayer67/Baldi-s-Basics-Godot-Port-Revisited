@@ -1,7 +1,6 @@
 # ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Node3D
 
-
 func _process(_delta : float) -> void:
 	# make baldi face the camera
 	var camera : Camera3D = get_viewport().get_camera_3d()

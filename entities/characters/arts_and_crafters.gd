@@ -2,7 +2,7 @@
 extends Character
 class_name Crafters
 
-@export var active : bool = false
+@export var active := false
 
 @export var audCrafterLoop : AudioStream = preload("res://audio/Characters/ArtsAndCrafters/CFT_Loop.wav")
 
@@ -10,15 +10,15 @@ class_name Crafters
 
 @export var noteBookAnger : int = 7
 
-var angry : bool = false
-var gettingAngry : bool = false
+var angry := false
+var getting_angry := false
 var anger : float = 0.0
-var forceShowTime : float = 0.0
+var force_show_time : float = 0.0
 
 @onready var sounds : AudioStreamPlayer3D = $Sounds
 @onready var sprite : Sprite3D = $ArtsAndCrafters
-@onready var playerChecker : RayCast3D = $PlayerChecker
-@onready var visibilityChecker : VisibleOnScreenNotifier3D = $VisibilityChecker
+@onready var player_checker : RayCast3D = $PlayerChecker
+@onready var visibility_checker : VisibleOnScreenNotifier3D = $VisibilityChecker
 
 
 func _ready() -> void:
@@ -33,8 +33,8 @@ func activate() -> void:
 	show()
 
 func _process(delta : float) -> void:
-	forceShowTime = move_toward(forceShowTime,0.0,delta)
-	if gettingAngry: # if arts is getting angry
+	force_show_time = move_toward(force_show_time,0.0,delta)
+	if getting_angry: # if arts is getting angry
 		anger += delta # Increase anger
 		if anger >= 1.0 && !angry: # If anger is greater then 1 and arts isn't angry
 			angry = true # Get angry
@@ -56,21 +56,21 @@ func _physics_process(delta : float) -> void:
 		navAgent.target_position = Global.player.global_position
 	
 	if Global.noteBooks >= noteBookAnger: # If the player has more then the note book count 
-		playerChecker.target_position = (Global.player.global_position - global_position).slide(Vector3.UP)
-		playerChecker.force_raycast_update()
-		if !playerChecker.is_colliding() && visibilityChecker.is_on_screen() && visible: # if Arts is visible, and active and sees player
-			gettingAngry = true # start getting angry
+		player_checker.target_position = (Global.player.global_position - global_position).slide(Vector3.UP)
+		player_checker.force_raycast_update()
+		if !player_checker.is_colliding() && visibility_checker.is_on_screen() && visible: # if Arts is visible, and active and sees player
+			getting_angry = true # start getting angry
 		else:
-			gettingAngry = false # stop being angry
+			getting_angry = false # stop being angry
 	super(delta)
 
 func give_location(location : Vector3, flee : bool) -> void:
 	if !angry && active:
 		navAgent.target_position = location
-		playerChecker.target_position = (Global.player.global_position - global_position).slide(Vector3.UP)
-		playerChecker.force_raycast_update()
-		if flee && !playerChecker.is_colliding(): # show if fleeing and line of sight isn't broken
-			forceShowTime = 3.0 # Make arts appear in 3 seconds
+		player_checker.target_position = (Global.player.global_position - global_position).slide(Vector3.UP)
+		player_checker.force_raycast_update()
+		if flee && !player_checker.is_colliding(): # show if fleeing and line of sight isn't broken
+			force_show_time = 3.0 # Make arts appear in 3 seconds
 
 
 # play full whoosh sound if rotating

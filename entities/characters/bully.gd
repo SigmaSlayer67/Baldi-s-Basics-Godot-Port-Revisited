@@ -50,10 +50,10 @@ func _physics_process(delta : float) -> void:
 		guilt = 10.0 # Makes the bully guilty for "Bullying in the halls"
 
 func wake_up() -> void:
-	global_position = Global.get_wander_point(&"hall_wander")+Vector3(0.0,5.0,0.0) # set random target based on targets
+	global_position = Global.get_wander_point("hall_wander")+Vector3(0,5,0) # set random target based on targets
 	if is_instance_valid(Global.player):
 		while global_position.distance_to(Global.player.global_position) <= 20.0: # go to different target if too close to player
-			global_position = Global.get_wander_point(&"hall_wander")+Vector3(0.0,5.0,0.0)
+			global_position = Global.get_wander_point("hall_wander")+Vector3(0,5,0)
 	awake = true
 
 func reset() -> void:
