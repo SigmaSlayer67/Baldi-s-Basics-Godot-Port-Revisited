@@ -4,9 +4,13 @@ extends Character
 
 @export var active : bool = false
 
-@export var aud_crafter_loop : AudioStream = preload("res://audio/Characters/ArtsAndCrafters/CFT_Loop.wav")
+@export var aud_crafter_loop : AudioStream = preload(
+	"res://audio/Characters/ArtsAndCrafters/CFT_Loop.wav"
+)
 
-@export var angry_sprite : Texture2D = preload("res://graphics/Characters/ArtsAndCrafters/Crafters_Ohno.png")
+@export var angry_sprite : Texture2D = preload(
+	"res://graphics/Characters/ArtsAndCrafters/Crafters_Ohno.png"
+)
 
 @export var note_book_anger : int = 7
 
@@ -28,12 +32,6 @@ func _ready() -> void:
 	visible = active
 
 
-func activate() -> void:
-	active = true
-	set_physics_process(active)
-	show()
-
-
 func _process(delta : float) -> void:
 	force_show_time = move_toward(force_show_time, 0.0, delta)
 	if getting_angry: # if arts is getting angry
@@ -52,7 +50,9 @@ func _physics_process(delta : float) -> void:
 	if not angry: # if not angry
 		if is_instance_valid(Global.player):
 			# if close to the player and force showtime is less then 0
-			if (global_position.distance_to(navAgent.get_final_position()) <= 20.0 and global_position.distance_to(Global.player.global_position) >= 60.0) or force_show_time > 0.0:
+			if (global_position.distance_to(navAgent.get_final_position()) <= 20.0 \
+					and global_position.distance_to(Global.player.global_position) >= 60.0) \
+					or force_show_time > 0.0:
 				visible = true # show
 			else:
 				visible = false # hide
@@ -72,17 +72,6 @@ func _physics_process(delta : float) -> void:
 	super(delta)
 
 
-func give_location(location : Vector3, flee : bool) -> void:
-	if not angry and active:
-		navAgent.target_position = location
-		player_checker.target_position = (
-				Global.player.global_position - global_position).slide(Vector3.UP)
-		player_checker.force_raycast_update()
-		# show if fleeing and line of sight isn't broken
-		if flee and not player_checker.is_colliding():
-			force_show_time = 3.0 # Make arts appear in 3 seconds
-
-
 # play full whoosh sound if rotating
 func _on_sounds_finished() -> void:
 	sounds.stream = aud_crafter_loop
@@ -98,3 +87,19 @@ func _on_player_collider_body_entered(body : Node3D) -> void:
 			body.look_at(Vector3(Global.baldi.global_position.x, body.global_position.y, Global.baldi.global_position.z), body.up_direction)
 		
 		call_deferred(&"queue_free") # despawn
+
+
+func activate() -> void:
+	active = true
+	set_physics_process(active)
+	show()
+
+
+func give_location(location : Vector3, flee : bool) -> void:
+	if not angry and active:
+		navAgent.target_position = location
+		player_checker.target_position = (Global.player.global_position - global_position).slide(Vector3.UP)
+		player_checker.force_raycast_update()
+		# show if fleeing and line of sight isn't broken
+		if flee and not player_checker.is_colliding():
+			force_show_time = 3.0 # Make arts appear in 3 seconds

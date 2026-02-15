@@ -63,7 +63,7 @@ script = ExtResource("1_f1phb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 shape = SubResource("CapsuleShape3D_nuyj6")
 
-[node name="Baldi" type="AnimatedSprite3D" parent="."]
+[node name="BaldiSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2, 0)
 offset = Vector2(8, 0)
 pixel_size = 0.03

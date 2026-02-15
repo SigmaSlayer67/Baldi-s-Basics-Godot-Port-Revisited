@@ -189,8 +189,9 @@ func player_move(delta : float) -> void:
 		cameraVTween = create_tween()
 		cameraVTween.tween_property(camera3D, "v_offset", jumpHeight, delta)
 	
-	if !velocity.is_equal_approx(Vector3.ZERO): # comment this line out to always move and slide (pushes you out of geometry)
-		var collider : KinematicCollision3D = move_and_collide(velocity*delta,true)
+	# comment this line out to always move and slide (pushes you out of geometry)
+	if !velocity.is_equal_approx(Vector3.ZERO):
+		var collider : KinematicCollision3D = move_and_collide(velocity * delta, true)
 		if collider:
 			move_and_collide(velocity.slide(velocity.slide(collider.get_normal()).normalized()) * delta)
 			velocity = velocity.slide(collider.get_normal())

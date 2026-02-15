@@ -6,10 +6,12 @@ extends CharacterBody3D
 var speed : float = 0.0
 var navSkipSafe : bool = false
 
+
 func _ready() -> void:
 	if navAgent != null:
 		speed = navAgent.max_speed # set speed to nav agents max speed
 		navAgent.velocity_computed.connect(_on_nav_velocity_computed)
+
 
 func _physics_process(delta : float) -> void:
 	var testCol : KinematicCollision3D = move_and_collide(velocity*delta,true)
@@ -24,10 +26,12 @@ func _physics_process(delta : float) -> void:
 		navAgent.max_speed = speed
 		navAgent.velocity = velocity
 
+
 func _on_nav_velocity_computed(safe_velocity : Vector3) -> void:
 	if !navSkipSafe && navAgent.avoidance_enabled:
 		velocity = safe_velocity
 		navSkipSafe = false
+
 
 func shove(shove_velocity : Vector3) -> void:
 	move_and_collide(shove_velocity)
