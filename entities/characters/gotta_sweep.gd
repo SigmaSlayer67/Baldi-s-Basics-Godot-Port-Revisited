@@ -29,7 +29,7 @@ func activate() -> void:
 	show()
 
 func wander() -> void:
-	navAgent.target_position = Global.get_wander_point("hall_wander") # set random target based on targets
+	navAgent.target_position = Global.get_wander_point(&"hall_wander") # set random target based on targets
 	wanders += 1
 	coolDown = 1.0
 

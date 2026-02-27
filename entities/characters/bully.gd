@@ -3,6 +3,7 @@ class_name Bully
 extends StaticBody3D
 
 @export var active : bool = false
+
 @export var aud_taunts : Array[AudioStream] = [
 	preload("res://audio/Characters/Bully/B_TakeCandy.wav"),
 	preload("res://audio/Characters/Bully/B_GiveGreat.wav"),
@@ -70,22 +71,22 @@ func _on_collider_body_entered(body : Node3D) -> void:
 		reset()
 	elif body is Player:
 		# check if player has items
-		var hasItem : bool = false
+		var has_item : bool = false
 		for i : int in body.items:
 			if i != 0:
-				hasItem = true
+				has_item = true
 		# taunt if player doesn't have items
-		if not hasItem:
+		if not has_item:
 			# "What, no items? No Items? No passsssss"
 			sounds.stream = aud_denied
 			sounds.play() 
 		else:
 			# select player inventory slot at random
-			var getItem : int = randi_range(0, body.items.size() - 1)
+			var get_item : int = randi_range(0, body.items.size() - 1)
 			# loop if the selected item is empty
-			while (body.items[getItem] == 0):
-				getItem = randi_range(0, body.items.size() - 1)
-			body.lose_item(getItem)
+			while (body.items[get_item] == 0):
+				get_item = randi_range(0, body.items.size() - 1)
+			body.lose_item(get_item)
 			sounds.stream = aud_thanks[randi_range(0, aud_thanks.size() - 1)]
 			sounds.play()
 			reset()
@@ -99,11 +100,11 @@ func activate() -> void:
 
 func wake_up() -> void:
 	# set random target based on targets
-	global_position = Global.get_wander_point(&"hall_wander") + Vector3(0, 5, 0)
+	global_position = Global.get_wander_point(&"hall_wander") + Vector3(0.0, 5.0, 0.0)
 	if is_instance_valid(Global.player):
 		# go to different target if too close to player
 		while global_position.distance_to(Global.player.global_position) <= 20.0:
-			global_position = Global.get_wander_point(&"hall_wander") + Vector3(0, 5, 0)
+			global_position = Global.get_wander_point(&"hall_wander") + Vector3(0.0, 5.0, 0.0)
 	awake = true
 
 
