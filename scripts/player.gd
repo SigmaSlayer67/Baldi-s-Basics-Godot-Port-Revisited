@@ -435,7 +435,7 @@ func lose_item(item : int) -> void:
 
 func update_items() -> void:
 	for i : int in items.size():
-		slots.get_child(i).get_child(0).texture = Global.itemTextures[items[i]]
+		slots.get_child(i).get_child(0).texture = Global.item_textures[items[i]]
 	$PlayerHud/ItemText.text = itemNames[items[itemSelected]]
 
 func escape_activate() -> void:

@@ -1,4 +1,4 @@
-# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+# ATTENTION: Script done! (script is fully adapted to GDScript's style guide)
 class_name Bully
 extends StaticBody3D
 
@@ -45,17 +45,18 @@ func _physics_process(delta : float) -> void:
 		if awake: # if the bully is on the map
 			active_time += delta # increase active time
 			# If the bully has been in the map for a long time and the player is far away
-			if active_time >= 180.0 and \
-			global_position.distance_to(Global.player.global_position) >= 120.0:
+			if active_time >= 180.0 \
+			and global_position.distance_to(Global.player.global_position) >= 120.0:
 				reset() # Reset the bully
 	guilt = move_toward(guilt, 0.0, delta)
 	
 	player_checker.target_position = Global.player.global_position - global_position
-	if not player_checker.is_colliding() and awake and global_position.distance_to(Global.player.global_position) <= 30.0:
+	if not player_checker.is_colliding() and awake \
+	and global_position.distance_to(Global.player.global_position) <= 30.0:
 		# If the bully hasn't already spoken
 		if not spoken:
 			# Get a taunt sound
-			sounds.stream = aud_taunts[randi_range(0, aud_taunts.size() - 1)]
+			sounds.stream = random_audio_array_stream(aud_taunts)
 			sounds.play()
 			# Sets spoken to true, preventing the bully from talking again
 			spoken = true
@@ -67,12 +68,14 @@ func _physics_process(delta : float) -> void:
 func _on_collider_body_entered(body : Node3D) -> void:
 	# If touching the principal and the bully is guilty
 	if body is Principal and guilt > 0.0:
-		body.bullySeen = false
+		var principal := body as Principal
+		principal.bullySeen = false
 		reset()
 	elif body is Player:
 		# check if player has items
 		var has_item : bool = false
-		for i : int in body.items:
+		var player := body as Player
+		for i : int in player.items:
 			if i != 0:
 				has_item = true
 		# taunt if player doesn't have items
@@ -82,12 +85,12 @@ func _on_collider_body_entered(body : Node3D) -> void:
 			sounds.play() 
 		else:
 			# select player inventory slot at random
-			var get_item : int = randi_range(0, body.items.size() - 1)
+			var get_item : int = randi_range(0, player.items.size() - 1)
 			# loop if the selected item is empty
-			while (body.items[get_item] == 0):
-				get_item = randi_range(0, body.items.size() - 1)
-			body.lose_item(get_item)
-			sounds.stream = aud_thanks[randi_range(0, aud_thanks.size() - 1)]
+			while player.items[get_item] == 0:
+				get_item = randi_range(0, player.items.size() - 1)
+			player.lose_item(get_item)
+			sounds.stream = random_audio_array_stream(aud_thanks)
 			sounds.play()
 			reset()
 
@@ -109,10 +112,15 @@ func wake_up() -> void:
 
 
 func reset() -> void:
-	global_position = Vector3i(0, 20, 0)
+	global_position = Vector3(0.0, 20.0, 0.0)
 	# Set the amount of time before the bully appears again
 	wait_time = randf_range(60.0, 120.0)
 	awake = false
 	active_time = 0.0
 	spoken = false
 	guilt = 0.0
+
+
+func random_audio_array_stream(audio_array: Array[AudioStream]) -> AudioStream:
+	var random_audio_stream : AudioStream = audio_array[randi_range(0, audio_array.size() - 1)]
+	return random_audio_stream

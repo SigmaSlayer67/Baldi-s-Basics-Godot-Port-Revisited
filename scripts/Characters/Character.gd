@@ -1,4 +1,5 @@
 # ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+@icon("res://character_icon_temp.svg")
 class_name Character
 extends CharacterBody3D
 

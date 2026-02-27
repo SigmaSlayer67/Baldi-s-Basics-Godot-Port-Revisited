@@ -21,7 +21,7 @@ var secret : bool = true
 
 
 
-var itemTextures : Array[Texture2D] = [
+var item_textures : Array[Texture2D] = [
 	null,
 	preload("res://graphics/SchoolHouse/PickUps/EnergyFlavoredZestyBar.png"),
 	preload("res://graphics/SchoolHouse/PickUps/YellowDoorLock.png"),

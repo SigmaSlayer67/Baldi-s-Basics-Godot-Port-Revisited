@@ -1578,54 +1578,69 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -70, 0
 
 [node name="Door" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5, 5, -5)
+backSideDarker = false
 
 [node name="Door2" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.5, 5, 35)
+backSideDarker = false
 setDoorFrame = 114
 
 [node name="Door3" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 147.5, 5, 35)
+backSideDarker = false
 
 [node name="Door4" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 222.5, 5, -35)
+backSideDarker = false
 setDoorFrame = 114
 
 [node name="Door5" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 287.5, 5, 35)
+backSideDarker = false
 
 [node name="Door6" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 262.5, 5, -185)
+backSideDarker = false
 
 [node name="Door7" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 152.5, 5, -175)
+backSideDarker = false
 setDoorFrame = 114
 
 [node name="Door8" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.5001, 5, -125)
+backSideDarker = false
 setDoorFrame = 114
 
 [node name="Door9" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5001, 5, -65)
+backSideDarker = false
 
 [node name="Door10" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.50006, 5, -75)
+backSideDarker = false
 
 [node name="Door11" parent="Environment/Doors" groups=["principal_lock"] instance=ExtResource("3_xrbke")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 147.5, 5, -45)
+backSideDarker = false
 
 [node name="Door12" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 115, 5, -47.5)
+backSideDarker = false
 
 [node name="Door13" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 115, 5, -97.5)
+backSideDarker = false
 setDoorFrame = 114
 
 [node name="Door14" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4.99999, 5, -152.5)
+backSideDarker = false
 setDoorFrame = 114
 
 [node name="Door15" parent="Environment/Doors" instance=ExtResource("3_xrbke")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 225, 5, -102.5)
+backSideDarker = false
 
 [node name="FacultyRoom" type="Node3D" parent="Environment"]
 transform = Transform3D(-1, -8.74228e-08, 0, -8.74228e-08, 1, 8.74228e-08, -7.64274e-15, 8.74228e-08, -1, 90, 0, 50)
@@ -2339,63 +2354,53 @@ script = ExtResource("10_qqh4f")
 
 [node name="YellowDoorLock" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 4, 88)
-itemIndex = 2
 
 [node name="ZestiBar" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86, 4, 42)
 
 [node name="PrincipalKey" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82, 4, 239)
-itemIndex = 3
 
 [node name="BSODA" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34, 4, 278)
-itemIndex = 4
 
 [node name="Quarter" parent="Objects" groups=["reward"] instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 4, 7)
 visible = false
-itemIndex = 5
+_item_index = 5
 
 [node name="Tape" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.93, 4, 83.5)
-itemIndex = 6
 
 [node name="Quarter2" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75, 4, 145)
-itemIndex = 5
+_item_index = 5
 
 [node name="ZestiBar2" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 4, 251)
 
 [node name="WD_3D" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -83, 4, 27)
-itemIndex = 8
 
 [node name="Quarter3" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42, 4, 177)
 script = ExtResource("24_7rlta")
-itemIndex = 5
+_item_index = 5
 
 [node name="Scissors" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 4, 201)
-itemIndex = 9
 
 [node name="Scissors2" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51, 4, 173)
-itemIndex = 9
 
 [node name="Scissors3" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 4, 96)
-itemIndex = 9
 
 [node name="WD_3D2" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82, 4, 223)
-itemIndex = 8
 
 [node name="Alarm" parent="Objects" instance=ExtResource("13_32byt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.9, 4, 169)
-itemIndex = 7
 
 [node name="Bsoda" parent="Objects" instance=ExtResource("14_lfk2v")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 16, 4, 334)
@@ -3410,7 +3415,6 @@ lockForTutorial = true
 
 [node name="Door5" parent="." instance=ExtResource("18_108qv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 5, 195)
-backSideDarker = null
 lockForTutorial = true
 
 [node name="Door6" parent="." instance=ExtResource("18_108qv")]

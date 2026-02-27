@@ -1,4 +1,4 @@
-# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+# ATTENTION: Script done! (script is fully adapted to GDScript's style guide)
 @tool
 class_name Item
 extends Area3D
@@ -10,8 +10,12 @@ extends Area3D
 		_item_index = value
 		if sprite != null:
 			if Engine.is_editor_hint():
-				# you'll have to copy the texture array for this to display right
-				var itemTextures : Array[Texture2D] = [
+			## You need to copy the entire item_textures array from global.gd 
+			## for the sprites to display accordingly in the editor. If you
+			## have made any changes to the Global item_textures array, it is
+			## recommended that the identical changes are copied and pasted
+			## here and viceversa.
+				var item_textures : Array[Texture2D] = [
 					null,
 					preload("res://graphics/SchoolHouse/PickUps/EnergyFlavoredZestyBar.png"),
 					preload("res://graphics/SchoolHouse/PickUps/YellowDoorLock.png"),
@@ -24,9 +28,9 @@ extends Area3D
 					preload("res://graphics/SchoolHouse/PickUps/SafetyScissors.png"),
 					preload("res://graphics/SchoolHouse/PickUps/BootsIcon.png"),
 				]
-				sprite.texture = itemTextures[value]
+				sprite.texture = item_textures[value]
 			else:
-				sprite.texture = Global.itemTextures[value]
+				sprite.texture = Global.item_textures[value]
 
 @onready var _is_active : bool = visible
 @onready var sprite: Sprite3D = $Sprite
