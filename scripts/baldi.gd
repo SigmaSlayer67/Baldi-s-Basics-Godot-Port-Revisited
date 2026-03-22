@@ -1,10 +1,15 @@
-# ATTENTION: Script donenot  (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
-extends Character
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 class_name Baldi
+extends Character
 
 @export var active : bool = false
 
-var base_time : float = 3.0
+var rumble : bool = false
+var anti_hearing : bool = false
+
+# Unused variable
+#var base_time : float = 3.0
+
 var time_to_move : float = 0.0
 
 var baldi_wait : float = 3.0
@@ -15,7 +20,6 @@ var move_frames : float = 0.0
 
 var current_priority : int = 0
 
-var anti_hearing : bool = false
 var anti_hearing_time : float = 0.0
 var vibration_distance : float = 50.0
 
@@ -25,16 +29,16 @@ var anger_rate : float = 0.01
 var anger_rate_ratio : float = 0.00025
 var anger_frequency : float = 1.0
 var time_to_anger : float = 0.0
-
-var wander_target := Vector3.ZERO
-var previous := Vector3.ZERO
-
 var cool_down : float = 0.0
 
-var rumble : bool = false
+# Unused variable
+#var wander_target := Vector3.ZERO
+var previous := Vector3.ZERO
 
 @onready var sfx_slap : AudioStreamPlayer3D = $Slap
 @onready var player_checker : RayCast3D = $PlayerChecker
+@onready var baldi_sprite: AnimatedSprite3D = $BaldiSprite
+
 
 func _ready() -> void:
 	super()
@@ -43,28 +47,22 @@ func _ready() -> void:
 	set_physics_process(active)
 	visible = active
 
-func activate() -> void:
-	active = true
-	show()
-	set_physics_process(active)
-	player_checker.target_position = Global.player.global_position - global_position
-	player_checker.force_raycast_update()
-	
 
 func _process(_delta : float) -> void:
-	$Baldi.speed_scale = max(1.0,speed/60.0)
+	baldi_sprite.speed_scale = max(1.0, speed / 60.0)
+
 
 func _physics_process(delta : float) -> void:
-	
 	# cool downs
-	if time_to_move > 0.0: # decrease if time to move is greater then 0
+	# decrease if time to move is greater then 0
+	if time_to_move > 0.0:
 		time_to_move -= delta
 	else:
 		move() # move
 	
-	cool_down = max(0.0,cool_down-delta) # decrease cool down if above 0
+	cool_down = max(0.0, cool_down - delta) # decrease cool down if above 0
 	
-	baldi_temp_anger = move_toward(baldi_temp_anger,0.0,0.02 * delta)
+	baldi_temp_anger = move_toward(baldi_temp_anger, 0.0, 0.02 * delta)
 	
 	
 	# anti hearing
@@ -79,13 +77,15 @@ func _physics_process(delta : float) -> void:
 			time_to_anger -= delta
 		else:
 			time_to_anger = anger_frequency
-			get_angry(anger_rate) # get angry based on anger rate
-			anger_rate += anger_rate_ratio # increase anger for next anger call
+			# get angry based on anger rate
+			get_angry(anger_rate)
+			# increase anger for next anger call
+			anger_rate += anger_rate_ratio
 	
 	# moving
 	if move_frames > 0.0:
 		speed = 75.0
-		move_frames -= delta*60.0
+		move_frames -= delta * 60.0
 	else:
 		speed = 0.0
 	
@@ -94,19 +94,38 @@ func _physics_process(delta : float) -> void:
 	if Global.player:
 		player_checker.target_position = Global.player.global_position - global_position
 		# check that the cast wasn't interupted
-		if not player_checker.is_colliding():
+		if !player_checker.is_colliding():
 			set_target_node(Global.player)
 	
 	super(delta) # call parent movement class
 
 
+func _on_player_collider_body_entered(body : Node3D) -> void:
+	if player_checker.is_colliding(): 
+		return
+	
+	if body is Player and visible:
+		if body.has_method(&"game_over"):
+			body.game_over()
+
+
+func activate() -> void:
+	active = true
+	show()
+	set_physics_process(active)
+	player_checker.target_position = Global.player.global_position - global_position
+	player_checker.force_raycast_update()
+
+
 func wander() -> void:
-	nav_agent.target_position = Global.get_wander_point()# set random target based on targets
+	# set random target based on targets
+	navAgent.target_position = Global.get_wander_point()
 	cool_down = 1.0 # set cool down
 	current_priority = 0 # reset priority
 
+
 func set_target_node(object : Node3D) -> void:
-	nav_agent.target_position = object.global_position
+	navAgent.target_position = object.global_position
 	cool_down = 1.0 # set cool down
 	current_priority = 0 # reset priority
 
@@ -114,51 +133,55 @@ func set_target_node(object : Node3D) -> void:
 func move() -> void:
 	if global_position.is_equal_approx(previous) and cool_down <= 0.0:
 		wander()
+	
 	move_frames = 10.0
 	time_to_move = baldi_wait - baldi_temp_anger
 	previous = global_position
 	sfx_slap.play()
-	$Baldi.stop()
-	$Baldi.play("slap")
+	baldi_sprite.stop()
+	baldi_sprite.play(&"slap")
 	# rumble
 	if Global.rumble:
 		var distance : float = global_position.distance_to(Global.player.global_position)
 		if distance <= vibration_distance:
-			Input.start_joy_vibration(0, 0.5, 1.0-(distance/vibration_distance), 0.15)
+			Input.start_joy_vibration(0, 0.5, 1.0 - (distance / vibration_distance), 0.15)
+
 
 func get_angry(set_anger : float) -> void:
-	baldi_anger = max(0.5,baldi_anger+set_anger) # increase anger but cap baldi's lower anger to 0.5
-	baldi_wait = -3.0 * baldi_anger / (baldi_anger + 2.0 / baldi_speed_scale) + 3.0 # keeps baldi from going nuts I think, i dunno, comment it out see what happens lmao
+	# increase anger but cap baldi's lower anger to 0.5
+	baldi_anger = max(0.5, baldi_anger + set_anger)
+	# keeps baldi from going nuts I think, i dunno, comment it out see what happens lmao
+	baldi_wait = -3.0 * baldi_anger / (baldi_anger + 2.0 / baldi_speed_scale) + 3.0
 
+
+# idk why this is a function but hey you can always add some checks this way
 func get_temp_anger(temp_set : float) -> void:
-	baldi_temp_anger += temp_set # idk why this is a function but hey you can always add some checks this way
+	baldi_temp_anger += temp_set
+
 
 func hear(sound_location := Vector3.ZERO, priority : int = 0, play_reaction : bool = true) -> void:
 	if not anti_hearing:
 		if priority >= current_priority:
-			var old_target : Vector3 = nav_agent.target_position # used to determine if the point is reachable
-			nav_agent.target_position = sound_location # set new location
-			if nav_agent.get_final_position().slide(Vector3.UP).distance_to(nav_agent.target_position.slide(Vector3.UP)) > 1.0: # if unreachable, set target to old target (use a distance verify because positions in the air don't play nice with is_target_reachable)
-				nav_agent.target_position = old_target
+			# used to determine if the point is reachable
+			var oldTarget : Vector3 = navAgent.target_position
+			navAgent.target_position = sound_location # set new location
+			# if unreachable, set target to old target (use a distance verify because positions in the air don't play nice with is_target_reachable)
+			if navAgent.get_final_position().slide(Vector3.UP).distance_to(navAgent.target_position.slide(Vector3.UP)) > 1.0:
+				navAgent.target_position = oldTarget
 				# play a confused reaction
 				if active and play_reaction:
-					Global.player.bali_react("Confused")
+					Global.player.bali_react(&"Confused")
 			else: # else set the new priority
 				current_priority = priority
 				# play a notice reaction
 				if active and play_reaction:
-					Global.player.bali_react("Notice")
+					Global.player.bali_react(&"Notice")
 		# play a confused reaction if the current priority is more important
 		elif active:
-			Global.player.bali_react("Confused")
+			Global.player.bali_react(&"Confused")
+
 
 func activate_anti_hearing(time : float) -> void:
 	wander()
 	anti_hearing = true
 	anti_hearing_time = time
-
-func _on_player_collider_body_entered(body : Node3D) -> void:
-	if player_checker.is_colliding(): return
-	if body is Player and visible:
-		if body.has_method("game_over"):
-			body.game_over()

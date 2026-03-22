@@ -1,12 +1,29 @@
-# ATTENTION: Script donenot  (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Character
 class_name FirstPrize
 
 # first prize was the most annoying character to set up and even now I'm pretty sure they're still inaccurate
 
+const TURN_SPEED : float = 15.0
+
 @export var active : bool = false
 
-const TURN_SPEED : float = 15.0
+@export var aud_found : Array[AudioStream] = [
+	preload("res://audio/Characters/1stPrize/1PR_AmComing.wav"),
+	preload("res://audio/Characters/1stPrize/1PR_ISeeYou.wav")
+]
+@export var aud_lost : Array[AudioStream] = [
+	preload("res://audio/Characters/1stPrize/1PR_HaveLost.wav"),
+	preload("res://audio/Characters/1stPrize/1PR_OhNo.wav")
+]
+@export var aud_hug : Array[AudioStream] = [
+	preload("res://audio/Characters/1stPrize/1PR_IHug.wav"),
+	preload("res://audio/Characters/1stPrize/1PR_Marry.wav")
+]
+@export var aud_random : Array[AudioStream] = [
+	preload("res://audio/Characters/1stPrize/1PR_BeenProgrammed.wav"),
+	preload("res://audio/Characters/1stPrize/1PR_AmLooking.wav")
+]
 
 var ang_diff : float = 0.0
 var norm_speed : float = 5.0
@@ -14,27 +31,27 @@ var run_speed : float = 100.0
 var current_speed : float = 0.0
 var auto_break_cool : float = 0.0
 var crazy_time : float = 0.0
-var target_rotation : Transform3D
+# Unused variable
+#var target_rotation : Transform3D
 var cool_down : float = 0.0
-var prev_speed : float = 0.0
+# Unused variable
+#var prev_speed : float = 0.0
 var player_seen : bool = false
-var hug_announced : bool = false
-@export var aud_found : Array[AudioStream] = [preload("res://audio/Characters/1stPrize/1PR_AmComing.wav"), preload("res://audio/Characters/1stPrize/1PR_ISeeYou.wav")]
-@export var aud_lost : Array[AudioStream] = [preload("res://audio/Characters/1stPrize/1PR_HaveLost.wav"), preload("res://audio/Characters/1stPrize/1PR_OhNo.wav")]
-@export var aud_hug : Array[AudioStream] = [preload("res://audio/Characters/1stPrize/1PR_IHug.wav"), preload("res://audio/Characters/1stPrize/1PR_Marry.wav")]
-@export var aud_random : Array[AudioStream] = [preload("res://audio/Characters/1stPrize/1PR_BeenProgrammed.wav"), preload("res://audio/Characters/1stPrize/1PR_AmLooking.wav")]
+var hugAnnounced : bool = false
 
-@onready var player_checker : RayCast3D = $PlayerChecker
+var playerReference : Player = null
+var alive : bool = false # zoom prevention
+
+var justhit : bool = false
+
+@onready var playerChecker : RayCast3D = $PlayerChecker
 @onready var sounds : AudioStreamPlayer3D = $Sounds
 @onready var engine : AudioStreamPlayer3D = $Engine
 @onready var bang : AudioStreamPlayer3D = $Bang
 
-@onready var raycast : RayCast3D = $RayCast3D #Change "RaycCast3D to the name of your raycast object"
+# Change "RaycCast3D to the name of your raycast object"
+@onready var raycast : RayCast3D = $RayCast3D
 
-var player_reference : Player = null
-var alive : bool = false # zoom prevention
-
-var just_hit : bool = false
 
 func _ready() -> void:
 	super()
@@ -72,13 +89,14 @@ func _physics_process(delta : float) -> void:
 	
 	engine.pitch_scale = max(velocity.length() + 1.0  * delta,1.0)
 	
-	if not is_instance_valid(Global.player): return
+	if not is_instance_valid(Global.player): 
+		return
 	
-	player_checker.rotation = -rotation
-	player_checker.target_position = Global.player.global_position - global_position
-	if not player_checker.is_colliding():
+	playerChecker.rotation = -rotation
+	playerChecker.target_position = Global.player.global_position - global_position
+	if not playerChecker.is_colliding():
 		if not player_seen and not sounds.playing:
-			sounds.stream = aud_found[randi_range(0,aud_found.size()-1)]
+			sounds.stream = random_audio_array_stream(aud_found)
 			sounds.play()
 		player_seen = true
 		target_player()
@@ -87,7 +105,7 @@ func _physics_process(delta : float) -> void:
 		current_speed = norm_speed
 		if player_seen and cool_down <= 0.0:
 			if not sounds.playing:
-				sounds.stream = aud_lost[randi_range(0,aud_lost.size()-1)]
+				sounds.stream = random_audio_array_stream(aud_lost)
 				sounds.play()
 			player_seen = false
 			wander()
@@ -108,24 +126,39 @@ func _physics_process(delta : float) -> void:
 	navAgent.target_position = lastTarget
 	
 	if raycast.is_colliding(): 
-		if not just_hit:
-			just_hit = true
+		if not justhit:
+			justhit = true
 			if velocity.length() >= 30.0: bang.play()
 		velocity = Vector3.ZERO
 		speed = 0.0
 	else:
-		just_hit = false
+		justhit = false
 		# set movement direction
 		velocity = velocity.move_toward((-global_basis.z*(speed)),delta * 10.0)
 	
-	
-	if is_instance_valid(player_reference) and velocity.dot(-global_basis.z) > 5.0:
+	if is_instance_valid(playerReference) and velocity.dot(-global_basis.z) > 5.0:
 		# check they aren't using boots
-		if not player_reference.boots:
-			player_reference.hugging = true
-			player_reference.failSafe = 1.0
-			player_reference.velocity = velocity*delta*60.0
+		if not playerReference.boots:
+			playerReference.hugging = true
+			playerReference.failSafe = 1.0
+			playerReference.velocity = velocity*delta*60.0
 	#super(delta)
+
+
+func _on_player_collider_body_entered(body : Node3D) -> void:
+	if body is Player:
+		if not sounds.playing and not hugAnnounced:
+			sounds.stream = random_audio_array_stream(aud_hug)
+			sounds.play()
+			hugAnnounced = true
+		playerReference = body
+
+
+
+func _on_player_collider_body_exited(_body : Node3D) -> void:
+	auto_break_cool = 1.0
+	playerReference = null
+
 
 func activate() -> void:
 	active = true
@@ -134,11 +167,12 @@ func activate() -> void:
 
 
 func wander() -> void:
-	navAgent.target_position = Global.get_wander_point("hall_wander")# set random target based on targets
-	hug_announced = false
-	var num : int = randi_range(0,9)
+	# set random target based on targets
+	navAgent.target_position = Global.get_wander_point(&"hall_wander")
+	hugAnnounced = false
+	var num : int = randi_range(0, 9)
 	if num == 0 and cool_down <= 0.0 and sounds.playing:
-		sounds.stream = aud_random[randi_range(0,aud_random.size()-1)]
+		sounds.stream = random_audio_array_stream(aud_random)
 		sounds.play()
 	cool_down = 1.0
 
@@ -148,22 +182,6 @@ func target_player() -> void:
 	cool_down = 0.5
 
 
-
-func _on_player_collider_body_entered(body : Node3D) -> void:
-	if body is Player:
-		if not sounds.playing and not hug_announced:
-			sounds.stream = aud_hug[randi_range(0,aud_hug.size()-1)]
-			sounds.play()
-			hug_announced = true
-		player_reference = body
-
-
-
-func _on_player_collider_body_exited(_body : Node3D) -> void:
-	auto_break_cool = 1.0
-	player_reference = null
-
-
 func scissors() -> bool:
 	# return true or false so the player knows if to use the item up
 	if crazy_time <= 0.0:
@@ -171,3 +189,8 @@ func scissors() -> bool:
 		crazy_time = 15.0
 		return true
 	return false
+
+
+func random_audio_array_stream(audio_array: Array[AudioStream]) -> AudioStream:
+	var random_audio_stream : AudioStream = audio_array[randi_range(0, audio_array.size() - 1)]
+	return random_audio_stream

@@ -1,33 +1,38 @@
-# ATTENTION: Script donenot  (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+@icon("res://character_icon_temp.svg")
 class_name Character
 extends CharacterBody3D
 
-@onready var nav_agent : NavigationAgent3D = get_node_or_null("Nav")
+@onready var navAgent : NavigationAgent3D = get_node_or_null("Nav")
 var speed : float = 0.0
-var nav_skip_safe : bool = false
+var navSkipSafe : bool = false
+
 
 func _ready() -> void:
-	if nav_agent != null:
-		speed = nav_agent.max_speed # set speed to nav agents max speed
-		nav_agent.velocity_computed.connect(_on_nav_velocity_computed)
+	if navAgent != null:
+		speed = navAgent.max_speed # set speed to nav agents max speed
+		navAgent.velocity_computed.connect(_on_nav_velocity_computed)
+
 
 func _physics_process(delta : float) -> void:
-	var test_col : KinematicCollision3D = move_and_collide(velocity*delta,true)
-	if test_col:
-		if test_col.get_collider() is Character:
-			test_col.get_collider().shove(-test_col.get_normal()*delta)
-		velocity = velocity.slide(test_col.get_normal())
+	var testCol : KinematicCollision3D = move_and_collide(velocity*delta,true)
+	if testCol:
+		if testCol.get_collider() is Character:
+			testCol.get_collider().shove(-testCol.get_normal()*delta)
+		velocity = velocity.slide(testCol.get_normal())
 	#move_and_collide(velocity*delta)
 	move_and_slide()
-	velocity = global_position.direction_to(nav_agent.get_next_path_position())*speed
-	if nav_agent != null:
-		nav_agent.max_speed = speed
-		nav_agent.velocity = velocity
+	velocity = global_position.direction_to(navAgent.get_next_path_position())*speed
+	if navAgent != null:
+		navAgent.max_speed = speed
+		navAgent.velocity = velocity
+
 
 func _on_nav_velocity_computed(safe_velocity : Vector3) -> void:
-	if not nav_skip_safe and nav_agent.avoidance_enabled:
+	if !navSkipSafe && navAgent.avoidance_enabled:
 		velocity = safe_velocity
-		nav_skip_safe = false
+		navSkipSafe = false
+
 
 func shove(shove_velocity : Vector3) -> void:
 	move_and_collide(shove_velocity)

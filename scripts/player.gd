@@ -1,60 +1,55 @@
-# ATTENTION: Script donenot  (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
-extends CharacterBody3D
+# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 class_name Player
+extends CharacterBody3D
 
-var game_over : bool = false
-var jump_rope : bool = false
+const GRAVITY : float = 10.0
+const ALARM_CLOCK : PackedScene = preload("res://entities/objects/alarm_clock.tscn")
+
+@export_enum("Off","On","Funny") var debugMode : int = 0
+@export var real_game : bool = true # used to determine if the players in a game environment or walking evnironment, used to hide the hud in secret ending
+
+var gameOver : bool = false
+var jumpRope : bool = false
 var sweeping : bool = false
 var hugging : bool = false
 var boots : bool = false
-var boot_time : float = 0.0
+var bootTime : float = 0.0
 
-var slow_speed : float = 4.0
-var walk_speed : float = 10.0
-var run_speed : float = 16.0
-var player_speed : float = 0.0
+var slowSpeed : float = 4.0
+var walkSpeed : float = 10.0
+var runSpeed : float = 16.0
+var playerSpeed : float = 0.0
 
-const GRAVITY : float = 10.0
-var init_velocity : float = 5.0
-var jump_velocity : float = 0.0
-var jump_height : float = 0.0
+var initVelocity : float = 5.0
+var jumpVelocity : float = 0.0
+var jumpHeight : float = 0.0
 
-@onready var stamina : float = max_stamina
-var stamina_rate : float = 10.0
-var max_stamina : float = 100.0
+var staminaRate : float = 10.0
+var maxStamina : float = 100.0
 
-@onready var guilt : float = init_guilt
-var init_guilt : float = 0.0
-var guilt_type : StringName = ""
+var initGuilt : float = 0.0
+var guiltType : StringName = &""
 
-@onready var cast_collider : RayCast3D = $Camera3D/Collider
-@onready var last_camera_position : Vector3 = $Camera3D.global_position
-@onready var camera_offset : Vector3 = $Camera3D.position
-@onready var camera_3d : Camera3D = $Camera3D
+var cameraTween : Tween
+var cameraVTween : Tween
 
-var camera_tween : Tween
-var camera_v_tween : Tween
+var detentionTimer : float = 0.0
 
-var detention_timer : float = 0.0
+var failSafe : float = 0.0
 
-var fail_safe : float = 0.0
+var BlackBackground : Environment = preload("res://graphics/black_background_environment.tres")
 
-var black_background : Environment = preload("res://graphics/black_background_environment.tres")
+var BSoda : PackedScene = preload("res://entities/dropped_items/BSODA.tscn")
 
-var bsoda : PackedScene = preload("res://entities/dropped_items/BSODA.tscn")
-
-@export_enum("Off","On","Funny") var debug_mode : int = 0
-@export var real_game : bool = true # used to determine if the players in a game environment or walking evnironment, used to hide the hud in secret ending
-
-@onready var frozen_position : Vector3 = global_position
-
-var item_selected : int = 0
+var turnRate : float = 0.0
+var itemSelected : int = 0
 var items : PackedInt32Array = []
 
 var run_toggled : bool = false # for mobile
 var behind_toggled : bool = false # for mobile
+var is_mobile : bool = DisplayServer.is_touchscreen_available()
 
-var item_names : PackedStringArray = [
+var itemNames : PackedStringArray = [
 	"Nothing",
 	"Energy flavored Zesty Bar",
 	"Yellow Door Lock",
@@ -67,13 +62,16 @@ var item_names : PackedStringArray = [
 	"Safety Scissors",
 	"Big Ol' Boots",
 ]
+
+@onready var guilt : float = initGuilt
+@onready var stamina : float = maxStamina
+@onready var frozenPosition : Vector3 = global_position
+@onready var castCollider : RayCast3D = $Camera3D/Collider
+@onready var lastCameraPosition : Vector3 = $Camera3D.global_position
+@onready var cameraOffset : Vector3 = $Camera3D.position
+@onready var camera3D : Camera3D = $Camera3D
 @onready var slots : Control = $PlayerHud/ItemSlots/ItemSlots
 
-var turn_rate : float = 0.0
-
-var is_mobile : bool = DisplayServer.is_touchscreen_available()
-
-const ALARM_CLOCK : PackedScene = preload("res://entities/objects/alarm_clock.tscn")
 
 func _ready() -> void:
 	Global.player = self
@@ -92,7 +90,7 @@ func _ready() -> void:
 					set_selected_item(i)
 				)
 	
-	if not is_mobile:
+	if !is_mobile:
 		$PlayerHud/Buttons.visible = false
 		$PlayerHud/Pause.visible = false
 	
@@ -107,30 +105,30 @@ func _ready() -> void:
 		$PlayerHud/Reticle.show()
 	
 	# funny debug (make the player ultra fast)
-	if debug_mode == 2:
-		walk_speed *= 5.0
+	if debugMode == 2:
+		walkSpeed *= 5.0
 
 func _process(delta : float) -> void:
 	# look behind
-	camera_3d.rotation.y = 0.0 if (not Input.is_action_pressed("gm_behind") and not behind_toggled) or jump_rope else deg_to_rad(180.0)
+	camera3D.rotation.y = 0.0 if (not Input.is_action_pressed(&"gm_behind") and not behind_toggled) or jumpRope else deg_to_rad(180.0)
 	
-	$PlayerHud/Detention.visible = detention_timer > 0
-	$PlayerHud/Detention/Label.text = "You have detentionnot  \n" + str(int(ceil(detention_timer))) + " seconds remainnot "
-	$PlayerHud/StaminaBar.value = (stamina / max_stamina) * 100.0
+	$PlayerHud/Detention.visible = detentionTimer > 0
+	$PlayerHud/Detention/Label.text = "You have detention! \n" + str(int(ceil(detentionTimer))) + " seconds remain!"
+	$PlayerHud/StaminaBar.value = (stamina / maxStamina) * 100.0
 	$PlayerHud/Warning.visible = stamina < 0.0
 	update_note_book_counter()
 	
 	# rotation code
-	rotate_y(deg_to_rad(turn_rate*delta*Global.sensitivity*8.0))
-	turn_rate = -Input.get_axis("gm_turn_left","gm_turn_right")
+	rotate_y(deg_to_rad(turnRate * delta * Global.sensativity * 8.0))
+	turnRate = -Input.get_axis(&"gm_turn_left", &"gm_turn_right")
 	if not Global.analog:
-		turn_rate = round(turn_rate)
+		turnRate = round(turnRate)
 	
 	# head animation handler (see baldi for the func call method, see baldi_react for the other)
 	var headReaction : AnimatedSprite2D = $PlayerHud/BaldiHeadController/HeadReaction
 	# scroll out of frame if not playing
 	if not headReaction.is_playing():
-		headReaction.position.y = move_toward(headReaction.position.y,64.0,delta*60.0*8.0)
+		headReaction.position.y = move_toward(headReaction.position.y, 64.0, delta * 60.0 * 8.0)
 	else: # else set it to an onscreen position
 		headReaction.position.y = -64.0
 
@@ -140,129 +138,132 @@ func _physics_process(delta : float) -> void:
 	stamina_check(delta)
 	guilt_check(delta)
 	
-	if fail_safe > 0.0:
-		fail_safe = move_toward(fail_safe,0.0,delta)
+	if failSafe > 0.0:
+		failSafe = move_toward(failSafe, 0.0, delta)
 	else:
 		hugging = false
 		sweeping = false
 	
 	# boots
-	boot_time = move_toward(boot_time,0.0,delta)
-	boots = boot_time > 0.0
+	bootTime = move_toward(bootTime, 0.0, delta)
+	boots = bootTime > 0.0
 	
 	# check for interacts for pointer visibility
 	# set pointer to invisible by default (sometimes the object collider might collide with nothing)
 	$PlayerHud/Pointer.visible = false
-	if cast_collider.is_colliding():
-		var hit : Object = cast_collider.get_collider()
+	if castCollider.is_colliding():
+		var hit : Object = castCollider.get_collider()
 		if hit is Door:
 			# special handling for double doors (don't want to make it into a different class)
-			$PlayerHud/Pointer.visible = not hit.doubleDoor and hit.visible
+			$PlayerHud/Pointer.visible = !hit.doubleDoor and hit.visible
 		else:
-			$PlayerHud/Pointer.visible = hit.has_method("interact") and hit.visible
+			$PlayerHud/Pointer.visible = hit.has_method(&"interact") and hit.visible
 
 func player_move(delta : float) -> void:
 	## ATTENTION: This might break something, but i had no other choice except for doing this
 	## for the sake of static typing. 
-	var input_dir : Vector2 = Input.get_vector("gm_left","gm_right","gm_back","gm_forward")
-	var direction := Vector3(input_dir.x,0.0,-input_dir.y)
-	if stamina > 0:
-		if Input.is_action_pressed("gm_run") or run_toggled:
-			player_speed = run_speed
-			if velocity.length() > 0.1 and not hugging and not sweeping:
-				reset_guilt("running",0.1)
+	var input_dir : Vector2 = Input.get_vector(&"gm_left", &"gm_right", &"gm_back", &"gm_forward")
+	var direction := Vector3(input_dir.x, 0.0, -input_dir.y)
+	if stamina > 0.0:
+		if Input.is_action_pressed(&"gm_run") or run_toggled:
+			playerSpeed = runSpeed
+			if velocity.length() > 0.1 and !hugging and !sweeping:
+				reset_guilt(&"running", 0.1)
 		else:
-			player_speed = walk_speed
+			playerSpeed = walkSpeed
 	else:
-		player_speed = walk_speed
+		playerSpeed = walkSpeed
 		
-	var moveDirection : Vector3 = direction * player_speed
+	var moveDirection : Vector3 = direction * playerSpeed
 	
-	if jump_rope:
+	if jumpRope:
 		moveDirection = Vector3.ZERO
-	if jump_rope or jump_height > 0.0: # continue jump routine if the players still in the air
+	if jumpRope or jumpHeight > 0.0: # continue jump routine if the players still in the air
 		# jumping
-		jump_velocity -= GRAVITY*delta
-		jump_height = max(0.0,jump_height+(jump_velocity*delta))
+		jumpVelocity -= GRAVITY*delta
+		jumpHeight = max(0.0, jumpHeight + (jumpVelocity * delta))
 		# set v_offset (jumping)
-		if camera_v_tween:
-			camera_v_tween.kill()
+		if cameraVTween:
+			cameraVTween.kill()
 		# use tween for smooth transitions
-		camera_v_tween = create_tween()
-		camera_v_tween.tween_property(camera_3d,"v_offset",jump_height,delta)
+		cameraVTween = create_tween()
+		cameraVTween.tween_property(camera3D, "v_offset", jumpHeight, delta)
 	
-	if not velocity.is_equal_approx(Vector3.ZERO): # comment this line out to always move and slide (pushes you out of geometry)
-		var collider : KinematicCollision3D = move_and_collide(velocity*delta,true)
+	# comment this line out to always move and slide (pushes you out of geometry)
+	if !velocity.is_equal_approx(Vector3.ZERO):
+		var collider : KinematicCollision3D = move_and_collide(velocity * delta, true)
 		if collider:
 			move_and_collide(velocity.slide(velocity.slide(collider.get_normal()).normalized()) * delta)
 			velocity = velocity.slide(collider.get_normal())
 		
 		velocity.y = 0.0
 		move_and_slide()
-		camera_3d.global_translate(-get_real_velocity()*delta)
-	velocity = moveDirection.rotated(basis.y,rotation.y)
+		camera3D.global_translate(-get_real_velocity()*delta)
+	velocity = moveDirection.rotated(basis.y, rotation.y)
 	
-	if camera_tween:
-		camera_tween.kill()
-	camera_tween = create_tween()
-	camera_tween.tween_property(camera_3d,"position",camera_offset,delta)
+	if cameraTween:
+		cameraTween.kill()
+	cameraTween = create_tween()
+	cameraTween.tween_property(camera3D, "position", cameraOffset, delta)
 	
 	# jump rope check
-	if jump_rope and global_position.distance_to(frozen_position) >= 1.0:
-		jump_rope = false
+	if jumpRope and global_position.distance_to(frozenPosition) >= 1.0:
+		jumpRope = false
 
 func stamina_check(delta : float) -> void:
 	if velocity.length() > 0.1:
-		if (Input.is_action_pressed("gm_run") or run_toggled) and stamina > 0.0:
-			stamina -= stamina_rate * delta
+		if (Input.is_action_pressed(&"gm_run") or run_toggled) and stamina > 0.0:
+			stamina -= staminaRate * delta
 		if stamina <= 0.0 and stamina > -5.0:
 			stamina = -5.0
-	elif stamina < max_stamina:
-		stamina += stamina_rate * delta
-		
+	elif stamina < maxStamina:
+		stamina += staminaRate * delta
+
+
 func _unhandled_input(event : InputEvent) -> void: # For multi drag
-	var sensativity : float = Global.sensitivity/100.0
+	var sensativity : float = Global.sensativity/100.0
 	if event is InputEventScreenDrag:
-		if not Global.analog:
-			turn_rate = sign(-event.relative.x)
+		if !Global.analog:
+			turnRate = sign(-event.relative.x)
 		else:
 			rotate_y(deg_to_rad(-event.relative.x*sensativity))
-			
+
+
 func _input(event : InputEvent) -> void:
-	var sensativity : float = Global.sensitivity/100.0
+	var sensativity : float = Global.sensativity / 100.0
 	if event is InputEventMouseMotion and not is_mobile:
 		if not Global.analog:
-			turn_rate = sign(-event.relative.x)
+			turnRate = sign(-event.relative.x)
 		else:
-			rotate_y(deg_to_rad(-event.relative.x*sensativity))
+			rotate_y(deg_to_rad(-event.relative.x * sensativity))
 	# I wonder if whoever was making this code had a stroke and got this horrible spacing
 	
 		
 	
-	if jump_rope:
-		if event.is_action_pressed("gm_jump") and jump_height <= 0.0: # jumping for jumprope minigame
-			jump_velocity = init_velocity # start jump
-	elif event.is_action_pressed("gm_click") and cast_collider.is_colliding():
+	if jumpRope:
+		if event.is_action_pressed(&"gm_jump") and jumpHeight <= 0.0: # jumping for jumprope minigame
+			jumpVelocity = initVelocity # start jump
+	elif event.is_action_pressed(&"gm_click") and castCollider.is_colliding():
 		# interact with objects
 		if not is_mobile:
 			on_click()
 	
-	if event.is_action_pressed("gm_next_item"):
-		set_selected_item(item_selected+1)
-	elif event.is_action_pressed("gm_prev_item"):
-		set_selected_item(item_selected-1)
-	elif event.is_action_pressed("gm_first_item"):
+	if event.is_action_pressed(&"gm_next_item"):
+		set_selected_item(itemSelected + 1)
+	elif event.is_action_pressed(&"gm_prev_item"):
+		set_selected_item(itemSelected - 1)
+	elif event.is_action_pressed(&"gm_first_item"):
 		set_selected_item(0)
-	elif  event.is_action_pressed("gm_second_item"):
+	elif  event.is_action_pressed(&"gm_second_item"):
 		set_selected_item(1)
-	elif  event.is_action_pressed("gm_third_item"):
+	elif  event.is_action_pressed(&"gm_third_item"):
 		set_selected_item(2)
 	
-	if event.is_action_pressed("gm_use"):
+	if event.is_action_pressed(&"gm_use"):
 		use_item()
 	
 	# pause menu
-	if event.is_action_pressed("gm_pause"):
+	if event.is_action_pressed(&"gm_pause"):
 		get_tree().paused = true
 		Global.unlock_mouse()
 		await get_tree().process_frame
@@ -272,38 +273,39 @@ func _input(event : InputEvent) -> void:
 		Global.lock_mouse()
 
 func on_click() -> void:
-	var hit : Object = cast_collider.get_collider()
-	if hit and hit.has_method("interact"):
+	var hit : Object = castCollider.get_collider()
+	if hit and hit.has_method(&"interact"):
 		hit.interact(self)
 
 func reset_guilt(type : StringName, amount : float) -> void:
 	if amount >= guilt:
 		guilt = amount
-		guilt_type = type
+		guiltType = type
 
 func guilt_check(delta : float) -> void:
 	if guilt > 0.0:
 		guilt = move_toward(guilt,0.0,delta)
-	detention_timer = move_toward(detention_timer,0.0,delta)
+	detentionTimer = move_toward(detentionTimer,0.0,delta)
 
 func game_over() -> void:
-	if debug_mode == 2:
-		Global.baldi.move_and_collide(-camera_3d.global_basis.z*100.0)
-	if debug_mode > 0: return
-	camera_3d.process_mode = Node.PROCESS_MODE_ALWAYS
+	if debugMode == 2:
+		Global.baldi.move_and_collide(-camera3D.global_basis.z*100.0)
+	if debugMode > 0: 
+		return
+	camera3D.process_mode = Node.PROCESS_MODE_ALWAYS
 	if is_instance_valid(Global.baldi):
 		# Goodnes, we might have to fix this spacing sooner than later
-		camera_3d.global_position = Global.baldi.global_position+Global.baldi.global_position.direction_to(Vector3(global_position.x,Global.baldi.global_position.y,global_position.z))*2.0+Vector3(0.0,1.0,0.0)
-		camera_3d.look_at(Global.baldi.global_position+Vector3(0.0,1.0,0.0),up_direction)
+		camera3D.global_position = Global.baldi.global_position+Global.baldi.global_position.direction_to(Vector3(global_position.x, Global.baldi.global_position.y, global_position.z))*2.0+Vector3(0.0,1.0,0.0)
+		camera3D.look_at(Global.baldi.global_position+Vector3(0.0, 1.0, 0.0),up_direction)
 	$Caught.play() # volume turned down because I don't wanna be responcible for blowing out someoen's speakers.
 	# if you have a problem with me doing that cry about it.
 	$PlayerHud.visible = false
-	Global.background.environment = black_background
+	Global.background.environment = BlackBackground
 	# clipping
 	var tween : Tween = get_tree().create_tween()
 	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	camera_3d.far = 200.0
-	tween.tween_property(camera_3d,"far",0.0,1.0).set_trans(Tween.TRANS_LINEAR)
+	camera3D.far = 200.0
+	tween.tween_property(camera3D, "far", 0.0, 1.0).set_trans(Tween.TRANS_LINEAR)
 	
 	get_tree().paused = true
 	await tween.finished # wait for clip to finish
@@ -313,73 +315,73 @@ func game_over() -> void:
 
 func update_note_book_counter() -> void:
 	if Global.endless:
-		$PlayerHud/NoteBookCount.text = str(Global.note_books)+" Notebooks"
+		$PlayerHud/NoteBookCount.text = str(Global.noteBooks)+" Notebooks"
 	else:
-		$PlayerHud/NoteBookCount.text = str(Global.note_books)+"/7 Notebooks"
+		$PlayerHud/NoteBookCount.text = str(Global.noteBooks)+"/7 Notebooks"
 
-func set_selected_item(new_item_select : int) -> void:
-	slots.get_child(item_selected).color = Color.WHITE
-	item_selected = wrapi(new_item_select,0,slots.get_child_count())
-	slots.get_child(item_selected).color = Color.RED
+func set_selected_item(newItemSelect : int) -> void:
+	slots.get_child(itemSelected).color = Color.WHITE
+	itemSelected = wrapi(newItemSelect, 0, slots.get_child_count())
+	slots.get_child(itemSelected).color = Color.RED
 	update_items()
 
 # This function is just a monstrousity, it would be great if more parts are separated on their own
 # more abstract and underlined functions to reduce the amount of duplicated code.
 func use_item() -> void:
-	match(items[item_selected]):
-		Global.ITEMS.ZESTI: # ZESTI BARnot  refills past max stamina
-			stamina = max_stamina * 2.0
-			items[item_selected] = Global.ITEMS.NONE
-		Global.ITEMS.BSODA: # Create BSODAnot 
-			var mySoda := bsoda.instantiate() as Area3D
+	match(items[itemSelected]):
+		Global.ITEMS.ZESTI: # ZESTI BAR! refills past max stamina
+			stamina = maxStamina * 2.0
+			items[itemSelected] = Global.ITEMS.NONE
+		Global.ITEMS.BSODA: # Create BSODA!
+			var mySoda := BSoda.instantiate() as Area3D
 			get_parent().add_child(mySoda)
-			reset_guilt("drink",1.0)
+			reset_guilt(&"drink", 1.0)
 			mySoda.global_position = global_position
 			# set bsoda rotation to camera rotation
-			mySoda.global_rotation = camera_3d.global_rotation
-			items[item_selected] = Global.ITEMS.NONE
+			mySoda.global_rotation = camera3D.global_rotation
+			items[itemSelected] = Global.ITEMS.NONE
 		Global.ITEMS.LOCK: # Lock double doors
 			# interact with objects
-			var hit : Object = cast_collider.get_collider()
+			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method("lock_double_door"):
+				if hit.has_method(&"lock_double_door"):
 					if hit.lock_double_door():
-						items[item_selected] = Global.ITEMS.NONE
+						items[itemSelected] = Global.ITEMS.NONE
 		Global.ITEMS.KEY: # Unlock Principal door
 			# interact with objects
-			var hit : Object = cast_collider.get_collider()
+			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method("use_key"):
+				if hit.has_method(&"use_key"):
 					if hit.use_key():
-						items[item_selected] = Global.ITEMS.NONE
+						items[itemSelected] = Global.ITEMS.NONE
 		Global.ITEMS.QUARTER:
 			# interact with objects
-			var hit : Object = cast_collider.get_collider()
+			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method("use_quarter"):
-					items[item_selected] = Global.ITEMS.NONE
+				if hit.has_method(&"use_quarter"):
+					items[itemSelected] = Global.ITEMS.NONE
 					hit.use_quarter(self)
 		Global.ITEMS.NO_SQUEE: # no squee
 			# interact with objects
-			var hit : Object = cast_collider.get_collider()
+			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method("no_squee"):
+				if hit.has_method(&"no_squee"):
 					if hit.no_squee():
 						$NoSquee.play()
-						items[item_selected] = Global.ITEMS.NONE
+						items[itemSelected] = Global.ITEMS.NONE
 		Global.ITEMS.TAPE:
 			# interact with objects
-			var hit : Object = cast_collider.get_collider()
+			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method("use_tape"):
-					items[item_selected] = Global.ITEMS.NONE
+				if hit.has_method(&"use_tape"):
+					items[itemSelected] = Global.ITEMS.NONE
 					hit.use_tape(self)
 		Global.ITEMS.BOOTS:
-			items[item_selected] = Global.ITEMS.NONE
+			items[itemSelected] = Global.ITEMS.NONE
 			# stop first prize from hugging
 			hugging = false
 			# set boot time to 15
-			boot_time = 15.0
+			bootTime = 15.0
 			# tween animation (move boots over screen)
 			$PlayerHud/Boots.show()
 			var tween : Tween = get_tree().create_tween()
@@ -392,37 +394,37 @@ func use_item() -> void:
 			var clock := ALARM_CLOCK.instantiate() as Node3D
 			add_sibling(clock)
 			clock.global_position = global_position
-			items[item_selected] = Global.ITEMS.NONE
+			items[itemSelected] = Global.ITEMS.NONE
 		Global.ITEMS.SCISSORS:
 			# reset collission mask to only check for characters (set a memory value)
-			var memory : int = cast_collider.collision_mask
-			cast_collider.collision_mask = 0
-			cast_collider.set_collision_mask_value(4,true)
-			cast_collider.force_raycast_update()
+			var memory : int = castCollider.collision_mask
+			castCollider.collision_mask = 0
+			castCollider.set_collision_mask_value(4, true)
+			castCollider.force_raycast_update()
 			# reset
-			cast_collider.collision_mask = memory
+			castCollider.collision_mask = memory
 			# interact with characters
-			var hit : Object = cast_collider.get_collider()
+			var hit : Object = castCollider.get_collider()
 			if hit:
-				if hit.has_method("scissors"):
+				if hit.has_method(&"scissors"):
 					if hit.scissors():
-						items[item_selected] = Global.ITEMS.NONE
+						items[itemSelected] = Global.ITEMS.NONE
 			# playtime check
-			elif jump_rope:
-				for i : Node in get_tree().get_nodes_in_group("playtime"):
+			elif jumpRope:
+				for i : Node in get_tree().get_nodes_in_group(&"playtime"):
 					if i is PlayTime:
-						if i.jump_ropeStarted:
+						if i.jumpRopeStarted:
 							if i.scissors():
-								items[item_selected] = Global.ITEMS.NONE
+								items[itemSelected] = Global.ITEMS.NONE
 
 	update_items()
 
 func add_item(itemID : int) -> void:
 	var currentGetItem : int = 0
-	while items[min(currentGetItem,items.size()-1)] not = Global.ITEMS.NONE and currentGetItem < items.size():
+	while items[min(currentGetItem,items.size()-1)] != Global.ITEMS.NONE and currentGetItem < items.size():
 		currentGetItem += 1
 	if currentGetItem >= items.size(): # if all slots are filled, overwrite item
-		currentGetItem = item_selected
+		currentGetItem = itemSelected
 	items[currentGetItem] = itemID
 	update_items()
 
@@ -434,23 +436,23 @@ func lose_item(item : int) -> void:
 func update_items() -> void:
 	for i : int in items.size():
 		slots.get_child(i).get_child(0).texture = Global.item_textures[items[i]]
-	$PlayerHud/ItemText.text = item_names[items[item_selected]]
+	$PlayerHud/ItemText.text = itemNames[items[itemSelected]]
 
 func escape_activate() -> void:
 	$AllNotebooks.play()
 
-func bali_react(react_frame : StringName = "Notice") -> void:
+func bali_react(react_frame : StringName = &"Notice") -> void:
 	$PlayerHud/BaldiHeadController/HeadReaction.play(react_frame)
 
 
 func _on_run_button_pressed() -> void:
-	run_toggled = not run_toggled
+	run_toggled = !run_toggled
 
 
 func _on_behind_button_pressed() -> void:
-	behind_toggled = not behind_toggled
+	behind_toggled = !behind_toggled
 
 
 func _on_click_button_pressed() -> void:
 	on_click()
-	Input.action_press("gm_jump")
+	Input.action_press(&"gm_jump")
