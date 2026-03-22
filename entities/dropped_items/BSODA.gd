@@ -1,9 +1,9 @@
 # ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Area3D
 
-var npcList : Array[Node3D] = []
+var npc_list : Array[Node3D] = []
 @export var speed : float = 20.0
-var lifeTime : float = 30.0
+var life_time : float = 30.0
 @onready var soda : MeshInstance3D = $SODA
 
 
@@ -15,12 +15,12 @@ func _ready() -> void:
 func _physics_process(delta : float) -> void:
 	translate(Vector3.FORWARD*delta*speed) # move forward
 	
-	if lifeTime > 0.0:
-		lifeTime -= delta # decrease life span
+	if life_time > 0.0:
+		life_time -= delta # decrease life span
 	else:
 		queue_free() # clear when lifespan timer runs out
 	
-	for i : Node3D in npcList: # shift other npcs
+	for i : Node3D in npc_list: # shift other npcs
 		if i.get("velocity") != null: # check that velocity exists
 			var setVelocity : Vector3 = -global_basis.z*speed
 			# set to position then move
@@ -34,8 +34,8 @@ func _physics_process(delta : float) -> void:
 
 func _on_body_entered(body : Node3D) -> void:
 	if body == self: return
-	npcList.append(body)
+	npc_list.append(body)
 
 func _on_body_exited(body : Node3D) -> void:
-	if npcList.has(body):
-		npcList.erase(body) # remove npc (if they're on the list)
+	if npc_list.has(body):
+		npc_list.erase(body) # remove npc (if they're on the list)

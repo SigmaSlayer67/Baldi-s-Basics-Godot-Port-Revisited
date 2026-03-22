@@ -1,7 +1,7 @@
 # ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Control
 
-var loadingStatus : int
+var loading_status : int
 var progress : Array[float]
 
 func _ready() -> void:
@@ -70,8 +70,8 @@ func load_scene() -> void:
 	var scene_path : String = "res://scenes/school_house.tscn"
 	ResourceLoader.load_threaded_request(scene_path)
 	while true:
-		loadingStatus = ResourceLoader.load_threaded_get_status(scene_path, progress)
-		match  loadingStatus:
+		loading_status = ResourceLoader.load_threaded_get_status(scene_path, progress)
+		match  loading_status:
 			ResourceLoader.THREAD_LOAD_LOADED:
 				get_tree().change_scene_to_packed(ResourceLoader.load_threaded_get(scene_path))
 				break

@@ -2,7 +2,7 @@
 extends AudioStreamPlayer3D
 class_name Ambience
 
-@export var ambientSounds : Array[AudioStream] = [
+@export var ambient_sounds : Array[AudioStream] = [
 	preload("res://audio/SFX/Ambiences/fret.wav"),
 	preload("res://audio/SFX/Ambiences/dulcimer.wav"),
 	preload("res://audio/SFX/Ambiences/noise.wav"),
@@ -11,11 +11,11 @@ class_name Ambience
 ]
 
 # this gets called in global when an ai location is called
-func play_ambience(setPosition : Vector3) -> void:
+func play_ambience(set_position : Vector3) -> void:
 	var num : int = randi_range(0,49) # pick a number from 0 to 49
 	# if not playing a sound and num is 0 (1/50 chance) play sound
 	if !playing && num == 0:
-		global_position = setPosition
-		stream = ambientSounds[randi_range(0,ambientSounds.size()-1)]
+		global_position = set_position
+		stream = ambient_sounds[randi_range(0,ambient_sounds.size()-1)]
 		play()
 	return

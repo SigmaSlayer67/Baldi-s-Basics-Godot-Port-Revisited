@@ -1,4 +1,4 @@
-# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+# ATTENTION: Script donenot  (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Node3D
 
 
@@ -16,7 +16,7 @@ func escape_activate() -> void: # called in math minigame (has to be in escape g
 
 
 func _on_near_trigger_body_entered(_body : Node3D) -> void:
-	if Global.escapesReached < 3 && Global.escapeMode:
+	if Global.escapes_reached < 3 and Global.escape_mode:
 		lower()
 		Global.exit_reached()
 		$Switch.play()

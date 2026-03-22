@@ -1,19 +1,19 @@
-# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+# ATTENTION: Script donenot  (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Character
 class_name Principal
 
 @export var active : bool = false
 
-var seeRuleBreak : bool = false
-var bullySeen : bool = false
-var coolDown : float = 0.0
-var timeSeenRuleBreak : float = 0.0
+var see_rule_break : bool = false
+var bully_seen : bool = false
+var cool_down : float = 0.0
+var time_seen_rule_break : float = 0.0
 var angry : bool = false
-var inOffice : bool = false
+var in_office : bool = false
 var detentions : int = 0
-var lockTimes : Array[int] = [15,30,45,60,99]
+var lock_times : Array[int] = [15,30,45,60,99]
 
-var audTimes : Array[AudioStream] = [
+var aud_times : Array[AudioStream] = [
 preload("res://audio/Characters/Principal/Times/PRI_15Sec.wav"),
 preload("res://audio/Characters/Principal/Times/PRI_30Sec.wav"),
 preload("res://audio/Characters/Principal/Times/PRI_45Sec.wav"),
@@ -21,21 +21,21 @@ preload("res://audio/Characters/Principal/Times/PRI_60Sec.wav"),
 preload("res://audio/Characters/Principal/Times/PRI_99Sec.wav"),
 ]
 
-var audScolds : Array[AudioStream]= [
+var aud_scolds : Array[AudioStream]= [
 preload("res://audio/Characters/Principal/Scolds/PRI_KnowBetter.wav"),
 preload("res://audio/Characters/Principal/Scolds/PRI_WhenLearn.wav"),
 preload("res://audio/Characters/Principal/Scolds/PRI_YourParents.wav"),
 ]
 
-var audDetention : AudioStream = preload("res://audio/Characters/Principal/PRI_DetentionForYou.wav")
-var audNoDrinking : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/PRI_NoDrinking.wav")
-var audNoBullying : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/PRI_NoBullying.wav")
-var audNoFaculty : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/PRI_NoFaculty.wav")
-var audNoLockers : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/Unused/PRI_NoLockers.wav")
-var audNoRunning : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/PRI_NoRunning.wav")
-var audNoStabbing : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/Unused/PRI_NoStabbing.wav")
-var audNoEscaping : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/PRI_NoEscaping.wav")
-var audWhistle : AudioStream = preload("res://audio/Characters/Principal/PRI_Whistle.wav")
+var aud_detention : AudioStream = preload("res://audio/Characters/Principal/PRI_DetentionForYou.wav")
+var aud_no_drinking : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/PRI_NoDrinking.wav")
+var aud_no_bullying : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/PRI_NoBullying.wav")
+var aud_no_faculty : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/PRI_NoFaculty.wav")
+var aud_no_lockers : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/Unused/PRI_NoLockers.wav")
+var aud_no_running : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/PRI_NoRunning.wav")
+var aud_no_stabbing : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/Unused/PRI_NoStabbing.wav")
+var aud_no_escaping : AudioStream = preload("res://audio/Characters/Principal/RuleBroke/PRI_NoEscaping.wav")
+var aud_whistle : AudioStream = preload("res://audio/Characters/Principal/PRI_Whistle.wav")
 # Unused variable, always comment these when you find that a variable is not used
 # in any script or any other form, you can determine if a variable or function is unused
 # by searching the exact name of it on "Project" > "Find in files..." or by pressing
@@ -44,12 +44,12 @@ var audWhistle : AudioStream = preload("res://audio/Characters/Principal/PRI_Whi
 #var audDelay
 
 var aim := Vector3.ZERO
-var audioQueue : Array[AudioStream] = []
-@onready var playerChecker : RayCast3D = $PlayerChecker
-var canSeePlayer : bool = false
+var audio_queue : Array[AudioStream] = []
+@onready var player_checker : RayCast3D = $PlayerChecker
+var can_see_player : bool = false
 @onready var sounds : AudioStreamPlayer3D = $Sounds
 
-@onready var principalOfficeLocation : Vector3 = global_position
+@onready var principal_office_location : Vector3 = global_position
 
 func _ready() -> void:
 	super()
@@ -63,113 +63,113 @@ func activate() -> void:
 
 #I don't like the idea of game logic being tied to frame rate, process should be used for animation and audio related events
 func _physics_process(delta : float) -> void: 
-	if seeRuleBreak:
-		timeSeenRuleBreak += delta
-		if timeSeenRuleBreak >= 0.5 && !angry:
+	if see_rule_break:
+		time_seen_rule_break += delta
+		if time_seen_rule_break >= 0.5 and not angry:
 			angry = true
-			seeRuleBreak = false
-			timeSeenRuleBreak = 0.0
+			see_rule_break = false
+			time_seen_rule_break = 0.0
 			correct_player()
 	else:
-		timeSeenRuleBreak = 0.0
-	coolDown = move_toward(coolDown,0.0,delta)
+		time_seen_rule_break = 0.0
+	cool_down = move_toward(cool_down,0.0,delta)
 	
 	
 	# targeting
 	# set player raycast
 	if Global.player:
-		playerChecker.target_position = Global.player.global_position - global_position
+		player_checker.target_position = Global.player.global_position - global_position
 		# check that the cast wasn't interupted
-		playerChecker.force_raycast_update()
-		canSeePlayer = !playerChecker.is_colliding()
+		player_checker.force_raycast_update()
+		can_see_player = not player_checker.is_colliding()
 	
-	if !angry:
+	if not angry:
 		aim = global_position.direction_to(Global.player.global_position)
-		if canSeePlayer && Global.player.guilt > 0.0 && !inOffice && !angry:
-			seeRuleBreak = true
+		if can_see_player and Global.player.guilt > 0.0 and not in_office and not angry:
+			see_rule_break = true
 		else:
-			seeRuleBreak = false
+			see_rule_break = false
 			
-			if get_real_velocity().length() <= 1.0 && coolDown <= 0.0:
+			if get_real_velocity().length() <= 1.0 and cool_down <= 0.0:
 				wander()
 		# bully logic
 		if Global.bully:
-			playerChecker.target_position = Global.bully.global_position - global_position
-			playerChecker.force_raycast_update()
-			if !playerChecker.is_colliding() && Global.bully.guilt > 0.0 && !inOffice && !angry:
+			player_checker.target_position = Global.bully.global_position - global_position
+			player_checker.force_raycast_update()
+			if not player_checker.is_colliding() and Global.bully.guilt > 0.0 and not in_office and not angry:
 				target_bully()
 
 	else:
 		navAgent.target_position = Global.player.global_position
 	
-	$PlayerCollider/CollisionShape3D.disabled = !$PlayerCollider/CollisionShape3D.disabled
+	$PlayerCollider/CollisionShape3D.disabled = not $PlayerCollider/CollisionShape3D.disabled
 	super(delta)
 	velocity.y = 0.0
 	
 
 func wander() -> void:
 	navAgent.target_position = Global.get_wander_point()# set random target based on targets
-	coolDown = 1.0
-	if randf_range(0.0,10.0) <= 1.0 && !sounds.playing:
-		sounds.stream = audWhistle
+	cool_down = 1.0
+	if randf_range(0.0,10.0) <= 1.0 and not sounds.playing:
+		sounds.stream = aud_whistle
 		sounds.play()
 
 func queue_audio(audio : AudioStream = null) -> void:
-	audioQueue.append(audio)
-	if !sounds.playing:
-		sounds.stream = audioQueue[0]
+	audio_queue.append(audio)
+	if not sounds.playing:
+		sounds.stream = audio_queue[0]
 		sounds.play()
-		audioQueue.pop_front()
+		audio_queue.pop_front()
 
 func correct_player() -> void:
 	sounds.stop()
-	audioQueue.clear()
+	audio_queue.clear()
 	# get player rule break
-	match(Global.player.guiltType):
+	match(Global.player.guilt_type):
 		"escape": # escaping detention
-			queue_audio(audNoEscaping)
+			queue_audio(aud_no_escaping)
 		"drink": # bsoda
-			queue_audio(audNoDrinking)
+			queue_audio(aud_no_drinking)
 		"faculty": # faculty 
-			queue_audio(audNoFaculty)
+			queue_audio(aud_no_faculty)
 		_: # default
-			queue_audio(audNoRunning)
+			queue_audio(aud_no_running)
 
 ## Catching player
 func _on_player_collider_body_entered(body : Node3D) -> void:
-	if body is Player && angry && !inOffice:
-		inOffice = true
-		global_position = principalOfficeLocation+Vector3(0.0,0.0,-10.0)
-		body.global_position = principalOfficeLocation
+	if body is Player and angry and not in_office:
+		in_office = true
+		global_position = principal_office_location+Vector3(0.0,0.0,-10.0)
+		body.global_position = principal_office_location
 		body.look_at(Vector3(global_position.x,body.global_position.y,global_position.z),body.up_direction)
-		body.detentionTimer = lockTimes[detentions]
+		body.detentionTimer = lock_times[detentions]
 		body.guilt = 0.0 # reset guilt
 		body.jumpRope = false
 		navAgent.target_position = global_position
 		# Idk why the check is for baldi to be visible instead of just the instance being valid but i digress
 		if Global.baldi.visible:
 			Global.baldi.hear(global_position,8)
-		coolDown = 5.0
+		cool_down = 5.0
 		angry = false
 		for i : Node in get_tree().get_nodes_in_group("principal_lock"):
 			if i is Door:
-				i.lockTime = lockTimes[detentions]
+				i.lockTime = lock_times[detentions]
 				i.doorLocked = true
 		await get_tree().create_timer(0.250,false).timeout
-		queue_audio(audTimes[detentions])
-		queue_audio(audDetention)
-		queue_audio(audScolds[randi_range(0,audScolds.size()-1)])
+		queue_audio(aud_times[detentions])
+		queue_audio(aud_detention)
+		queue_audio(aud_scolds[randi_range(0,aud_scolds.size()-1)])
 		detentions = min(detentions+1,4)
 
 
 func _on_sounds_finished() -> void: # queue next audio
-	if audioQueue.size() > 0:
-		sounds.stream = audioQueue[0]
+	if audio_queue.size() > 0:
+		sounds.stream = audio_queue[0]
 		sounds.play()
-		audioQueue.pop_front()
+		audio_queue.pop_front()
 
 func target_bully() -> void:
-	if !bullySeen:
+	if not bully_seen:
 		navAgent.target_position = Global.bully.global_position
-		queue_audio(audNoBullying)
-		bullySeen = true
+		queue_audio(aud_no_bullying)
+		bully_seen = true

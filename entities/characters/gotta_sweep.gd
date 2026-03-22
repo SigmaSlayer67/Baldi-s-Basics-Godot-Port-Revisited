@@ -1,25 +1,25 @@
-# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+# ATTENTION: Script donenot  (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends Character
 
 
-var coolDown : float = 0.0
-var waitTime : float = 0.0
+var cool_down : float = 0.0
+var wait_time : float = 0.0
 var wanders : int = 0
-var sweepinTime : bool = false
+var sweeping_time : bool = false
 @export var active : bool = false
 @onready var origin : Vector3 = global_position
 
-var audSweep : AudioStream = preload("res://audio/Characters/GottaSweep/GS_GottaSweep.wav")
-var audIntro : AudioStream = preload("res://audio/Characters/GottaSweep/GS_Intro.wav")
+var aud_sweep : AudioStream = preload("res://audio/Characters/GottaSweep/GS_GottaSweep.wav")
+var aud_intro : AudioStream = preload("res://audio/Characters/GottaSweep/GS_Intro.wav")
 
 @onready var sounds : AudioStreamPlayer3D = $Sounds
 
-var npcList : Array[Node3D] = [] # keep a record of contacted NPCs
+var npc_list : Array[Node3D] = [] # keep a record of contacted NPCs
 
 
 func _ready() -> void:
 	super()
-	waitTime = randf_range(120.0, 180.0)
+	wait_time = randf_range(120.0, 180.0)
 	set_physics_process(active)
 	visible = active
 
@@ -31,32 +31,32 @@ func activate() -> void:
 func wander() -> void:
 	navAgent.target_position = Global.get_wander_point("hall_wander") # set random target based on targets
 	wanders += 1
-	coolDown = 1.0
+	cool_down = 1.0
 
 func go_home() -> void:
 	navAgent.target_position = origin # set random target based on targets
 	wanders = 0
-	coolDown = 1.0
-	waitTime = randf_range(120.0, 180.0)
-	sweepinTime = false
+	cool_down = 1.0
+	wait_time = randf_range(120.0, 180.0)
+	sweeping_time = false
 
 func _physics_process(delta : float) -> void:
-	coolDown = move_toward(coolDown,0.0,delta)
-	waitTime = move_toward(waitTime,0.0,delta)
-	if waitTime <= 0.0 && !sweepinTime:
-		sweepinTime = true
+	cool_down = move_toward(cool_down,0.0,delta)
+	wait_time = move_toward(wait_time,0.0,delta)
+	if wait_time <= 0.0 and not sweeping_time:
+		sweeping_time = true
 		wander() # start wandering
 		wanders = 0 # wander counter
-		sounds.stream = audIntro
-		sounds.play() # LOOKS LIKE ITS SWEEPING TIME!
+		sounds.stream = aud_intro
+		sounds.play() # LOOKS LIKE ITS SWEEPING TIMEnot 
 	
-	if get_real_velocity().length() <= 0.1 && coolDown <= 0.0 && wanders < 5 && sweepinTime: # Gotta Sweep has not roamed around 5 times
+	if get_real_velocity().length() <= 0.1 and cool_down <= 0.0 and wanders < 5 and sweeping_time: # Gotta Sweep has not roamed around 5 times
 		wander()
 	elif wanders >= 5:
 		go_home()
 	
-	for i : Node3D in npcList: # shift other npcs
-		if i.get("velocity") != null: # check that velocity exists
+	for i : Node3D in npc_list: # shift other npcs
+		if i.get("velocity") not = null: # check that velocity exists
 			var setVelocity := Vector3(velocity.x,i.velocity.y,velocity.z)
 			# set to position then move
 			if i is CharacterBody3D:
@@ -65,13 +65,13 @@ func _physics_process(delta : float) -> void:
 					setVelocity = setVelocity.slide(collide.get_normal()).normalized()*setVelocity.length()
 			
 			if i is Player:
-				if !i.boots:
+				if not i.boots:
 					i.velocity = setVelocity + (0.3 * i.velocity)
 					i.sweeping = true
 					i.failSafe = 1.0
 			else:
 				i.velocity = setVelocity + (0.1 * i.velocity)
-			if i.get("navSkipSafe") != null:
+			if i.get("navSkipSafe") not = null:
 				i.navSkipSafe = true
 	
 	super(delta)
@@ -80,14 +80,14 @@ func _physics_process(delta : float) -> void:
 
 func _on_area_3d_body_entered(body : Node3D) -> void:
 	if body == self: return
-	sounds.stream = audSweep
+	sounds.stream = aud_sweep
 	sounds.play()
-	npcList.append(body)
+	npc_list.append(body)
 	if body is Player:
 		body.sweeping = true
 
 func _on_area_3d_body_exited(body : Node3D) -> void:
-	if npcList.has(body):
-		npcList.erase(body) # remove npc (if they're on the list)
+	if npc_list.has(body):
+		npc_list.erase(body) # remove npc (if they're on the list)
 	if body is Player:
 		body.sweeping = false

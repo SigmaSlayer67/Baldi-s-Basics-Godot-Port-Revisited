@@ -1,21 +1,21 @@
-# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+# ATTENTION: Script donenot  (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends StaticBody3D
 class_name Bully
 
-var waitTime : float = 65.7312
-var activeTime : float = 0.0
+var wait_time : float = 65.7312
+var active_time : float = 0.0
 var guilt : float = 0.0
 var awake : bool = false
 var spoken : bool = false
 
 
 @export var active : bool = false
-@export var audTaunts : Array[AudioStream] = [preload("res://audio/Characters/Bully/B_TakeCandy.wav"),preload("res://audio/Characters/Bully/B_GiveGreat.wav")]
-@export var audThanks : Array[AudioStream] = [preload("res://audio/Characters/Bully/B_TakeThat.wav"),preload("res://audio/Characters/Bully/B_Donation.wav")]
-@export var audDenied : AudioStream = preload("res://audio/Characters/Bully/B_NoItems.wav")
+@export var aud_taunts : Array[AudioStream] = [preload("res://audio/Characters/Bully/B_TakeCandy.wav"),preload("res://audio/Characters/Bully/B_GiveGreat.wav")]
+@export var aud_thanks : Array[AudioStream] = [preload("res://audio/Characters/Bully/B_TakeThat.wav"),preload("res://audio/Characters/Bully/B_Donation.wav")]
+@export var aud_denied : AudioStream = preload("res://audio/Characters/Bully/B_NoItems.wav")
 
 @onready var sounds : AudioStreamPlayer = $Sounds
-@onready var playerChecker : RayCast3D = $PlayerChecker
+@onready var player_checker : RayCast3D = $PlayerChecker
 
 
 func _ready() -> void:
@@ -29,22 +29,22 @@ func activate() -> void:
 	show()
 
 func _physics_process(delta : float) -> void:
-	if waitTime > 0.0:
-		waitTime = move_toward(waitTime,0.0,delta)
-	elif !awake:
+	if wait_time > 0.0:
+		wait_time = move_toward(wait_time,0.0,delta)
+	elif not awake:
 		wake_up() # wake up bully
 	if is_instance_valid(Global.player):
 		if awake: # if the bully is on the map
-			activeTime += delta # increase active time
-			if activeTime >= 180.0 && global_position.distance_to(Global.player.global_position) >= 120.0: # If the bully has been in the map for a long time and the player is far away
+			active_time += delta # increase active time
+			if active_time >= 180.0 and global_position.distance_to(Global.player.global_position) >= 120.0: # If the bully has been in the map for a long time and the player is far away
 				reset() # Reset the bully
 	guilt = move_toward(guilt,0.0,delta)
 	
-	playerChecker.target_position = Global.player.global_position - global_position
-	if !playerChecker.is_colliding() && awake && global_position.distance_to(Global.player.global_position) <= 30.0:
-		if !spoken: # If the bully hasn't already spoken
+	player_checker.target_position = Global.player.global_position - global_position
+	if not player_checker.is_colliding() and awake and global_position.distance_to(Global.player.global_position) <= 30.0:
+		if not spoken: # If the bully hasn't already spoken
 			# Get a taunt sound
-			sounds.stream = audTaunts[randi_range(0,audTaunts.size()-1)]
+			sounds.stream = aud_taunts[randi_range(0,aud_taunts.size()-1)]
 			sounds.play()
 			spoken = true # Sets spoken to true, preventing the bully from talking again
 		guilt = 10.0 # Makes the bully guilty for "Bullying in the halls"
@@ -58,25 +58,25 @@ func wake_up() -> void:
 
 func reset() -> void:
 	global_position = Vector3i(0,20,0)
-	waitTime = randf_range(60.0, 120.0) #Set the amount of time before the bully appears again
+	wait_time = randf_range(60.0, 120.0) #Set the amount of time before the bully appears again
 	awake = false
-	activeTime = 0.0
+	active_time = 0.0
 	spoken = false
 	guilt = 0.0
 
 
 func _on_collider_body_entered(body : Node3D) -> void:
-	if body is Principal && guilt > 0.0: #If touching the principal and the bully is guilty
+	if body is Principal and guilt > 0.0: #If touching the principal and the bully is guilty
 		body.bullySeen = false
 		reset()
 	elif body is Player:
 		# check if player has items
 		var hasItem : bool = false
 		for i : int in body.items:
-			if i != 0:
+			if i not = 0:
 				hasItem = true
-		if !hasItem: # taunt if player doesn't have items
-			sounds.stream = audDenied # "What, no items? No Items? No passsssss"
+		if not hasItem: # taunt if player doesn't have items
+			sounds.stream = aud_denied # "What, no items? No Items? No passsssss"
 			sounds.play() 
 		else:
 			# select player inventory slot at random
@@ -85,6 +85,6 @@ func _on_collider_body_entered(body : Node3D) -> void:
 			while (body.items[getItem] == 0):
 				getItem = randi_range(0,body.items.size()-1)
 			body.lose_item(getItem)
-			sounds.stream = audThanks[randi_range(0,audThanks.size()-1)]
+			sounds.stream = aud_thanks[randi_range(0,aud_thanks.size()-1)]
 			sounds.play()
 			reset()

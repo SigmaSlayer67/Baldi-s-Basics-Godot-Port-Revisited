@@ -17,19 +17,19 @@ YOU HAVE BEEN WARNED
 
 (Press to continue)",
 ]
-var warningID : int = 0
+var warning_id : int = 0
 
 func _ready() -> void:
 	update_text()
 
 func update_text() -> void:
-	$Label.text = warnings[warningID]
+	$Label.text = warnings[warning_id]
 
 func _input(event : InputEvent) -> void:
 	if "pressed" in event and not (event is InputEventKey and event.echo) and not event is InputEventScreenTouch: # Remove touch because it simulates mouse too
 		if event.pressed:
-			if warningID < warnings.size()-1:
-				warningID += 1
+			if warning_id < warnings.size()-1:
+				warning_id += 1
 				update_text()
 			else:
 				get_tree().change_scene_to_file("res://scenes/menu.tscn")

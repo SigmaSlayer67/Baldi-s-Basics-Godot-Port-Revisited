@@ -1,11 +1,11 @@
-# ATTENTION: Script done! (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
+# ATTENTION: Script donenot  (check message that says: the script is fully statically typed and ready for execution, shall be removed when moving on to the next branch)
 extends CanvasLayer
 
 signal closed
 
 func _ready() -> void:
 	Global.load_settings()
-	$Options/Menu/Sensativity.value = Global.sensativity
+	$Options/Menu/Sensativity.value = Global.sensitivity
 	$Options/Menu/Rumble.button_pressed = Global.analog
 	$Options/Menu/Analog.button_pressed = Global.rumble
 
@@ -21,12 +21,12 @@ func _on_back_pressed() -> void:
 	closed.emit()
 
 func _on_sensativity_value_changed(value : float) -> void:
-	Global.sensativity = max(0.1,value)
+	Global.sensitivity = max(0.1,value)
 	$Options/Menu/Sensativity/SensBar.value = value
 
 func _input(event : InputEvent) -> void:
 	# close on pause pressed
-	if event.is_action_pressed("gm_pause") && visible && get_tree().paused:
+	if event.is_action_pressed("gm_pause") and visible and get_tree().paused:
 		_on_back_pressed()
 
 func _on_rumble_toggled(toggled_on : bool) -> void:
